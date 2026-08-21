@@ -1,0 +1,99 @@
+[gd_scene load_steps=8 format=3 uid="uid://clevel1level1x1"]
+
+[ext_resource type="Script" path="res://game/scripts/Level.gd" id="1_level"]
+[ext_resource type="PackedScene" path="res://game/scenes/ui/HUD.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://game/scenes/Socket.tscn" id="3_socket"]
+[ext_resource type="PackedScene" path="res://game/scenes/Hazard.tscn" id="4_hazard"]
+[ext_resource type="PackedScene" path="res://game/scenes/Wall.tscn" id="5_wall"]
+[ext_resource type="PackedScene" path="res://game/scenes/Player.tscn" id="6_player"]
+[ext_resource type="PackedScene" path="res://game/scenes/GameCamera.tscn" id="7_cam"]
+
+[node name="Level1" type="Node2D"]
+script = ExtResource("1_level")
+level_index = 0
+
+[node name="FloorBackground" type="ColorRect" parent="."]
+offset_left = -400.0
+offset_top = -200.0
+offset_right = 2000.0
+offset_bottom = 1000.0
+color = Color(0.055, 0.075, 0.11, 1)
+z_index = -10
+
+[node name="GridDecor1" type="Polygon2D" parent="."]
+color = Color(0.09, 0.13, 0.18, 1)
+polygon = PackedVector2Array(-400, 300, 2000, 300, 2000, 303, -400, 303)
+z_index = -9
+
+[node name="GridDecor2" type="Polygon2D" parent="."]
+color = Color(0.09, 0.13, 0.18, 1)
+polygon = PackedVector2Array(-400, 500, 2000, 500, 2000, 503, -400, 503)
+z_index = -9
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]
+
+[node name="GameCamera" parent="." instance=ExtResource("7_cam")]
+position = Vector2(640, 400)
+
+[node name="SocketStart" parent="." instance=ExtResource("3_socket")]
+position = Vector2(200, 400)
+is_starting_anchor = true
+
+[node name="SocketMid" parent="." instance=ExtResource("3_socket")]
+position = Vector2(680, 400)
+progress_value = 5
+
+[node name="SocketGoal" parent="." instance=ExtResource("3_socket")]
+position = Vector2(1150, 400)
+is_final_goal = true
+
+[node name="HazardTop" parent="." instance=ExtResource("4_hazard")]
+position = Vector2(920, 320)
+
+[node name="HazardBottom" parent="." instance=ExtResource("4_hazard")]
+position = Vector2(920, 480)
+
+[node name="WallTop1" parent="." instance=ExtResource("5_wall")]
+position = Vector2(300, 180)
+size = Vector2(400, 24)
+
+[node name="WallTop2" parent="." instance=ExtResource("5_wall")]
+position = Vector2(900, 180)
+size = Vector2(500, 24)
+
+[node name="WallBottom1" parent="." instance=ExtResource("5_wall")]
+position = Vector2(300, 620)
+size = Vector2(400, 24)
+
+[node name="WallBottom2" parent="." instance=ExtResource("5_wall")]
+position = Vector2(900, 620)
+size = Vector2(500, 24)
+
+[node name="WallLeft" parent="." instance=ExtResource("5_wall")]
+position = Vector2(80, 400)
+size = Vector2(24, 480)
+
+[node name="WallRight" parent="." instance=ExtResource("5_wall")]
+position = Vector2(1240, 400)
+size = Vector2(24, 480)
+
+[node name="TutorialHint1" type="Label" parent="."]
+offset_left = 160.0
+offset_top = 260.0
+offset_right = 640.0
+offset_bottom = 292.0
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 0.85)
+text = "→ Двигайся: WASD. Кабель ограничен."
+
+[node name="TutorialHint2" type="Label" parent="."]
+offset_left = 500.0
+offset_top = 260.0
+offset_right = 1100.0
+offset_bottom = 292.0
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(1, 0.85, 0.5, 0.85)
+text = "→ Натяни трос и нажми SPACE для рывка"
+
+[node name="Player" parent="." instance=ExtResource("6_player")]
+position = Vector2(200, 400)

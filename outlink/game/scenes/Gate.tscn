@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0gategate001"]
+
+[ext_resource type="Script" path="res://game/scripts/Gate.gd" id="1_gate"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g"]
+size = Vector2(28, 96)
+
+[node name="Gate" type="Area2D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_gate")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_g")
+
+[node name="PostTop" type="Polygon2D" parent="."]
+color = Color(0.7, 0.7, 0.75, 1)
+polygon = PackedVector2Array(-16, -56, 16, -56, 16, -48, -16, -48)
+
+[node name="PostBottom" type="Polygon2D" parent="."]
+color = Color(0.7, 0.7, 0.75, 1)
+polygon = PackedVector2Array(-16, 48, 16, 48, 16, 56, -16, 56)
+
+[node name="Beam" type="Polygon2D" parent="."]
+color = Color(1, 0.35, 0.7, 0.85)
+polygon = PackedVector2Array(-8, -48, 8, -48, 8, 48, -8, 48)
+
+[node name="BeamCore" type="Polygon2D" parent="."]
+color = Color(1, 0.85, 1, 0.95)
+polygon = PackedVector2Array(-3, -48, 3, -48, 3, 48, -3, 48)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -30.0
+offset_top = -74.0
+offset_right = 30.0
+offset_bottom = -56.0
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(1, 0.6, 0.8, 1)
+text = "TETHER GATE"
+horizontal_alignment = 1

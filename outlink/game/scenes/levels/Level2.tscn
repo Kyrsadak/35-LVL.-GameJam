@@ -1,0 +1,114 @@
+[gd_scene load_steps=9 format=3 uid="uid://clevel2level2x2"]
+
+[ext_resource type="Script" path="res://game/scripts/Level.gd" id="1_level"]
+[ext_resource type="PackedScene" path="res://game/scenes/ui/HUD.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://game/scenes/Socket.tscn" id="3_socket"]
+[ext_resource type="PackedScene" path="res://game/scenes/Hazard.tscn" id="4_hazard"]
+[ext_resource type="PackedScene" path="res://game/scenes/Wall.tscn" id="5_wall"]
+[ext_resource type="PackedScene" path="res://game/scenes/Player.tscn" id="6_player"]
+[ext_resource type="PackedScene" path="res://game/scenes/GameCamera.tscn" id="7_cam"]
+[ext_resource type="PackedScene" path="res://game/scenes/Gate.tscn" id="8_gate"]
+
+[node name="Level2" type="Node2D"]
+script = ExtResource("1_level")
+level_index = 1
+
+[node name="FloorBackground" type="ColorRect" parent="."]
+offset_left = -400.0
+offset_top = -400.0
+offset_right = 2400.0
+offset_bottom = 1400.0
+color = Color(0.05, 0.075, 0.11, 1)
+z_index = -10
+
+[node name="GridDecorH1" type="Polygon2D" parent="."]
+color = Color(0.1, 0.14, 0.19, 1)
+polygon = PackedVector2Array(-400, 300, 2400, 300, 2400, 303, -400, 303)
+z_index = -9
+
+[node name="GridDecorH2" type="Polygon2D" parent="."]
+color = Color(0.1, 0.14, 0.19, 1)
+polygon = PackedVector2Array(-400, 700, 2400, 700, 2400, 703, -400, 703)
+z_index = -9
+
+[node name="GridDecorV" type="Polygon2D" parent="."]
+color = Color(0.1, 0.14, 0.19, 1)
+polygon = PackedVector2Array(1200, -400, 1203, -400, 1203, 1400, 1200, 1400)
+z_index = -9
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]
+
+[node name="GameCamera" parent="." instance=ExtResource("7_cam")]
+position = Vector2(800, 500)
+
+[node name="SocketStart" parent="." instance=ExtResource("3_socket")]
+position = Vector2(200, 500)
+is_starting_anchor = true
+
+[node name="SocketMid1" parent="." instance=ExtResource("3_socket")]
+position = Vector2(700, 500)
+progress_value = 5
+
+[node name="SocketMid2" parent="." instance=ExtResource("3_socket")]
+position = Vector2(1200, 300)
+progress_value = 5
+
+[node name="SocketMid3" parent="." instance=ExtResource("3_socket")]
+position = Vector2(1200, 800)
+progress_value = 5
+
+[node name="SocketGoal" parent="." instance=ExtResource("3_socket")]
+position = Vector2(1700, 500)
+is_final_goal = true
+
+[node name="Gate1" parent="." instance=ExtResource("8_gate")]
+position = Vector2(950, 500)
+
+[node name="Gate2" parent="." instance=ExtResource("8_gate")]
+position = Vector2(1450, 500)
+
+[node name="Hazard1" parent="." instance=ExtResource("4_hazard")]
+position = Vector2(1200, 500)
+
+[node name="Hazard2" parent="." instance=ExtResource("4_hazard")]
+position = Vector2(1450, 300)
+
+[node name="Hazard3" parent="." instance=ExtResource("4_hazard")]
+position = Vector2(1450, 800)
+
+[node name="WallTop1" parent="." instance=ExtResource("5_wall")]
+position = Vector2(400, 200)
+size = Vector2(680, 24)
+
+[node name="WallTop2" parent="." instance=ExtResource("5_wall")]
+position = Vector2(1500, 200)
+size = Vector2(500, 24)
+
+[node name="WallBottom1" parent="." instance=ExtResource("5_wall")]
+position = Vector2(400, 800)
+size = Vector2(680, 24)
+
+[node name="WallBottom2" parent="." instance=ExtResource("5_wall")]
+position = Vector2(1500, 800)
+size = Vector2(500, 24)
+
+[node name="WallLeft" parent="." instance=ExtResource("5_wall")]
+position = Vector2(80, 500)
+size = Vector2(24, 640)
+
+[node name="WallRight" parent="." instance=ExtResource("5_wall")]
+position = Vector2(1800, 500)
+size = Vector2(24, 640)
+
+[node name="TutorialHint" type="Label" parent="."]
+offset_left = 700.0
+offset_top = 240.0
+offset_right = 1400.0
+offset_bottom = 272.0
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(1, 0.6, 0.8, 0.85)
+text = "→ Розовые врата пропускают только в АВТОНОМНОСТИ"
+horizontal_alignment = 1
+
+[node name="Player" parent="." instance=ExtResource("6_player")]
+position = Vector2(200, 500)

@@ -1,0 +1,104 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmainmenumainmn"]
+
+[ext_resource type="Script" path="res://game/scripts/MainMenu.gd" id="1_menu"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.03, 0.06, 0.1, 1)
+
+[node name="DecorTop" type="Polygon2D" parent="."]
+color = Color(0.09, 0.14, 0.22, 1)
+polygon = PackedVector2Array(0, 0, 1280, 0, 1280, 90, 0, 90)
+
+[node name="DecorBottom" type="Polygon2D" parent="."]
+color = Color(0.09, 0.14, 0.22, 1)
+polygon = PackedVector2Array(0, 630, 1280, 630, 1280, 720, 0, 720)
+
+[node name="AccentLine" type="Polygon2D" parent="."]
+color = Color(0.35, 0.85, 1, 0.7)
+polygon = PackedVector2Array(0, 90, 1280, 90, 1280, 93, 0, 93)
+
+[node name="AccentLine2" type="Polygon2D" parent="."]
+color = Color(1, 0.85, 0.3, 0.7)
+polygon = PackedVector2Array(0, 627, 1280, 627, 1280, 630, 0, 630)
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -260.0
+offset_right = 260.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="TitleLabel" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+text = "OUTLINK"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 0.85)
+text = "МЕХАНИКА НЕЗАВИСИМОСТИ"
+horizontal_alignment = 1
+
+[node name="Separator" type="HSeparator" parent="Panel/VBox"]
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="Panel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(320, 44)
+theme_override_font_sizes/font_size = 18
+text = "► НОВАЯ ИГРА"
+
+[node name="LevelsLabel" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.6, 0.8, 1, 0.8)
+text = "БЫСТРЫЙ ЗАПУСК СЕКТОРА:"
+horizontal_alignment = 1
+
+[node name="LevelsContainer" type="VBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Separator2" type="HSeparator" parent="Panel/VBox"]
+layout_mode = 2
+
+[node name="QuitButton" type="Button" parent="Panel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(320, 36)
+text = "ВЫХОД"
+
+[node name="ControlsLabel" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.7)
+text = "WASD/Стрелки — движение · SPACE — рывок · R — рестарт · ESC — пауза"
+horizontal_alignment = 1
