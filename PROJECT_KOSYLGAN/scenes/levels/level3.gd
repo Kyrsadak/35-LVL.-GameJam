@@ -17,7 +17,7 @@ func _ready() -> void:
 	if RobotManager:
 		RobotManager.register_level(3, atlas, cipher, charging_station, camera_pivot)
 	if hud and hud.has_method("set_level_info"):
-		hud.set_level_info(3, "Центр Управления", "TAB: Смена робота на месте | E: Действие / Поднять ящик")
+		hud.set_level_info(3, "Центр Управления", "ПКМ: Обзор 360° | Колесо: Зум | F: Сброс | TAB: Смена | E: Действие")
 
 	if plate1:
 		plate1.activated.connect(func(): _on_plate_changed(1, true))
