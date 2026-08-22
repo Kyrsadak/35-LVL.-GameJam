@@ -1,41 +1,39 @@
 [gd_scene load_steps=9 format=3]
 
+[ext_resource type="Script" path="res://scenes/props/prop_safety_barrier.gd" id="1_script"]
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_barrier_col"]
-size = Vector3(1.2, 0.95, 0.45)
+size = Vector3(1.50, 0.95, 0.50)
 
 [sub_resource type="BoxMesh" id="BoxMesh_leg"]
-size = Vector3(0.08, 0.8, 0.08)
+size = Vector3(0.08, 0.85, 0.08)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_orange"]
-albedo_color = Color(0.95, 0.38, 0.10, 1)
-roughness = 0.45
-metallic = 0.05
-
-[sub_resource type="BoxMesh" id="BoxMesh_crossbeam"]
-size = Vector3(1.1, 0.08, 0.06)
+albedo_color = Color(0.95, 0.42, 0.10, 1)
+roughness = 0.5
 
 [sub_resource type="BoxMesh" id="BoxMesh_main_board"]
-size = Vector3(1.15, 0.38, 0.1)
+size = Vector3(1.45, 0.38, 0.10)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_white_stripe"]
-albedo_color = Color(0.95, 0.95, 0.96, 1)
-roughness = 0.3
+[sub_resource type="BoxMesh" id="BoxMesh_lower_bar"]
+size = Vector3(1.35, 0.12, 0.08)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_flasher"]
-top_radius = 0.09
-bottom_radius = 0.09
-height = 0.06
+top_radius = 0.08
+bottom_radius = 0.08
+height = 0.08
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yellow_light"]
-albedo_color = Color(0.98, 0.75, 0.15, 1)
+albedo_color = Color(1.0, 0.75, 0.15, 1)
 emission_enabled = true
-emission = Color(0.98, 0.70, 0.10, 1)
-emission_energy_multiplier = 1.2
+emission = Color(1.0, 0.70, 0.10, 1)
+emission_energy_multiplier = 1.8
 roughness = 0.2
 
 [node name="PropSafetyBarrier" type="StaticBody3D"]
 collision_layer = 2
 collision_mask = 7
+script = ExtResource("1_script")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.475, 0)
@@ -43,56 +41,45 @@ shape = SubResource("BoxShape3D_barrier_col")
 
 # Left A-Frame Legs
 [node name="LegLeftFront" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, -0.45, 0.38, 0.1)
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, -0.58, 0.42, 0.12)
 mesh = SubResource("BoxMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
 [node name="LegLeftBack" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, -0.45, 0.38, -0.1)
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, -0.58, 0.42, -0.12)
 mesh = SubResource("BoxMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
 # Right A-Frame Legs
 [node name="LegRightFront" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0.45, 0.38, 0.1)
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0.58, 0.42, 0.12)
 mesh = SubResource("BoxMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
 [node name="LegRightBack" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0.45, 0.38, -0.1)
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0.58, 0.42, -0.12)
 mesh = SubResource("BoxMesh_leg")
 surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
-# Lower Cross Beam
-[node name="LowerBeam" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
-mesh = SubResource("BoxMesh_crossbeam")
-surface_material_override/0 = SubResource("StandardMaterial3D_orange")
-
-# Main Barricade Plank
+# Main Reflective Barricade Board
 [node name="MainBoard" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
 mesh = SubResource("BoxMesh_main_board")
 surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
-# White Diagonal Stripes
-[node name="Stripe1" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, -0.25, 0.58, 0.052)
-mesh = SubResource("BoxMesh_crossbeam")
-surface_material_override/0 = SubResource("StandardMaterial3D_white_stripe")
-
-[node name="Stripe2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 0.25, 0.58, 0.052)
-mesh = SubResource("BoxMesh_crossbeam")
-surface_material_override/0 = SubResource("StandardMaterial3D_white_stripe")
+# Lower Crossbar
+[node name="LowerBar" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+mesh = SubResource("BoxMesh_lower_bar")
+surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
 # 2 Amber Flashers on Top
 [node name="FlasherLeft" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.38, 0.82, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.50, 0.88, 0)
 mesh = SubResource("CylinderMesh_flasher")
 surface_material_override/0 = SubResource("StandardMaterial3D_yellow_light")
 
 [node name="FlasherRight" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.38, 0.82, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.50, 0.88, 0)
 mesh = SubResource("CylinderMesh_flasher")
 surface_material_override/0 = SubResource("StandardMaterial3D_yellow_light")
