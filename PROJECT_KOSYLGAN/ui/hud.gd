@@ -5,6 +5,7 @@ extends CanvasLayer
 @onready var cipher_battery_display = %CipherBatteryDisplay
 
 @onready var level_title: Label = %LevelTitle
+@onready var dialogue_container: PanelContainer = %DialogueContainer
 @onready var message_banner: Label = %MessageBanner
 @onready var clue_panel: PanelContainer = %CluePanel
 @onready var clue_text: Label = %ClueText
@@ -45,7 +46,8 @@ func _ready() -> void:
 			
 	clue_panel.visible = false
 	interact_prompt.visible = false
-	message_banner.visible = false
+	if dialogue_container:
+		dialogue_container.visible = false
 
 func set_level_info(level_num: int, title: String, mode_desc: String) -> void:
 	level_title.text = "УРОВЕНЬ " + str(level_num) + ": " + title.to_upper() + "\n" + mode_desc
@@ -69,14 +71,16 @@ func _on_robot_switched(active_robot: Node) -> void:
 
 func show_banner_message(text: String, duration: float = 2.0) -> void:
 	message_banner.text = text
-	message_banner.visible = true
+	if dialogue_container:
+		dialogue_container.visible = true
 	if message_timer:
 		message_timer.timeout.disconnect(_hide_banner)
 	message_timer = get_tree().create_timer(duration)
 	message_timer.timeout.connect(_hide_banner)
 
 func _hide_banner() -> void:
-	message_banner.visible = false
+	if dialogue_container:
+		dialogue_container.visible = false
 
 func _on_clue_revealed(text: String) -> void:
 	clue_text.text = text

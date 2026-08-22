@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://ui/hud.gd" id="1_hud"]
 [ext_resource type="Script" path="res://ui/battery_display.gd" id="2_bat"]
@@ -18,6 +18,24 @@ content_margin_left = 16.0
 content_margin_top = 12.0
 content_margin_right = 16.0
 content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
+bg_color = Color(0.07, 0.09, 0.14, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.82, 0.96, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 10
+content_margin_left = 24.0
+content_margin_top = 10.0
+content_margin_right = 24.0
+content_margin_bottom = 10.0
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -100,23 +118,33 @@ theme_override_font_sizes/font_size = 15
 text = "..."
 autowrap_mode = 2
 
-[node name="MessageBanner" type="Label" parent="."]
+[node name="DialogueContainer" type="PanelContainer" parent="."]
 unique_name_in_owner = true
-anchors_preset = 5
+custom_minimum_size = Vector2(560, 68)
+anchors_preset = 7
 anchor_left = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-offset_left = -350.0
-offset_top = 88.0
-offset_right = 350.0
-offset_bottom = 124.0
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -140.0
+offset_right = 280.0
+offset_bottom = -68.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(0.95, 0.55, 0.15, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 17
-text = ""
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
+
+[node name="MessageBanner" type="Label" parent="DialogueContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 0.96, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.06, 0.1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 25
+text = "(=^･ω･^=)⚡ // Weo Weo Weo! 🔌"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="InteractPrompt" type="Label" parent="."]
 unique_name_in_owner = true
@@ -126,9 +154,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -200.0
-offset_top = -110.0
+offset_top = -185.0
 offset_right = 200.0
-offset_bottom = -75.0
+offset_bottom = -150.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.25, 0.22, 0.18, 1)
