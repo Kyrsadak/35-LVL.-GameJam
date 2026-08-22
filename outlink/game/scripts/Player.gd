@@ -82,21 +82,30 @@ func _physics_tethered(delta: float, input_vector: Vector2) -> void:
 	trail_particles.emitting = false
 
 	var target_vel := input_vector * tethered_speed
-	velocity = target_vel + dash_velocity
-
-	# Ограничение физической длины троса
 	var to_socket := global_position - current_socket_pos
 	var dist := to_socket.length()
 
-	if dist > max_tether_length:
-		var clamped_pos := current_socket_pos + to_socket.normalized() * max_tether_length
-		velocity = (clamped_pos - global_position) / delta
+	# Если трос натянут на максимум — разрешаем скользить по кругу (тангенциально) и идти внутрь,
+	# блокируя только дальнейшее движение наружу (игрок больше никогда не застревает!)
+	if dist >= max_tether_length and dist > 0.001:
+		var outward := to_socket.normalized()
+		var outward_speed := target_vel.dot(outward)
+		if outward_speed > 0.0:
+			# Убираем только наружную составляющую скорости, оставляя свободное скольжение по орбите
+			target_vel -= outward * outward_speed
 
+	velocity = target_vel + dash_velocity
 	dash_velocity = dash_velocity.move_toward(Vector2.ZERO, 1400.0 * delta)
 	move_and_slide()
 
-	# Обновление натяжения (после move_and_slide)
-	dist = (global_position - current_socket_pos).length()
+	# Мягкая фиксация максимального радиуса после физики
+	to_socket = global_position - current_socket_pos
+	dist = to_socket.length()
+	if dist > max_tether_length and dist > 0.001:
+		global_position = current_socket_pos + to_socket.normalized() * max_tether_length
+		dist = max_tether_length
+
+	# Обновление натяжения
 	tension = clampf(dist / max_tether_length, 0.0, 1.0)
 	EventBus.tension_changed.emit(tension)
 
