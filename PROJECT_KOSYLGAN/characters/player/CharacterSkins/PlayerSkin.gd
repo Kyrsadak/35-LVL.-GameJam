@@ -102,9 +102,9 @@ func update_move_animation(velocity_ratio: float, _delta: float) -> void:
 		if velocity_ratio > 0.1:
 			var target_run = "Run_Hold" if anim_player.has_animation("Run_Hold") else "Run"
 			if current_anim != target_run:
-				anim_player.play(target_run, 0.1)
+				anim_player.play(target_run, 0.12)
 				current_anim = target_run
-			anim_player.speed_scale = clamp(velocity_ratio * 1.2, 0.7, 1.4)
+			anim_player.speed_scale = clamp(velocity_ratio * 0.9, 0.6, 1.0)
 		else:
 			var target_idle = "Idle_Hold" if anim_player.has_animation("Idle_Hold") else "Idle"
 			if current_anim != target_idle:
@@ -115,9 +115,9 @@ func update_move_animation(velocity_ratio: float, _delta: float) -> void:
 		if velocity_ratio > 0.1:
 			if current_anim != "Run":
 				if anim_player.has_animation("Run"):
-					anim_player.play("Run", 0.1)
+					anim_player.play("Run", 0.12)
 					current_anim = "Run"
-			anim_player.speed_scale = clamp(velocity_ratio * 1.2, 0.7, 1.4)
+			anim_player.speed_scale = clamp(velocity_ratio * 0.9, 0.6, 1.0)
 		else:
 			if current_anim != "Idle":
 				if anim_player.has_animation("Idle"):
