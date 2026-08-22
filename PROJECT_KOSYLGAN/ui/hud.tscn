@@ -1,25 +1,39 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://ui/hud.gd" id="1_hud"]
 [ext_resource type="Script" path="res://ui/battery_display.gd" id="2_bat"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
-bg_color = Color(0.07, 0.09, 0.14, 0.92)
+bg_color = Color(0.07, 0.09, 0.14, 0.94)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.35, 0.82, 0.96, 0.9)
+border_color = Color(0.35, 0.82, 0.96, 0.95)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 shadow_color = Color(0, 0, 0, 0.5)
-shadow_size = 10
-content_margin_left = 28.0
-content_margin_top = 10.0
-content_margin_right = 28.0
-content_margin_bottom = 10.0
+shadow_size = 12
+content_margin_left = 24.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_enter_key"]
+bg_color = Color(0.12, 0.18, 0.28, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0, 0.85, 1.0, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0.0, 0.85, 1.0, 0.3)
+shadow_size = 6
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -71,29 +85,53 @@ theme_color = Color(1.0, 0.6, 0.05, 1)
 
 [node name="DialogueContainer" type="PanelContainer" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(580, 68)
+custom_minimum_size = Vector2(620, 68)
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -290.0
+offset_left = -310.0
 offset_top = -140.0
-offset_right = 290.0
+offset_right = 310.0
 offset_bottom = -68.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
 
-[node name="MessageBanner" type="Label" parent="DialogueContainer"]
+[node name="HBox" type="HBoxContainer" parent="DialogueContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="MessageBanner" type="Label" parent="DialogueContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(1, 0.96, 0.88, 1)
 theme_override_colors/font_outline_color = Color(0.04, 0.06, 0.1, 1)
 theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 23
 text = "(=^･ω･^=)⚡ // Weo Weo Weo! 🔌"
+vertical_alignment = 1
+
+[node name="EnterBadge" type="PanelContainer" parent="DialogueContainer/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(44, 36)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_enter_key")
+
+[node name="EnterIcon" type="Label" parent="DialogueContainer/HBox/EnterBadge"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0, 0.95, 1.0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
+text = "↵"
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="InteractPrompt" type="Label" parent="."]

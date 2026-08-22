@@ -7,10 +7,16 @@ extends CanvasLayer
 @onready var level_title: Label = %LevelTitle
 @onready var dialogue_container: PanelContainer = %DialogueContainer
 @onready var message_banner: Label = %MessageBanner
+@onready var enter_badge: PanelContainer = %EnterBadge
 @onready var interact_prompt: Label = %InteractPrompt
 
 var active_typing_tween: Tween = null
+var pulse_badge_tween: Tween = null
 var default_dialogue_offset_top: float = -140.0
+
+var is_dialogue_open: bool = false
+var is_typing_active: bool = false
+var current_total_chars: int = 0
 
 func _ready() -> void:
 	if atlas_battery_display:
@@ -37,6 +43,28 @@ func _ready() -> void:
 		dialogue_container.visible = false
 		dialogue_container.modulate.a = 0.0
 		default_dialogue_offset_top = dialogue_container.offset_top
+	if enter_badge:
+		enter_badge.modulate.a = 0.0
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_dialogue_open or not dialogue_container or not dialogue_container.visible:
+		return
+		
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER or event.keycode == KEY_SPACE:
+			get_viewport().set_input_as_handled()
+			if is_typing_active:
+				# Skip typing instantly
+				if active_typing_tween and active_typing_tween.is_valid():
+					active_typing_tween.kill()
+				message_banner.visible_characters = current_total_chars
+				is_typing_active = false
+				_start_badge_pulse()
+				if SoundManager and SoundManager.has_method("play_ui_hover"):
+					SoundManager.play_ui_hover()
+			else:
+				# Dismiss dialogue on Enter
+				_dismiss_dialogue()
 
 func _process(_delta: float) -> void:
 	# Real-time frame-by-frame polling to guarantee 100% sync with active/inactive robot battery & charging
@@ -67,27 +95,33 @@ func _on_robot_switched(active_robot: Node) -> void:
 	if cipher_battery_display:
 		cipher_battery_display.set_active(r_id == "cipher")
 
-func show_banner_message(text: String, duration: float = 3.2) -> void:
+func show_banner_message(text: String, _duration: float = 0.0) -> void:
 	if not dialogue_container or not message_banner:
 		return
 		
 	# Cancel previous active animations
 	if active_typing_tween and active_typing_tween.is_valid():
 		active_typing_tween.kill()
+	if pulse_badge_tween and pulse_badge_tween.is_valid():
+		pulse_badge_tween.kill()
 
+	is_dialogue_open = true
+	is_typing_active = true
 	dialogue_container.visible = true
 	message_banner.text = text
 	message_banner.visible_characters = 0
 	
-	var total_chars = text.length()
+	current_total_chars = text.length()
 	var char_speed = 0.046 # Left-to-right steady typing cadence
-	var type_duration = max(0.60, total_chars * char_speed)
+	var type_duration = max(0.60, current_total_chars * char_speed)
 	var is_catgirl = "Weo" in text or "(=^" in text or "CRT-CAT" in text
 
 	# 1. Silky Smooth Panel Fade & Slide Up Entrance
 	dialogue_container.modulate.a = 0.0
 	dialogue_container.offset_top = default_dialogue_offset_top + 14.0
 	dialogue_container.offset_bottom = default_dialogue_offset_top + 14.0 + 68.0
+	if enter_badge:
+		enter_badge.modulate.a = 0.0
 	
 	var slide_tween = create_tween().set_parallel(true)
 	slide_tween.tween_property(dialogue_container, "modulate:a", 1.0, 0.28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -99,19 +133,47 @@ func show_banner_message(text: String, duration: float = 3.2) -> void:
 	var last_blip_idx = -1
 	active_typing_tween.tween_method(func(val: int):
 		message_banner.visible_characters = val
-		if val > 0 and val <= total_chars and val != last_blip_idx:
+		if val > 0 and val <= current_total_chars and val != last_blip_idx:
 			last_blip_idx = val
 			if val % 2 == 0: # Play speech blip every 2 characters
 				var ch = text[val - 1]
 				if ch != " " and SoundManager and SoundManager.has_method("play_dialogue_blip"):
 					SoundManager.play_dialogue_blip(is_catgirl)
-	, 0, total_chars, type_duration).set_trans(Tween.TRANS_LINEAR)
+	, 0, current_total_chars, type_duration).set_trans(Tween.TRANS_LINEAR)
 
-	# 3. Rest on screen, then silky smooth fade & drift exit
-	active_typing_tween.tween_interval(duration)
-	active_typing_tween.tween_property(dialogue_container, "modulate:a", 0.0, 0.40).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	active_typing_tween.tween_property(dialogue_container, "offset_top", default_dialogue_offset_top + 8.0, 0.40).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	# When typing finishes, activate the pulsing Enter Badge (NO auto-close!)
 	active_typing_tween.tween_callback(func():
+		is_typing_active = false
+		_start_badge_pulse()
+	)
+
+func _start_badge_pulse() -> void:
+	if not enter_badge:
+		return
+	if pulse_badge_tween and pulse_badge_tween.is_valid():
+		pulse_badge_tween.kill()
+		
+	enter_badge.modulate.a = 1.0
+	pulse_badge_tween = create_tween().set_loops()
+	pulse_badge_tween.tween_property(enter_badge, "scale", Vector2(1.12, 1.12), 0.45).set_trans(Tween.TRANS_SINE)
+	pulse_badge_tween.tween_property(enter_badge, "scale", Vector2(1.0, 1.0), 0.45).set_trans(Tween.TRANS_SINE)
+
+func _dismiss_dialogue() -> void:
+	if not is_dialogue_open:
+		return
+	is_dialogue_open = false
+	is_typing_active = false
+	
+	if SoundManager and SoundManager.has_method("play_ui_click"):
+		SoundManager.play_ui_click()
+		
+	if pulse_badge_tween and pulse_badge_tween.is_valid():
+		pulse_badge_tween.kill()
+
+	var exit_tween = create_tween().set_parallel(true)
+	exit_tween.tween_property(dialogue_container, "modulate:a", 0.0, 0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	exit_tween.tween_property(dialogue_container, "offset_top", default_dialogue_offset_top + 8.0, 0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	exit_tween.chain().tween_callback(func():
 		dialogue_container.visible = false
 	)
 
