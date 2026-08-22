@@ -2,9 +2,8 @@ class_name ChargingStation
 extends Area3D
 
 ## High-Tech Sci-Fi Cryo-Charging Capsule based on user reference concept art.
-## Features stepped docking pedestal, heavy hydraulic clamps, transparent glass chamber
-## with "20" stencil decal, top generator roof cap, volumetric energy lighting,
-## single-robot capacity limit, and [E] key docking/undocking mechanic.
+## Features stepped docking pedestal, 3D glowing energy conduits, dynamic stencil digit display,
+## volumetric energy lighting, single-robot capacity limit, and [E] key docking/undocking mechanic.
 
 signal robot_docked(robot: Node3D)
 signal robot_undocked(robot: Node3D)
@@ -21,18 +20,22 @@ signal robot_undocked(robot: Node3D)
 @onready var floor_dock_pad: MeshInstance3D = $BasePlatform/FloorDockPad
 @onready var outer_hazard_mesh: MeshInstance3D = $BasePlatform/OuterHazardMesh
 @onready var clamp_leds: Array[MeshInstance3D] = []
+@onready var conduit_meshes: Array[MeshInstance3D] = []
 
 var docked_robot: Node3D = null
 var nearby_robots: Array[Node3D] = []
 var is_docked: bool = false
 var anim_tween: Tween = null
 var scan_time: float = 0.0
+var _current_displayed_pct: int = -999
 
 var glass_material: StandardMaterial3D
 var plasma_material: StandardMaterial3D
 var led_material: StandardMaterial3D
 var yellow_trim_material: StandardMaterial3D
 var dark_metal_material: StandardMaterial3D
+var conduit_material: StandardMaterial3D
+var decal_material: StandardMaterial3D
 
 func _ready() -> void:
 	add_to_group("charging_station")
@@ -73,18 +76,16 @@ func _setup_materials_and_textures() -> void:
 	if glass_mesh:
 		glass_mesh.set_surface_override_material(0, glass_material)
 	
-	# 4. Glass Decal "20" Texture (High-Res 512x512)
-	var decal_tex = _generate_decal_texture()
-	var decal_mat = StandardMaterial3D.new()
-	decal_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	decal_mat.albedo_texture = decal_tex
-	decal_mat.emission_enabled = true
-	decal_mat.emission_texture = decal_tex
-	decal_mat.emission_energy_multiplier = 1.0
-	decal_mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
-	decal_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	# 4. Glass Decal Dynamic Number Display Texture
+	decal_material = StandardMaterial3D.new()
+	decal_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	decal_material.emission_enabled = true
+	decal_material.emission_energy_multiplier = 1.2
+	decal_material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+	decal_material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	_update_decal_texture("00")
 	if glass_decal_mesh:
-		glass_decal_mesh.set_surface_override_material(0, decal_mat)
+		glass_decal_mesh.set_surface_override_material(0, decal_material)
 	
 	# 5. Outer Base Radial Hazard Stripes Texture (High-Res 512x512)
 	var hazard_tex = _generate_hazard_stripes_texture()
@@ -96,7 +97,23 @@ func _setup_materials_and_textures() -> void:
 	if outer_hazard_mesh:
 		outer_hazard_mesh.set_surface_override_material(0, hazard_mat)
 	
-	# 6. Plasma Energy Rings Material
+	# 6. 3D Energy Conduits / Cables Material
+	conduit_material = StandardMaterial3D.new()
+	conduit_material.albedo_color = Color(0.0, 0.85, 1.0)
+	conduit_material.metallic = 0.4
+	conduit_material.roughness = 0.3
+	conduit_material.emission_enabled = true
+	conduit_material.emission = Color(0.0, 0.85, 1.0)
+	conduit_material.emission_energy_multiplier = 1.6
+	
+	var conduits_root = get_node_or_null("BasePlatform/BaseConduits")
+	if conduits_root:
+		for conduit in conduits_root.get_children():
+			if conduit is MeshInstance3D:
+				conduit_meshes.append(conduit)
+				conduit.set_surface_override_material(0, conduit_material)
+	
+	# 7. Plasma Energy Rings Material
 	plasma_material = StandardMaterial3D.new()
 	plasma_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	plasma_material.albedo_color = Color(0.0, 0.9, 1.0, 0.75)
@@ -106,14 +123,13 @@ func _setup_materials_and_textures() -> void:
 	if plasma_ring_1: plasma_ring_1.set_surface_override_material(0, plasma_material)
 	if plasma_ring_2: plasma_ring_2.set_surface_override_material(0, plasma_material)
 	
-	# 7. Clamp Status LEDs
+	# 8. Clamp Status LEDs
 	led_material = StandardMaterial3D.new()
 	led_material.albedo_color = Color(0.0, 0.95, 1.0)
 	led_material.emission_enabled = true
 	led_material.emission = Color(0.0, 0.95, 1.0)
 	led_material.emission_energy_multiplier = 2.5
 	
-	# Collect clamp LED mesh nodes
 	var clamps_root = get_node_or_null("BasePlatform/HydraulicClamps")
 	if clamps_root:
 		for clamp in clamps_root.get_children():
@@ -124,6 +140,28 @@ func _setup_materials_and_textures() -> void:
 
 func _process(delta: float) -> void:
 	scan_time += delta * 3.5
+	
+	# Live animated glow on 3D energy conduit cables
+	if conduit_material:
+		var energy_flow = 1.3 + 0.7 * sin(scan_time * 2.8)
+		conduit_material.emission_energy_multiplier = energy_flow
+		if is_docked:
+			conduit_material.emission = Color(0.15, 1.0, 0.50)
+			conduit_material.albedo_color = Color(0.15, 1.0, 0.50)
+		else:
+			conduit_material.emission = Color(0.0, 0.85, 1.0)
+			conduit_material.albedo_color = Color(0.0, 0.85, 1.0)
+	
+	# Synchronize glass stencil number with docked robot battery in real time
+	if docked_robot and "battery" in docked_robot and "max_battery" in docked_robot:
+		var pct = int(round((docked_robot.battery / docked_robot.max_battery) * 100.0))
+		if pct != _current_displayed_pct:
+			_current_displayed_pct = pct
+			_update_decal_texture(str(pct))
+	else:
+		if _current_displayed_pct != 0:
+			_current_displayed_pct = 0
+			_update_decal_texture("00")
 	
 	if is_docked:
 		# Pulsing volumetric energy light
@@ -307,8 +345,8 @@ func _get_closest_nearby_robot() -> Node3D:
 			closest = r
 	return closest
 
-## Procedurally generates the high-res "20" stencil decal texture for the glass capsule
-func _generate_decal_texture() -> ImageTexture:
+## Updates the decal texture with dynamic digital text
+func _update_decal_texture(text_val: String) -> void:
 	var w = 512
 	var h = 512
 	var img = Image.create(w, h, false, Image.FORMAT_RGBA8)
@@ -318,32 +356,49 @@ func _generate_decal_texture() -> ImageTexture:
 	var col_yellow = Color(1.0, 0.78, 0.08, 0.96)
 	var col_yellow_fill = Color(1.0, 0.78, 0.08, 0.40)
 	
-	# --- Number "2" (Clean Cyber Stencil) ---
-	_draw_img_rect(img, 70, 70, 150, 32, col_white)   # top bar
-	_draw_img_rect(img, 188, 102, 32, 100, col_white) # top right
-	_draw_img_rect(img, 70, 202, 150, 32, col_white)  # middle bar
-	_draw_img_rect(img, 70, 234, 32, 100, col_white)  # bot left
-	_draw_img_rect(img, 70, 334, 150, 32, col_white)  # bot bar
+	# Draw dynamic stencil digits
+	if text_val.length() == 3: # E.g. "100"
+		_draw_stencil_digit(img, text_val[0], 50, 70, 100, 280, 24, col_white)
+		_draw_stencil_digit(img, text_val[1], 175, 70, 130, 280, 26, col_white)
+		_draw_stencil_digit(img, text_val[2], 330, 70, 130, 280, 26, col_white)
+	elif text_val.length() == 2: # E.g. "85"
+		_draw_stencil_digit(img, text_val[0], 70, 70, 160, 280, 30, col_white)
+		_draw_stencil_digit(img, text_val[1], 280, 70, 160, 280, 30, col_white)
+	else:
+		_draw_stencil_digit(img, "0", 70, 70, 160, 280, 30, col_white)
+		_draw_stencil_digit(img, text_val[0], 280, 70, 160, 280, 30, col_white)
 	
-	# --- Number "0" (Clean Cyber Stencil) ---
-	_draw_img_rect(img, 270, 70, 150, 32, col_white)   # top bar
-	_draw_img_rect(img, 270, 102, 32, 232, col_white)  # left bar
-	_draw_img_rect(img, 388, 102, 32, 232, col_white)  # right bar
-	_draw_img_rect(img, 270, 334, 150, 32, col_white)  # bot bar
-	
-	# Stencil middle slit for "0"
-	_draw_img_rect(img, 328, 70, 34, 32, Color(0, 0, 0, 0))
-	_draw_img_rect(img, 328, 334, 34, 32, Color(0, 0, 0, 0))
-	
-	# --- Lower Hazard Frame Bracket [ 20 ] ---
-	_draw_img_rect(img, 50, 390, 390, 14, col_yellow)   # bracket bottom rail
+	# --- Lower Hazard Frame Bracket [ % ] ---
+	_draw_img_rect(img, 50, 390, 410, 14, col_yellow)   # bracket bottom rail
 	_draw_img_rect(img, 50, 340, 14, 50, col_yellow)    # left corner hook
-	_draw_img_rect(img, 426, 340, 14, 50, col_yellow)   # right corner hook
-	_draw_img_rect(img, 90, 420, 310, 44, col_yellow_fill) # lower caution fill plate
-	_draw_img_rect(img, 90, 420, 310, 8, col_yellow)    # plate accent line
+	_draw_img_rect(img, 446, 340, 14, 50, col_yellow)   # right corner hook
+	_draw_img_rect(img, 90, 420, 330, 44, col_yellow_fill) # lower caution fill plate
+	_draw_img_rect(img, 90, 420, 330, 8, col_yellow)    # plate accent line
 	
 	img.generate_mipmaps()
-	return ImageTexture.create_from_image(img)
+	var tex = ImageTexture.create_from_image(img)
+	if decal_material:
+		decal_material.albedo_texture = tex
+		decal_material.emission_texture = tex
+
+func _draw_stencil_digit(img: Image, digit: String, x: int, y: int, w: int, h: int, thick: int, col: Color) -> void:
+	var top = digit in ["0", "2", "3", "5", "6", "7", "8", "9"]
+	var top_left = digit in ["0", "4", "5", "6", "8", "9"]
+	var top_right = digit in ["0", "1", "2", "3", "4", "7", "8", "9"]
+	var mid = digit in ["2", "3", "4", "5", "6", "8", "9"]
+	var bot_left = digit in ["0", "2", "6", "8"]
+	var bot_right = digit in ["0", "1", "3", "4", "5", "6", "7", "8", "9"]
+	var bot = digit in ["0", "2", "3", "5", "6", "8", "9"]
+	
+	var half_h = int(h * 0.5)
+	
+	if top: _draw_img_rect(img, x, y, w, thick, col)
+	if top_left: _draw_img_rect(img, x, y, thick, half_h, col)
+	if top_right: _draw_img_rect(img, x + w - thick, y, thick, half_h, col)
+	if mid: _draw_img_rect(img, x, y + half_h - int(thick * 0.5), w, thick, col)
+	if bot_left: _draw_img_rect(img, x, y + half_h, thick, half_h, col)
+	if bot_right: _draw_img_rect(img, x + w - thick, y + half_h, thick, half_h, col)
+	if bot: _draw_img_rect(img, x, y + h - thick, w, thick, col)
 
 ## Procedurally generates the high-res circular radial hazard stripes base texture
 func _generate_hazard_stripes_texture() -> ImageTexture:
@@ -353,7 +408,6 @@ func _generate_hazard_stripes_texture() -> ImageTexture:
 	var col_steel_inner = Color(0.22, 0.26, 0.34, 1.0)
 	var col_yellow = Color(1.0, 0.78, 0.08, 1.0)
 	var col_black = Color(0.08, 0.09, 0.12, 1.0)
-	var col_cyan_line = Color(0.0, 0.90, 1.0, 0.9)
 	
 	var center = Vector2(size * 0.5, size * 0.5)
 	var radius_max = float(size) * 0.48
@@ -369,7 +423,6 @@ func _generate_hazard_stripes_texture() -> ImageTexture:
 			if dist <= radius_stripe_out and dist >= radius_stripe_in:
 				# Clean radial angle with diagonal swirl chevrons
 				var angle = atan2(pos.y - center.y, pos.x - center.x) # -PI to PI
-				# 16 clean continuous angled chevrons curving around the disc
 				var stripe_phase = fmod((angle / TAU) * 16.0 + (dist - radius_stripe_in) * 0.08, 1.0)
 				if stripe_phase < 0.0:
 					stripe_phase += 1.0
@@ -379,13 +432,8 @@ func _generate_hazard_stripes_texture() -> ImageTexture:
 				else:
 					img.set_pixel(x, y, col_black)
 			elif dist <= radius_max and dist > radius_stripe_out:
-				# Outer dark titanium bezel with subtle cyan groove
-				if dist >= radius_max - 4.0:
-					img.set_pixel(x, y, col_cyan_line)
-				else:
-					img.set_pixel(x, y, col_dark_outer)
+				img.set_pixel(x, y, col_dark_outer)
 			elif dist < radius_stripe_in and dist >= radius_pedestal:
-				# Inner steel plate ring
 				if dist <= radius_pedestal + 4.0:
 					img.set_pixel(x, y, col_yellow)
 				else:

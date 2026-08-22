@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://systems/charging_station.gd" id="1_station"]
 
@@ -6,9 +6,15 @@
 height = 2.4
 radius = 1.15
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_solid"]
-height = 2.0
-radius = 0.62
+[sub_resource type="BoxShape3D" id="BoxShape3D_back_wall"]
+size = Vector3(1.2, 1.8, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_side_wall"]
+size = Vector3(0.2, 1.8, 0.9)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_roof"]
+height = 0.3
+radius = 0.8
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_metal"]
 albedo_color = Color(0.18, 0.21, 0.28, 1)
@@ -52,6 +58,18 @@ top_radius = 0.65
 bottom_radius = 0.65
 height = 0.016
 radial_segments = 32
+
+[sub_resource type="TorusMesh" id="TorusMesh_conduit_ring"]
+inner_radius = 0.73
+outer_radius = 0.77
+rings = 32
+ring_segments = 8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_conduit_pipe"]
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.52
+radial_segments = 12
 
 [sub_resource type="BoxMesh" id="BoxMesh_clamp_body"]
 size = Vector3(0.15, 0.2, 0.13)
@@ -131,9 +149,21 @@ shape = SubResource("CylinderShape3D_area")
 collision_layer = 2
 collision_mask = 7
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StationCollider"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
-shape = SubResource("CylinderShape3D_solid")
+[node name="BackWallShape" type="CollisionShape3D" parent="StationCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, -0.65)
+shape = SubResource("BoxShape3D_back_wall")
+
+[node name="LeftWallShape" type="CollisionShape3D" parent="StationCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 1.1, -0.15)
+shape = SubResource("BoxShape3D_side_wall")
+
+[node name="RightWallShape" type="CollisionShape3D" parent="StationCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, 1.1, -0.15)
+shape = SubResource("BoxShape3D_side_wall")
+
+[node name="RoofShape" type="CollisionShape3D" parent="StationCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25, 0)
+shape = SubResource("CylinderShape3D_roof")
 
 [node name="BasePlatform" type="Node3D" parent="."]
 
@@ -160,6 +190,28 @@ surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21, 0)
 mesh = SubResource("CylinderMesh_floor_pad")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="BaseConduits" type="Node3D" parent="BasePlatform"]
+
+[node name="ConduitRing" type="MeshInstance3D" parent="BasePlatform/BaseConduits"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("TorusMesh_conduit_ring")
+
+[node name="PipeFront" type="MeshInstance3D" parent="BasePlatform/BaseConduits"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.045, 1.05)
+mesh = SubResource("CylinderMesh_conduit_pipe")
+
+[node name="PipeRight" type="MeshInstance3D" parent="BasePlatform/BaseConduits"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 1.05, 0.045, 0)
+mesh = SubResource("CylinderMesh_conduit_pipe")
+
+[node name="PipeBack" type="MeshInstance3D" parent="BasePlatform/BaseConduits"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.045, -1.05)
+mesh = SubResource("CylinderMesh_conduit_pipe")
+
+[node name="PipeLeft" type="MeshInstance3D" parent="BasePlatform/BaseConduits"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -1.05, 0.045, 0)
+mesh = SubResource("CylinderMesh_conduit_pipe")
 
 [node name="HydraulicClamps" type="Node3D" parent="BasePlatform"]
 
