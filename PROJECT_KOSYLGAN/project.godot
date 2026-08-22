@@ -24,6 +24,7 @@ config/icon="res://project_icon.png"
 
 RobotManager="*res://systems/robot_manager.gd"
 GameManager="*res://scenes/game_manager.gd"
+SoundManager="*res://systems/sound_manager.gd"
 
 [display]
 

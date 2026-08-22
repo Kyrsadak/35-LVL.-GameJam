@@ -210,6 +210,8 @@ func _on_wire_cut(index: int, wire_left: ColorRect, wire_right: ColorRect, spark
 			is_correct = true
 
 	if is_correct:
+		if SoundManager:
+			SoundManager.play_cut()
 		led.color = Color(0.2, 1.0, 0.4) # Turn green
 		status_label.text = "⚡ ПРОВОД #" + str(index + 1) + " УСПЕШНО ОБЕСТОЧЕН!"
 		status_label.modulate = Color(0.25, 1.0, 0.45)
@@ -224,11 +226,15 @@ func _on_wire_cut(index: int, wire_left: ColorRect, wire_right: ColorRect, spark
 		if all_done:
 			_on_success()
 	else:
+		if SoundManager:
+			SoundManager.play_spark_error()
 		led.color = Color(1.0, 0.0, 0.0) # Flash bright red
 		spark.text = "💥"
 		_on_failure()
 
 func _on_success() -> void:
+	if SoundManager:
+		SoundManager.play_success()
 	if panel_led:
 		panel_led.color = Color(0.2, 1.0, 0.4)
 	if panel_led_label:

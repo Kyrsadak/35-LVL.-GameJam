@@ -6,7 +6,7 @@
 resource_name = "mat_space_floor"
 render_priority = 0
 shader = ExtResource("1_shader")
-shader_parameter/tile_color = Color(0.88, 0.84, 0.77, 1)
-shader_parameter/inner_tile_color = Color(0.93, 0.90, 0.84, 1)
-shader_parameter/grout_color = Color(0.72, 0.67, 0.60, 1)
+shader_parameter/tile_color = Color(0.80, 0.76, 0.70, 1)
+shader_parameter/inner_tile_color = Color(0.86, 0.83, 0.77, 1)
+shader_parameter/grout_color = Color(0.48, 0.43, 0.36, 1)
 shader_parameter/tile_scale = 1.0

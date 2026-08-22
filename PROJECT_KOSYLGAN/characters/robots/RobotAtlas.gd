@@ -63,6 +63,8 @@ func _pick_up_object(obj: Node3D) -> void:
 	if obj and obj.has_method("pick_up"):
 		if skin and skin.has_method("play_lift"):
 			skin.play_lift()
+		if SoundManager:
+			SoundManager.play_pickup()
 		obj.pick_up(carry_pivot)
 		carried_object = obj
 		if obj.is_in_group("key_module"):
@@ -72,6 +74,8 @@ func _drop_carried_object() -> void:
 	if carried_object and carried_object.has_method("drop"):
 		if skin and skin.has_method("set_holding"):
 			skin.set_holding(false)
+		if SoundManager:
+			SoundManager.play_drop()
 		var forward = get_facing_direction()
 		var drop_pos = global_position + (forward * 1.5)
 		drop_pos.y = max(drop_pos.y, 0.0)

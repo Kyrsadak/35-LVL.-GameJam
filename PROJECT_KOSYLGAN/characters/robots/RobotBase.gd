@@ -89,6 +89,8 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+var _step_timer: float = 0.0
+
 func _handle_movement(delta: float) -> void:
 	var input_vec = Input.get_vector("p1_move_left", "p1_move_right", "p1_move_up", "p1_move_down")
 	var move_dir = Vector3(input_vec.x, 0, input_vec.y).normalized()
@@ -96,10 +98,19 @@ func _handle_movement(delta: float) -> void:
 	if move_dir.length_squared() > 0.01:
 		velocity.x = move_toward(velocity.x, move_dir.x * move_speed, acceleration * delta)
 		velocity.z = move_toward(velocity.z, move_dir.z * move_speed, acceleration * delta)
+		
+		# Footstep sound cadence
+		_step_timer += delta
+		if _step_timer >= 0.28:
+			_step_timer = 0.0
+			if SoundManager:
+				SoundManager.play_footstep(-16.0)
+
 		if skin:
 			skin.orient_model_to_direction(move_dir, delta)
 			skin.update_move_animation(velocity.length() / move_speed, delta)
 	else:
+		_step_timer = 0.2
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
 		velocity.z = move_toward(velocity.z, 0, friction * delta)
 		if skin:

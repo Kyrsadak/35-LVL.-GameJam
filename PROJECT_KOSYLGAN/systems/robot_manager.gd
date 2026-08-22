@@ -83,23 +83,31 @@ func try_switch_robot() -> void:
 	# Switch control without any teleportation
 	set_active_robot(target_robot)
 	show_message("🔄 Управление: " + target_name, 1.5)
+	if SoundManager:
+		SoundManager.play_switch()
 
 func _on_robot_discharged(robot: Node) -> void:
 	var r_name = robot.robot_display_name if "robot_display_name" in robot else "РОБОТ"
 	show_message("⚡ БАТАРЕЯ " + r_name + " РАЗРЯЖЕНА! Перезапуск...", 2.5)
+	if SoundManager:
+		SoundManager.play_spark_error()
 	level_failed.emit("Батарея разряжена")
 	get_tree().create_timer(2.0).timeout.connect(restart_level)
 
 func _on_guide_read(guide_id: String, clue_text: String) -> void:
 	discovered_clues[guide_id] = clue_text
 	clue_revealed.emit(clue_text)
-	show_message("📋 Схема получена: " + clue_text, 4.0)
+	show_message("📋 Схема получена: " + clue_text, 3.5)
+	if SoundManager:
+		SoundManager.play_tablet_read()
 
 func show_message(text: String, duration: float = 2.0) -> void:
 	hud_message_requested.emit(text, duration)
 
 func complete_level() -> void:
 	level_completed.emit()
+	if SoundManager:
+		SoundManager.play_success()
 	show_message("🎉 ЭНЕРГОБЛОК ЗАПУЩЕН! Уровень пройден!", 3.0)
 	get_tree().create_timer(2.0).timeout.connect(func():
 		if GameManager:
