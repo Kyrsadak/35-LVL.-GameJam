@@ -7,30 +7,30 @@ size = Vector3(1.1, 2.4, 0.8)
 size = Vector3(1.0, 2.3, 0.7)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rack"]
-albedo_color = Color(0.14, 0.16, 0.20, 1)
-metallic = 0.85
-roughness = 0.35
+albedo_color = Color(0.25, 0.22, 0.19, 1)
+metallic = 0.1
+roughness = 0.8
 
 [sub_resource type="BoxMesh" id="BoxMesh_slot"]
 size = Vector3(0.85, 0.15, 0.04)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_led_blue"]
-albedo_color = Color(0.0, 0.8, 1.0, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_led_amber"]
+albedo_color = Color(0.95, 0.65, 0.2, 1)
 emission_enabled = true
-emission = Color(0.0, 0.8, 1.0, 1)
-emission_energy_multiplier = 1.5
+emission = Color(0.95, 0.65, 0.2, 1)
+emission_energy_multiplier = 0.4
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_led_green"]
-albedo_color = Color(0.1, 1.0, 0.4, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_led_warm_white"]
+albedo_color = Color(0.95, 0.90, 0.82, 1)
 emission_enabled = true
-emission = Color(0.1, 1.0, 0.4, 1)
-emission_energy_multiplier = 1.2
+emission = Color(0.95, 0.90, 0.82, 1)
+emission_energy_multiplier = 0.35
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_led_orange"]
-albedo_color = Color(1.0, 0.6, 0.1, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_led_soft_green"]
+albedo_color = Color(0.55, 0.80, 0.45, 1)
 emission_enabled = true
-emission = Color(1.0, 0.6, 0.1, 1)
-emission_energy_multiplier = 1.4
+emission = Color(0.55, 0.80, 0.45, 1)
+emission_energy_multiplier = 0.35
 
 [node name="PropServer" type="StaticBody3D"]
 collision_layer = 2
@@ -48,24 +48,24 @@ surface_material_override/0 = SubResource("StandardMaterial3D_rack")
 [node name="Blade1" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0.36)
 mesh = SubResource("BoxMesh_slot")
-surface_material_override/0 = SubResource("StandardMaterial3D_led_blue")
+surface_material_override/0 = SubResource("StandardMaterial3D_led_amber")
 
 [node name="Blade2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0.36)
 mesh = SubResource("BoxMesh_slot")
-surface_material_override/0 = SubResource("StandardMaterial3D_led_green")
+surface_material_override/0 = SubResource("StandardMaterial3D_led_soft_green")
 
 [node name="Blade3" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0.36)
 mesh = SubResource("BoxMesh_slot")
-surface_material_override/0 = SubResource("StandardMaterial3D_led_blue")
+surface_material_override/0 = SubResource("StandardMaterial3D_led_warm_white")
 
 [node name="Blade4" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0.36)
 mesh = SubResource("BoxMesh_slot")
-surface_material_override/0 = SubResource("StandardMaterial3D_led_orange")
+surface_material_override/0 = SubResource("StandardMaterial3D_led_amber")
 
 [node name="Blade5" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0.36)
 mesh = SubResource("BoxMesh_slot")
-surface_material_override/0 = SubResource("StandardMaterial3D_led_green")
+surface_material_override/0 = SubResource("StandardMaterial3D_led_soft_green")

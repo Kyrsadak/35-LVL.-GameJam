@@ -3,30 +3,30 @@
 [ext_resource type="Script" path="res://characters/player/CharacterSkins/PlayerSkin.gd" id="1_skin"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_armor"]
-albedo_color = Color(0.82, 0.86, 0.92, 1.0)
-metallic = 0.7
-roughness = 0.35
+albedo_color = Color(0.92, 0.89, 0.84, 1.0)
+metallic = 0.05
+roughness = 0.75
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_accent"]
-albedo_color = Color(0.12, 0.45, 0.85, 1.0)
-metallic = 0.6
-roughness = 0.35
+albedo_color = Color(0.32, 0.42, 0.52, 1.0)
+metallic = 0.1
+roughness = 0.65
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_joints"]
-albedo_color = Color(0.14, 0.16, 0.20, 1.0)
-metallic = 0.85
-roughness = 0.45
+albedo_color = Color(0.20, 0.18, 0.16, 1.0)
+metallic = 0.2
+roughness = 0.8
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_visor"]
-albedo_color = Color(0.08, 0.55, 0.98, 1.0)
+albedo_color = Color(0.95, 0.70, 0.25, 1.0)
 emission_enabled = true
-emission = Color(0.0, 0.85, 1.0, 1.0)
-emission_energy_multiplier = 1.8
+emission = Color(0.95, 0.65, 0.2, 1.0)
+emission_energy_multiplier = 0.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hazard"]
-albedo_color = Color(0.95, 0.75, 0.1, 1.0)
-metallic = 0.3
-roughness = 0.5
+albedo_color = Color(0.78, 0.48, 0.28, 1.0)
+metallic = 0.05
+roughness = 0.75
 
 [sub_resource type="BoxMesh" id="BoxMesh_head"]
 size = Vector3(0.38, 0.34, 0.34)

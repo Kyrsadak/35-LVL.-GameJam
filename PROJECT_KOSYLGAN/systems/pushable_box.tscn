@@ -9,17 +9,17 @@ size = Vector3(1.2, 1.2, 1.2)
 size = Vector3(1.2, 1.2, 1.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crate"]
-albedo_color = Color(0.85, 0.48, 0.1, 1)
-metallic = 0.5
-roughness = 0.4
+albedo_color = Color(0.76, 0.42, 0.26, 1)
+metallic = 0.05
+roughness = 0.8
 
 [sub_resource type="BoxMesh" id="BoxMesh_hazard_band"]
 size = Vector3(1.22, 0.25, 1.22)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_band"]
-albedo_color = Color(0.18, 0.20, 0.25, 1)
-metallic = 0.8
-roughness = 0.35
+albedo_color = Color(0.92, 0.89, 0.84, 1)
+metallic = 0.05
+roughness = 0.75
 
 [node name="PushableBox" type="CharacterBody3D" groups=["boxes", "pushable_box"]]
 collision_layer = 4

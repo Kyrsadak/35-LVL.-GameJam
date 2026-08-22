@@ -16,28 +16,27 @@ bottom_radius = 0.45
 height = 0.8
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pedestal"]
-albedo_color = Color(0.25, 0.28, 0.35, 1)
-metallic = 0.8
-roughness = 0.4
+albedo_color = Color(0.86, 0.83, 0.77, 1)
+metallic = 0.05
+roughness = 0.75
 
 [sub_resource type="BoxMesh" id="BoxMesh_pad"]
 size = Vector3(0.55, 0.05, 0.4)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
-albedo_color = Color(0.1, 0.6, 0.9, 1)
-emission_enabled = true
-emission = Color(0.0, 0.7, 1.0, 1)
-emission_energy_multiplier = 0.8
+albedo_color = Color(0.40, 0.35, 0.30, 1)
+metallic = 0.2
+roughness = 0.6
 
 [sub_resource type="PrismMesh" id="PrismMesh_holo"]
 size = Vector3(0.3, 0.3, 0.1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_holo"]
-albedo_color = Color(0.0, 0.85, 1.0, 0.8)
+albedo_color = Color(0.95, 0.75, 0.4, 0.8)
 transparency = 1
 emission_enabled = true
-emission = Color(0.0, 0.85, 1.0, 1)
-emission_energy_multiplier = 1.5
+emission = Color(0.95, 0.70, 0.3, 1)
+emission_energy_multiplier = 0.5
 
 [node name="GuideTablet" type="Area3D" groups=["guide_tablet", "interactable"]]
 collision_layer = 4
@@ -73,6 +72,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_holo")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-light_color = Color(0.1, 0.8, 1, 1)
-light_energy = 0.5
-omni_range = 2.5
+light_color = Color(1.0, 0.85, 0.65, 1)
+light_energy = 0.25
+omni_range = 2.0
