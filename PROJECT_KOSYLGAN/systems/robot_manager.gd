@@ -26,11 +26,11 @@ func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station
 	discovered_clues.clear()
 
 	# Configure battery discharge rates per level
-	var rate = 2.0 # ~50s on lvl 1
+	var rate = 2.8 # ~35s on lvl 1
 	if level_idx == 2:
-		rate = 2.5 # ~40s on lvl 2
+		rate = 3.2 # ~30s on lvl 2
 	elif level_idx >= 3:
-		rate = 3.0 # ~33s on lvl 3
+		rate = 3.6 # ~27s on lvl 3
 
 	if atlas:
 		if "discharge_rate" in atlas:
@@ -39,12 +39,16 @@ func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station
 			atlas.discharged.connect(_on_robot_discharged.bind(atlas))
 		if atlas.has_signal("guide_read") and not atlas.guide_read.is_connected(_on_guide_read):
 			atlas.guide_read.connect(_on_guide_read)
+		if "battery" in atlas and "max_battery" in atlas:
+			atlas.battery_changed.emit(atlas.battery, atlas.max_battery)
 			
 	if cipher:
 		if "discharge_rate" in cipher:
 			cipher.discharge_rate = rate
 		if cipher.has_signal("discharged") and not cipher.discharged.is_connected(_on_robot_discharged):
 			cipher.discharged.connect(_on_robot_discharged.bind(cipher))
+		if "battery" in cipher and "max_battery" in cipher:
+			cipher.battery_changed.emit(cipher.battery, cipher.max_battery)
 
 	# By default start with Atlas
 	set_active_robot(atlas)

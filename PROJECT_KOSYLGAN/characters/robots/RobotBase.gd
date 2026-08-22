@@ -72,13 +72,27 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
-	# Battery logic
+	# Dynamic Battery Drain Logic
 	if is_on_charging_station:
 		if battery < max_battery:
 			battery = min(max_battery, battery + charge_rate * delta)
 			battery_changed.emit(battery, max_battery)
 	elif is_active:
-		battery = max(0.0, battery - discharge_rate * delta)
+		var current_drain = discharge_rate
+		# Increase drain when moving
+		if velocity.length_squared() > 0.1:
+			current_drain *= 1.4
+		# Extra drain for Atlas when carrying heavy objects
+		if carried_object != null:
+			current_drain *= 1.5
+			
+		battery = max(0.0, battery - current_drain * delta)
+		battery_changed.emit(battery, max_battery)
+		if battery <= 0.0:
+			on_battery_depleted()
+	else:
+		# Passive low standby drain for inactive robot
+		battery = max(0.0, battery - (discharge_rate * 0.15) * delta)
 		battery_changed.emit(battery, max_battery)
 		if battery <= 0.0:
 			on_battery_depleted()
