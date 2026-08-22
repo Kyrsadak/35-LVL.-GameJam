@@ -8,6 +8,6 @@
 script = ExtResource("2_cipher")
 robot_id = "cipher"
 robot_display_name = "CIPHER"
-robot_color = Color(1, 0.55, 0.1, 1)
+robot_color = Color(0.15, 0.95, 0.50, 1)
 
 [node name="Skin" parent="." index="1" instance=ExtResource("3_cipherskin")]

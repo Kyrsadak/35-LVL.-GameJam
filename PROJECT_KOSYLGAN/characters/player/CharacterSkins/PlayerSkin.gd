@@ -1,6 +1,7 @@
 class_name PlayerSkin
 extends Node3D
 
+@export var character_id: String = "atlas"
 @export var rotation_speed := 16.0
 
 var _last_strong_direction := Vector3(0, 0, -1)
@@ -9,13 +10,67 @@ var current_anim: String = ""
 var is_holding: bool = false
 var is_lifting: bool = false
 
+var screen_face: MeshInstance3D = null
+var mat_screen_normal: StandardMaterial3D = null
+var mat_screen_blink: StandardMaterial3D = null
+var blink_timer: float = 0.0
+
 func _ready() -> void:
 	anim_player = find_child("AnimationPlayer", true, false)
+	screen_face = find_child("ScreenFace", true, false) as MeshInstance3D
+	
+	_setup_screen_materials()
+	
 	if anim_player and anim_player.has_animation("Idle"):
 		anim_player.play("Idle")
 		current_anim = "Idle"
+	
+	blink_timer = randf_range(2.0, 4.5)
 
-func set_skin_material(mat: Material) -> void:
+func _setup_screen_materials() -> void:
+	var prefix = "atlas" if character_id == "atlas" else "cipher"
+	var normal_path = "res://assets/textures/tex_" + prefix + "_face.png"
+	var blink_path = "res://assets/textures/tex_" + prefix + "_face_blink.png"
+	
+	var img_n = Image.load_from_file(ProjectSettings.globalize_path(normal_path))
+	if img_n:
+		img_n.generate_mipmaps()
+		mat_screen_normal = StandardMaterial3D.new()
+		mat_screen_normal.albedo_texture = ImageTexture.create_from_image(img_n)
+		mat_screen_normal.emission_enabled = true
+		mat_screen_normal.emission_texture = mat_screen_normal.albedo_texture
+		mat_screen_normal.emission_energy_multiplier = 0.85
+		mat_screen_normal.roughness = 0.25
+		mat_screen_normal.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+
+	var img_b = Image.load_from_file(ProjectSettings.globalize_path(blink_path))
+	if img_b:
+		img_b.generate_mipmaps()
+		mat_screen_blink = StandardMaterial3D.new()
+		mat_screen_blink.albedo_texture = ImageTexture.create_from_image(img_b)
+		mat_screen_blink.emission_enabled = true
+		mat_screen_blink.emission_texture = mat_screen_blink.albedo_texture
+		mat_screen_blink.emission_energy_multiplier = 0.85
+		mat_screen_blink.roughness = 0.25
+		mat_screen_blink.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+
+	if screen_face and mat_screen_normal:
+		screen_face.set_surface_override_material(0, mat_screen_normal)
+
+func _process(delta: float) -> void:
+	if not screen_face or not mat_screen_normal or not mat_screen_blink:
+		return
+		
+	blink_timer -= delta
+	if blink_timer <= 0.0:
+		blink_timer = randf_range(2.8, 5.5)
+		screen_face.set_surface_override_material(0, mat_screen_blink)
+		get_tree().create_timer(0.16).timeout.connect(func():
+			if is_instance_valid(screen_face) and mat_screen_normal:
+				screen_face.set_surface_override_material(0, mat_screen_normal)
+		)
+
+func set_skin_material(_mat: Material) -> void:
 	pass
 
 func play_lift() -> void:
@@ -39,7 +94,7 @@ func set_holding(holding: bool) -> void:
 			anim_player.play("Idle", 0.15)
 			current_anim = "Idle"
 
-func update_move_animation(velocity_ratio: float, delta: float) -> void:
+func update_move_animation(velocity_ratio: float, _delta: float) -> void:
 	if not anim_player or is_lifting:
 		return
 
