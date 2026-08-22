@@ -1,29 +1,37 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://systems/laser_gate.gd" id="1_gate"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_barrier"]
-size = Vector3(3.0, 2.5, 0.4)
+[sub_resource type="BoxShape3D" id="BoxShape3D_collision"]
+size = Vector3(4.0, 3.0, 0.4)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_beam"]
-top_radius = 0.04
-bottom_radius = 0.04
-height = 2.4
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_laser"]
-transparency = 1
-albedo_color = Color(1, 0.1, 0.2, 0.85)
-emission_enabled = true
-emission = Color(1, 0.15, 0.2, 1)
-emission_energy_multiplier = 4.0
-
-[sub_resource type="BoxMesh" id="BoxMesh_post"]
-size = Vector3(0.3, 2.6, 0.3)
+[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
+size = Vector3(0.45, 3.0, 0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_post"]
-albedo_color = Color(0.2, 0.25, 0.3, 1)
+albedo_color = Color(0.2, 0.22, 0.26, 1)
 metallic = 0.8
-roughness = 0.3
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_beam_bar"]
+size = Vector3(4.2, 0.3, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_topbar"]
+albedo_color = Color(0.85, 0.65, 0.1, 1)
+metallic = 0.4
+roughness = 0.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_laser"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 2.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_laser"]
+albedo_color = Color(1.0, 0.2, 0.2, 0.8)
+transparency = 1
+emission_enabled = true
+emission = Color(1.0, 0.15, 0.15, 1)
+emission_energy_multiplier = 1.4
 
 [node name="LaserGate" type="StaticBody3D" groups=["laser_gate"]]
 collision_layer = 2
@@ -31,48 +39,48 @@ collision_mask = 7
 script = ExtResource("1_gate")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
-shape = SubResource("BoxShape3D_barrier")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_collision")
 
-[node name="LaserBeams" type="Node3D" parent="."]
-
-[node name="Beam1" type="MeshInstance3D" parent="LaserBeams"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.2, 0)
-mesh = SubResource("CylinderMesh_beam")
-surface_material_override/0 = SubResource("StandardMaterial3D_laser")
-
-[node name="Beam2" type="MeshInstance3D" parent="LaserBeams"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1.2, 0)
-mesh = SubResource("CylinderMesh_beam")
-surface_material_override/0 = SubResource("StandardMaterial3D_laser")
-
-[node name="Beam3" type="MeshInstance3D" parent="LaserBeams"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 1.2, 0)
-mesh = SubResource("CylinderMesh_beam")
-surface_material_override/0 = SubResource("StandardMaterial3D_laser")
-
-[node name="Beam4" type="MeshInstance3D" parent="LaserBeams"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1.2, 0)
-mesh = SubResource("CylinderMesh_beam")
-surface_material_override/0 = SubResource("StandardMaterial3D_laser")
-
-[node name="Beam5" type="MeshInstance3D" parent="LaserBeams"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 1.2, 0)
-mesh = SubResource("CylinderMesh_beam")
-surface_material_override/0 = SubResource("StandardMaterial3D_laser")
-
-[node name="PostLeft" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 1.3, 0)
-mesh = SubResource("BoxMesh_post")
+[node name="PillarLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 1.5, 0)
+mesh = SubResource("BoxMesh_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_post")
 
-[node name="PostRight" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 1.3, 0)
-mesh = SubResource("BoxMesh_post")
+[node name="PillarRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 1.5, 0)
+mesh = SubResource("BoxMesh_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_post")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-light_color = Color(1, 0.15, 0.2, 1)
-light_energy = 2.0
+[node name="TopBar" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.85, 0)
+mesh = SubResource("BoxMesh_beam_bar")
+surface_material_override/0 = SubResource("StandardMaterial3D_topbar")
+
+[node name="Lasers" type="Node3D" parent="."]
+
+[node name="Laser1" type="MeshInstance3D" parent="Lasers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 1.35, 0)
+mesh = SubResource("CylinderMesh_laser")
+surface_material_override/0 = SubResource("StandardMaterial3D_laser")
+
+[node name="Laser2" type="MeshInstance3D" parent="Lasers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 1.35, 0)
+mesh = SubResource("CylinderMesh_laser")
+surface_material_override/0 = SubResource("StandardMaterial3D_laser")
+
+[node name="Laser3" type="MeshInstance3D" parent="Lasers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 1.35, 0)
+mesh = SubResource("CylinderMesh_laser")
+surface_material_override/0 = SubResource("StandardMaterial3D_laser")
+
+[node name="Laser4" type="MeshInstance3D" parent="Lasers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 1.35, 0)
+mesh = SubResource("CylinderMesh_laser")
+surface_material_override/0 = SubResource("StandardMaterial3D_laser")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lasers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+light_color = Color(1.0, 0.2, 0.2, 1)
+light_energy = 0.7
 omni_range = 3.5

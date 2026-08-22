@@ -2,11 +2,16 @@ class_name LaserGate
 extends StaticBody3D
 
 @export var is_active: bool = true
-@onready var collision_shape: CollisionShape3D = $CollisionShape3D
-@onready var laser_beams: Node3D = $LaserBeams
-@onready var light: OmniLight3D = $OmniLight3D
+var collision_shape: CollisionShape3D = null
+var laser_beams: Node3D = null
+var light: OmniLight3D = null
 
 func _ready() -> void:
+	collision_shape = find_child("CollisionShape3D", true, false) as CollisionShape3D
+	laser_beams = find_child("Lasers", true, false) as Node3D
+	if not laser_beams:
+		laser_beams = find_child("LaserBeams", true, false) as Node3D
+	light = find_child("OmniLight3D", true, false) as OmniLight3D
 	set_active(is_active)
 
 func set_active(active: bool) -> void:

@@ -1,29 +1,28 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://systems/socket_terminal.gd" id="1_sock"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sock"]
-size = Vector3(1.4, 1.2, 1.4)
+size = Vector3(2.0, 1.5, 1.5)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_pedestal"]
-top_radius = 0.6
-bottom_radius = 0.8
-height = 0.8
+[sub_resource type="BoxMesh" id="BoxMesh_body"]
+size = Vector3(1.8, 1.2, 1.2)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ped"]
-albedo_color = Color(0.2, 0.25, 0.35, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
+albedo_color = Color(0.18, 0.22, 0.28, 1)
 metallic = 0.8
-roughness = 0.3
+roughness = 0.4
 
-[sub_resource type="TorusMesh" id="TorusMesh_ring"]
-inner_radius = 0.4
-outer_radius = 0.55
+[sub_resource type="CylinderMesh" id="CylinderMesh_socket"]
+top_radius = 0.4
+bottom_radius = 0.45
+height = 0.3
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ring"]
-albedo_color = Color(0.1, 0.8, 1, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_socket"]
+albedo_color = Color(0.1, 0.12, 0.15, 1)
 emission_enabled = true
-emission = Color(0.1, 0.8, 1, 1)
-emission_energy_multiplier = 2.0
+emission = Color(0.0, 0.7, 1.0, 1)
+emission_energy_multiplier = 0.6
 
 [node name="SocketTerminal" type="Area3D" groups=["interactable", "socket_terminal"]]
 collision_layer = 4
@@ -31,24 +30,21 @@ collision_mask = 1
 script = ExtResource("1_sock")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 shape = SubResource("BoxShape3D_sock")
 
-[node name="PedestalMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
-mesh = SubResource("CylinderMesh_pedestal")
-surface_material_override/0 = SubResource("StandardMaterial3D_ped")
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("BoxMesh_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_body")
 
-[node name="RingMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
-mesh = SubResource("TorusMesh_ring")
-surface_material_override/0 = SubResource("StandardMaterial3D_ring")
-
-[node name="SocketMarker" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+[node name="SocketHole" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+mesh = SubResource("CylinderMesh_socket")
+surface_material_override/0 = SubResource("StandardMaterial3D_socket")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 light_color = Color(0.1, 0.8, 1, 1)
-light_energy = 1.5
+light_energy = 0.6
 omni_range = 3.0

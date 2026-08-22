@@ -1,49 +1,66 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=9 format=3]
 
-[ext_resource type="Script" path="res://systems/guide_tablet.gd" id="1_guide"]
+[ext_resource type="Script" path="res://systems/guide_tablet.gd" id="1_tablet"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_tablet"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tablet"]
+height = 2.0
 radius = 1.0
 
-[sub_resource type="BoxMesh" id="BoxMesh_tablet"]
-size = Vector3(0.5, 0.04, 0.7)
+[sub_resource type="CylinderMesh" id="CylinderMesh_pedestal"]
+top_radius = 0.35
+bottom_radius = 0.45
+height = 0.8
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tablet"]
-albedo_color = Color(0.15, 0.2, 0.3, 1)
-metallic = 0.9
-roughness = 0.2
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pedestal"]
+albedo_color = Color(0.25, 0.28, 0.35, 1)
+metallic = 0.8
+roughness = 0.4
 
-[sub_resource type="BoxMesh" id="BoxMesh_screen"]
-size = Vector3(0.42, 0.05, 0.6)
+[sub_resource type="BoxMesh" id="BoxMesh_pad"]
+size = Vector3(0.55, 0.05, 0.4)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_screen"]
-albedo_color = Color(0.1, 0.8, 1.0, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.1, 0.6, 0.9, 1)
+emission_enabled = true
+emission = Color(0.0, 0.7, 1.0, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="PrismMesh" id="PrismMesh_holo"]
+size = Vector3(0.3, 0.3, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_holo"]
+albedo_color = Color(0.0, 0.85, 1.0, 0.8)
+transparency = 1
 emission_enabled = true
 emission = Color(0.0, 0.85, 1.0, 1)
-emission_energy_multiplier = 1.8
+emission_energy_multiplier = 1.5
 
 [node name="GuideTablet" type="Area3D" groups=["guide_tablet", "interactable"]]
 collision_layer = 4
 collision_mask = 1
-script = ExtResource("1_guide")
+script = ExtResource("1_tablet")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("SphereShape3D_tablet")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+shape = SubResource("CylinderShape3D_tablet")
 
-[node name="MeshHolder" type="Node3D" parent="."]
+[node name="Pedestal" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = SubResource("CylinderMesh_pedestal")
+surface_material_override/0 = SubResource("StandardMaterial3D_pedestal")
 
-[node name="TabletFrame" type="MeshInstance3D" parent="MeshHolder"]
-mesh = SubResource("BoxMesh_tablet")
-surface_material_override/0 = SubResource("StandardMaterial3D_tablet")
+[node name="Pad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.85, 0)
+mesh = SubResource("BoxMesh_pad")
+surface_material_override/0 = SubResource("StandardMaterial3D_pad")
 
-[node name="Screen" type="MeshInstance3D" parent="MeshHolder"]
-mesh = SubResource("BoxMesh_screen")
-surface_material_override/0 = SubResource("StandardMaterial3D_screen")
+[node name="Hologram" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("PrismMesh_holo")
+surface_material_override/0 = SubResource("StandardMaterial3D_holo")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="MeshHolder"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
-light_color = Color(0.1, 0.85, 1, 1)
-light_energy = 1.2
-omni_range = 2.0
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+light_color = Color(0.1, 0.8, 1, 1)
+light_energy = 0.5
+omni_range = 2.5

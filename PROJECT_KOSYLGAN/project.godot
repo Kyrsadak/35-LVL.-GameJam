@@ -109,6 +109,7 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
+environment/defaults/default_clear_color=Color(0.06, 0.08, 0.12, 1)
 environment/defaults/default_environment="res://scenes/default_env.tres"
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
 vram_compression/import_etc=true
