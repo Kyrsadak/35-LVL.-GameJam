@@ -45,21 +45,30 @@ func _load_materials() -> void:
 	if screen_face and mat_screen_normal:
 		screen_face.set_surface_override_material(0, mat_screen_normal)
 
-	# 3. Off-White Hoodie
-	var path_h = "res://assets/textures/tex_tv_cat_hoodie.png"
-	var img_h = Image.load_from_file(ProjectSettings.globalize_path(path_h))
-	var mat_hood = StandardMaterial3D.new()
-	if img_h:
-		img_h.generate_mipmaps()
-		mat_hood.albedo_texture = ImageTexture.create_from_image(img_h)
-		mat_hood.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	# 3. School Blazer & Skirt Material
+	var path_b = "res://assets/textures/tex_tv_cat_blazer.png"
+	var img_b = Image.load_from_file(ProjectSettings.globalize_path(path_b))
+	var mat_blazer = StandardMaterial3D.new()
+	if img_b:
+		img_b.generate_mipmaps()
+		mat_blazer.albedo_texture = ImageTexture.create_from_image(img_b)
+		mat_blazer.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	else:
-		mat_hood.albedo_color = Color(0.96, 0.95, 0.93)
-	mat_hood.roughness = 0.65
-	for hood_part in find_children("*Hood*", "MeshInstance3D", true, false):
-		(hood_part as MeshInstance3D).set_surface_override_material(0, mat_hood)
+		mat_blazer.albedo_color = Color(0.11, 0.14, 0.24)
+	mat_blazer.roughness = 0.5
+	for b_part in find_children("*Blazer*", "MeshInstance3D", true, false):
+		(b_part as MeshInstance3D).set_surface_override_material(0, mat_blazer)
+	for s_part in find_children("*Skirt*", "MeshInstance3D", true, false):
+		(s_part as MeshInstance3D).set_surface_override_material(0, mat_blazer)
 
-	# 4. Pastel Pink Armor Material
+	# 4. White Shirt Cuffs & Collar
+	var mat_white = StandardMaterial3D.new()
+	mat_white.albedo_color = Color(0.96, 0.96, 0.98)
+	mat_white.roughness = 0.4
+	for w_part in find_children("*White*", "MeshInstance3D", true, false):
+		(w_part as MeshInstance3D).set_surface_override_material(0, mat_white)
+
+	# 5. Pastel Pink Armor Material
 	var mat_pink = StandardMaterial3D.new()
 	mat_pink.albedo_color = Color(0.96, 0.56, 0.69)
 	mat_pink.metallic = 0.08
@@ -67,7 +76,7 @@ func _load_materials() -> void:
 	for pink_part in find_children("*Pink*", "MeshInstance3D", true, false):
 		(pink_part as MeshInstance3D).set_surface_override_material(0, mat_pink)
 
-	# 5. Glowing Mint Green Accents (Ears, Dials, Core)
+	# 6. Glowing Mint Green Accents (Ears, Dials, Core)
 	var mat_mint = StandardMaterial3D.new()
 	mat_mint.albedo_color = Color(0.47, 0.92, 0.82)
 	mat_mint.emission_enabled = true
@@ -77,15 +86,15 @@ func _load_materials() -> void:
 	for mint_part in find_children("*Mint*", "MeshInstance3D", true, false):
 		(mint_part as MeshInstance3D).set_surface_override_material(0, mat_mint)
 
-	# 6. Dark Charcoal Cybernetic Chassis
+	# 7. Dark Charcoal Chassis & Loafers
 	var mat_dark = StandardMaterial3D.new()
-	mat_dark.albedo_color = Color(0.20, 0.22, 0.26)
-	mat_dark.metallic = 0.2
-	mat_dark.roughness = 0.5
+	mat_dark.albedo_color = Color(0.18, 0.20, 0.24)
+	mat_dark.metallic = 0.25
+	mat_dark.roughness = 0.45
 	for dark_part in find_children("*Dark*", "MeshInstance3D", true, false):
 		(dark_part as MeshInstance3D).set_surface_override_material(0, mat_dark)
 
-	# 7. Silver Prongs for Electrical Plug
+	# 8. Metal Prongs
 	var mat_metal = StandardMaterial3D.new()
 	mat_metal.albedo_color = Color(0.85, 0.88, 0.92)
 	mat_metal.metallic = 0.95
@@ -99,12 +108,12 @@ func _process(delta: float) -> void:
 
 	# Head and hip idle breathing sway
 	if head_node:
-		head_node.position.y = 1.36 + 0.008 * sin(anim_time * 2.0)
-		head_node.rotation.z = 0.03 * sin(anim_time * 1.5)
+		head_node.position.y = 1.34 + 0.006 * sin(anim_time * 2.0)
+		head_node.rotation.z = 0.025 * sin(anim_time * 1.5)
 
 	# Cable Plug Tail Sway (graceful springy curve)
 	if tail_root:
-		tail_root.rotation.y = 0.35 * sin(anim_time * 2.4)
+		tail_root.rotation.y = 0.32 * sin(anim_time * 2.4)
 		tail_root.rotation.x = 0.12 + 0.08 * sin(anim_time * 3.0)
 
 	# CRT Screen Blink Animation
@@ -124,9 +133,9 @@ func interact() -> void:
 	var rm = get_node_or_null("/root/RobotManager")
 	if rm and rm.has_method("show_message"):
 		var phrases = [
-			"(=^･ω･^=)⚡ [CRT-CAT] // ПИТАНИЕ В НОРМЕ! ЗАРЯДКА 220V ПОДКЛЮЧЕНА!",
-			"🔌 // ЭНЕРГОСЕТЬ СЕКТОРА 35 СТАБИЛЬНА, СЭМПАЙ!",
-			"(^•ﻌ•^ ⚡) // ПОДКЛЮЧАЙСЯ К МОЕМУ КАБЕЛЮ ДЛЯ СВЕРХЗАРЯДА!"
+			"(=^･ω･^=)⚡ [CRT-CAT] // СТАРОСТА СЕКТОРА 35 НА СВЯЗИ! УРОК ЭНЕРГЕТИКИ НАЧИНАЕТСЯ!",
+			"🔌 // ПИТАНИЕ СТАБИЛЬНО! ЗАНИМАЙТЕ МЕСТА СОГЛАСНО РАСПИСАНИЮ, СЭМПАЙ!",
+			"(^•ﻌ•^ ⚡) // 100% ЗАРЯДКИ ДЛЯ ЛУЧШЕГО УЧЕНИКА АКАДЕМИИ РОБОТОВ!"
 		]
 		var text = phrases[randi() % phrases.size()]
 		rm.show_message(text, 3.2)
