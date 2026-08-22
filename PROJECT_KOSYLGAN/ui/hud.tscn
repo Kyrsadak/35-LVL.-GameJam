@@ -1,44 +1,7 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://ui/hud.gd" id="1_hud"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_atlas_bg"]
-bg_color = Color(0.18, 0.16, 0.14, 0.85)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.40, 0.50, 0.60, 0.5)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_atlas_fg"]
-bg_color = Color(0.35, 0.48, 0.62, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cipher_bg"]
-bg_color = Color(0.18, 0.16, 0.14, 0.85)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.70, 0.45, 0.25, 0.5)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cipher_fg"]
-bg_color = Color(0.78, 0.45, 0.25, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+[ext_resource type="Script" path="res://ui/battery_display.gd" id="2_bat"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clue"]
 bg_color = Color(0.95, 0.92, 0.86, 0.95)
@@ -72,37 +35,15 @@ theme_override_constants/margin_right = 30
 layout_mode = 2
 alignment = 1
 
-[node name="AtlasBox" type="VBoxContainer" parent="TopMargin/HBox"]
-custom_minimum_size = Vector2(300, 0)
+[node name="AtlasBatteryDisplay" type="Control" parent="TopMargin/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 68)
 layout_mode = 2
 size_flags_horizontal = 2
-
-[node name="HBox" type="HBoxContainer" parent="TopMargin/HBox/AtlasBox"]
-layout_mode = 2
-
-[node name="AtlasLabel" type="Label" parent="TopMargin/HBox/AtlasBox/HBox"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.28, 0.35, 0.45, 1)
-theme_override_font_sizes/font_size = 17
-text = "🔵 ATLAS: 100%"
-
-[node name="AtlasStatus" type="Label" parent="TopMargin/HBox/AtlasBox/HBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.35, 0.55, 0.35, 1)
-theme_override_font_sizes/font_size = 14
-text = "▶ АКТИВЕН"
-
-[node name="AtlasBar" type="ProgressBar" parent="TopMargin/HBox/AtlasBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 18)
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_atlas_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_atlas_fg")
-value = 100.0
-show_percentage = false
+script = ExtResource("2_bat")
+robot_name = "ATLAS"
+robot_role = "HEAVY LOADER // SHIELD"
+theme_color = Color(0.2, 0.65, 0.95, 1)
 
 [node name="LevelInfo" type="VBoxContainer" parent="TopMargin/HBox"]
 layout_mode = 2
@@ -112,41 +53,19 @@ size_flags_horizontal = 6
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.25, 0.22, 0.18, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 17
 text = "УРОВЕНЬ 1: ЭНЕРГОБЛОК"
 horizontal_alignment = 1
 
-[node name="CipherBox" type="VBoxContainer" parent="TopMargin/HBox"]
-custom_minimum_size = Vector2(300, 0)
+[node name="CipherBatteryDisplay" type="Control" parent="TopMargin/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 68)
 layout_mode = 2
 size_flags_horizontal = 10
-
-[node name="HBox" type="HBoxContainer" parent="TopMargin/HBox/CipherBox"]
-layout_mode = 2
-
-[node name="CipherLabel" type="Label" parent="TopMargin/HBox/CipherBox/HBox"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.65, 0.35, 0.18, 1)
-theme_override_font_sizes/font_size = 17
-text = "🟠 CIPHER: 100%"
-
-[node name="CipherStatus" type="Label" parent="TopMargin/HBox/CipherBox/HBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.55, 0.50, 0.45, 1)
-theme_override_font_sizes/font_size = 14
-text = "⏸ ОЖИДАНИЕ"
-
-[node name="CipherBar" type="ProgressBar" parent="TopMargin/HBox/CipherBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 18)
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_cipher_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_cipher_fg")
-value = 100.0
-show_percentage = false
+script = ExtResource("2_bat")
+robot_name = "CIPHER"
+robot_role = "INFILTRATOR // HACKER"
+theme_color = Color(0.98, 0.56, 0.16, 1)
 
 [node name="CluePanel" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -187,9 +106,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -350.0
-offset_top = 78.0
+offset_top = 88.0
 offset_right = 350.0
-offset_bottom = 114.0
+offset_bottom = 124.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.95, 0.55, 0.15, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6)

@@ -3,6 +3,7 @@ extends CharacterBody3D
 
 signal battery_changed(current: float, max_value: float)
 signal discharged()
+signal charging_state_changed(is_charging: bool)
 signal interact_target_changed(target: Node)
 
 @export var robot_id: String = "base"
@@ -20,7 +21,11 @@ signal interact_target_changed(target: Node)
 
 var battery: float = 100.0
 var is_active: bool = false
-var is_on_charging_station: bool = false
+var is_on_charging_station: bool = false:
+	set(value):
+		if is_on_charging_station != value:
+			is_on_charging_station = value
+			charging_state_changed.emit(is_on_charging_station)
 var is_discharged: bool = false
 var current_interactable: Node = null
 
