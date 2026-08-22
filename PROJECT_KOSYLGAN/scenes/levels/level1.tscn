@@ -40,6 +40,12 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_news_scattered.tscn" id="38_news_scattered"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_news_stepped.tscn" id="39_news_stepped"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_wall_poster.tscn" id="40_poster"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_box_sealed.tscn" id="41_box_sealed"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_box_dirty.tscn" id="42_box_dirty"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_box_torn.tscn" id="43_box_torn"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_box_crushed.tscn" id="44_box_crushed"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_box_open_filled.tscn" id="45_box_filled"]
+
 
 [node name="Level1" type="Node3D"]
 script = ExtResource("1_lvl1")
@@ -227,6 +233,22 @@ poster_index = 0
 [node name="PosterBlueprint1" parent="Furniture" instance=ExtResource("40_poster")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 7.45, 1.6, 3.2)
 poster_index = 1
+
+
+[node name="BoxSealed1" parent="Furniture" instance=ExtResource("41_box_sealed")]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -5.8, 0, 5.8)
+
+[node name="BoxFilled1" parent="Furniture" instance=ExtResource("45_box_filled")]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -4.8, 0, 5.2)
+
+[node name="BoxDirty1" parent="Furniture" instance=ExtResource("42_box_dirty")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 6.2, 0, -12.5)
+
+[node name="BoxTorn1" parent="Furniture" instance=ExtResource("43_box_torn")]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 5.2, 0, 5.2)
+
+[node name="BoxCrushed1" parent="Furniture" instance=ExtResource("44_box_crushed")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -3.2, 0, -14.2)
 
 [node name="PosterBanana1" parent="Furniture" instance=ExtResource("40_poster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 1.6, -15.95)
