@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3]
+
+[sub_resource type="BoxMesh" id="BoxMesh_peel_lr"]
+size = Vector3(0.35, 0.03, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_banana_yellow"]
+albedo_color = Color(0.96, 0.82, 0.15, 1)
+roughness = 0.45
+metallic = 0.05
+
+[sub_resource type="BoxMesh" id="BoxMesh_peel_fb"]
+size = Vector3(0.12, 0.03, 0.35)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_stem"]
+top_radius = 0.02
+bottom_radius = 0.03
+height = 0.14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brown_stem"]
+albedo_color = Color(0.24, 0.15, 0.08, 1)
+roughness = 0.9
+
+[node name="PropBananaPeel" type="Node3D"]
+
+# Left & Right Peel Flaps
+[node name="PeelLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, -0.12, 0.03, 0)
+mesh = SubResource("BoxMesh_peel_lr")
+surface_material_override/0 = SubResource("StandardMaterial3D_banana_yellow")
+
+[node name="PeelRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, 0.12, 0.03, 0)
+mesh = SubResource("BoxMesh_peel_lr")
+surface_material_override/0 = SubResource("StandardMaterial3D_banana_yellow")
+
+# Front & Back Peel Flaps
+[node name="PeelFront" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0.03, 0.12)
+mesh = SubResource("BoxMesh_peel_fb")
+surface_material_override/0 = SubResource("StandardMaterial3D_banana_yellow")
+
+[node name="PeelBack" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.03, -0.12)
+mesh = SubResource("BoxMesh_peel_fb")
+surface_material_override/0 = SubResource("StandardMaterial3D_banana_yellow")
+
+# Central Banana Stem Tip
+[node name="StemTip" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
+mesh = SubResource("CylinderMesh_stem")
+surface_material_override/0 = SubResource("StandardMaterial3D_brown_stem")

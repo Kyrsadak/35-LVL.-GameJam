@@ -26,6 +26,11 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_pipes.tscn" id="24_pipes"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_cardboard_box_open.tscn" id="25_cbox"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_cardboard_stack.tscn" id="26_cstack"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_traffic_cone.tscn" id="27_cone"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_safety_barrier.tscn" id="28_barrier"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_blue_barrel.tscn" id="29_blue_barrel"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_plastic_drum.tscn" id="30_plastic_drum"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_banana_peel.tscn" id="31_banana"]
 
 [node name="Level1" type="Node3D"]
 script = ExtResource("1_lvl1")
@@ -157,6 +162,24 @@ transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 5.5, 0, 3.
 
 [node name="CardboardStack2" parent="Furniture" instance=ExtResource("26_cstack")]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -5.5, 0, -13.5)
+
+[node name="SafetyBarrier1" parent="Furniture" instance=ExtResource("28_barrier")]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 5.2, 0, -4.5)
+
+[node name="TrafficCone1" parent="Furniture" instance=ExtResource("27_cone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, 0, -4.8)
+
+[node name="TrafficCone2" parent="Furniture" instance=ExtResource("27_cone")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -4.8, 0, -5.2)
+
+[node name="BlueBarrel1" parent="Furniture" instance=ExtResource("29_blue_barrel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8, 0, -11.5)
+
+[node name="PlasticDrum1" parent="Furniture" instance=ExtResource("30_plastic_drum")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8, 0, -11.5)
+
+[node name="BananaPeel1" parent="Furniture" instance=ExtResource("31_banana")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 3.5, 0, 2.0)
 
 [node name="ChargingStation" parent="." instance=ExtResource("4_station")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.5)
