@@ -13,7 +13,6 @@ extends CanvasLayer
 
 var active_typing_tween: Tween = null
 var default_dialogue_offset_top: float = -140.0
-var wipe_mat: ShaderMaterial = null
 
 func _ready() -> void:
 	if atlas_battery_display:
@@ -25,9 +24,6 @@ func _ready() -> void:
 		cipher_battery_display.robot_name = "CIPHER"
 		cipher_battery_display.theme_color = Color(0.98, 0.56, 0.16) # Vibrant Amber-Orange
 		cipher_battery_display.set_active(false)
-
-	if message_banner and message_banner.material is ShaderMaterial:
-		wipe_mat = message_banner.material as ShaderMaterial
 
 	if RobotManager:
 		RobotManager.robot_switched.connect(_on_robot_switched)
@@ -86,42 +82,40 @@ func show_banner_message(text: String, duration: float = 2.8) -> void:
 
 	dialogue_container.visible = true
 	message_banner.text = text
-	if wipe_mat:
-		wipe_mat.set_shader_parameter("progress", 0.0)
+	message_banner.visible_characters = 0
 	
 	var total_chars = text.length()
-	var char_speed = 0.052 # Smooth and readable pacing
-	var type_duration = max(0.85, total_chars * char_speed)
+	var char_speed = 0.046 # Left-to-right steady typing cadence
+	var type_duration = max(0.60, total_chars * char_speed)
 	var is_catgirl = "Weo" in text or "(=^" in text or "CRT-CAT" in text
 
 	# 1. Silky Smooth Panel Fade & Slide Up Entrance
 	dialogue_container.modulate.a = 0.0
-	dialogue_container.offset_top = default_dialogue_offset_top + 16.0
-	dialogue_container.offset_bottom = default_dialogue_offset_top + 16.0 + 68.0
+	dialogue_container.offset_top = default_dialogue_offset_top + 14.0
+	dialogue_container.offset_bottom = default_dialogue_offset_top + 14.0 + 68.0
 	
 	var slide_tween = create_tween().set_parallel(true)
-	slide_tween.tween_property(dialogue_container, "modulate:a", 1.0, 0.35).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	slide_tween.tween_property(dialogue_container, "offset_top", default_dialogue_offset_top, 0.40).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	slide_tween.tween_property(dialogue_container, "offset_bottom", default_dialogue_offset_top + 68.0, 0.40).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	slide_tween.tween_property(dialogue_container, "modulate:a", 1.0, 0.28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	slide_tween.tween_property(dialogue_container, "offset_top", default_dialogue_offset_top, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	slide_tween.tween_property(dialogue_container, "offset_bottom", default_dialogue_offset_top + 68.0, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
-	# 2. Ultra-Smooth Gradient Wipe Reveal with Soft Sound Cadence
+	# 2. Strict Left-to-Right Typewriter Reveal (visible_characters)
 	active_typing_tween = create_tween()
-	var last_blip_step = -1
-	active_typing_tween.tween_method(func(prog: float):
-		if wipe_mat:
-			wipe_mat.set_shader_parameter("progress", prog)
-		var curr_step = int(prog * float(total_chars))
-		if curr_step != last_blip_step and curr_step % 2 == 0 and curr_step < total_chars:
-			last_blip_step = curr_step
-			var ch = text[curr_step]
-			if ch != " " and SoundManager and SoundManager.has_method("play_dialogue_blip"):
-				SoundManager.play_dialogue_blip(is_catgirl)
-	, 0.0, 1.0, type_duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	var last_blip_idx = -1
+	active_typing_tween.tween_method(func(val: int):
+		message_banner.visible_characters = val
+		if val > 0 and val <= total_chars and val != last_blip_idx:
+			last_blip_idx = val
+			if val % 2 == 0: # Play speech blip every 2 characters
+				var ch = text[val - 1]
+				if ch != " " and SoundManager and SoundManager.has_method("play_dialogue_blip"):
+					SoundManager.play_dialogue_blip(is_catgirl)
+	, 0, total_chars, type_duration).set_trans(Tween.TRANS_LINEAR)
 
 	# 3. Rest on screen, then silky smooth fade & drift exit
 	active_typing_tween.tween_interval(duration)
-	active_typing_tween.tween_property(dialogue_container, "modulate:a", 0.0, 0.45).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	active_typing_tween.tween_property(dialogue_container, "offset_top", default_dialogue_offset_top + 10.0, 0.45).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	active_typing_tween.tween_property(dialogue_container, "modulate:a", 0.0, 0.40).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	active_typing_tween.tween_property(dialogue_container, "offset_top", default_dialogue_offset_top + 8.0, 0.40).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	active_typing_tween.tween_callback(func():
 		dialogue_container.visible = false
 	)
