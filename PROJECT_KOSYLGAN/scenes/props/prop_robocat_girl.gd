@@ -25,7 +25,7 @@ func _load_materials() -> void:
 		mat_screen_normal.albedo_texture = ImageTexture.create_from_image(img_s)
 		mat_screen_normal.emission_enabled = true
 		mat_screen_normal.emission_texture = mat_screen_normal.albedo_texture
-		mat_screen_normal.emission_energy_multiplier = 0.6
+		mat_screen_normal.emission_energy_multiplier = 0.65
 		mat_screen_normal.roughness = 0.2
 		mat_screen_normal.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 
@@ -38,15 +38,15 @@ func _load_materials() -> void:
 		mat_screen_blink.albedo_texture = ImageTexture.create_from_image(img_sb)
 		mat_screen_blink.emission_enabled = true
 		mat_screen_blink.emission_texture = mat_screen_blink.albedo_texture
-		mat_screen_blink.emission_energy_multiplier = 0.6
+		mat_screen_blink.emission_energy_multiplier = 0.65
 		mat_screen_blink.roughness = 0.2
 		mat_screen_blink.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 
 	if screen_face and mat_screen_normal:
 		screen_face.set_surface_override_material(0, mat_screen_normal)
 
-	# 3. School Blazer & Skirt Material
-	var path_b = "res://assets/textures/tex_tv_cat_blazer.png"
+	# 3. Navy Blazer Material
+	var path_b = "res://assets/textures/tex_tv_cat_blazer_v2.png"
 	var img_b = Image.load_from_file(ProjectSettings.globalize_path(path_b))
 	var mat_blazer = StandardMaterial3D.new()
 	if img_b:
@@ -54,21 +54,47 @@ func _load_materials() -> void:
 		mat_blazer.albedo_texture = ImageTexture.create_from_image(img_b)
 		mat_blazer.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	else:
-		mat_blazer.albedo_color = Color(0.11, 0.14, 0.24)
-	mat_blazer.roughness = 0.5
+		mat_blazer.albedo_color = Color(0.10, 0.13, 0.24)
+	mat_blazer.roughness = 0.45
 	for b_part in find_children("*Blazer*", "MeshInstance3D", true, false):
 		(b_part as MeshInstance3D).set_surface_override_material(0, mat_blazer)
-	for s_part in find_children("*Skirt*", "MeshInstance3D", true, false):
-		(s_part as MeshInstance3D).set_surface_override_material(0, mat_blazer)
 
-	# 4. White Shirt Cuffs & Collar
+	# 4. Red & Charcoal Plaid Skirt Material
+	var path_skirt = "res://assets/textures/tex_tv_cat_skirt_plaid.png"
+	var img_skirt = Image.load_from_file(ProjectSettings.globalize_path(path_skirt))
+	var mat_skirt = StandardMaterial3D.new()
+	if img_skirt:
+		img_skirt.generate_mipmaps()
+		mat_skirt.albedo_texture = ImageTexture.create_from_image(img_skirt)
+		mat_skirt.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	else:
+		mat_skirt.albedo_color = Color(0.75, 0.15, 0.22)
+	mat_skirt.roughness = 0.5
+	for s_part in find_children("*Skirt*", "MeshInstance3D", true, false):
+		(s_part as MeshInstance3D).set_surface_override_material(0, mat_skirt)
+
+	# 5. Crisp White Shirt & Collar & Cuffs
 	var mat_white = StandardMaterial3D.new()
-	mat_white.albedo_color = Color(0.96, 0.96, 0.98)
-	mat_white.roughness = 0.4
+	mat_white.albedo_color = Color(0.98, 0.98, 1.0)
+	mat_white.roughness = 0.35
 	for w_part in find_children("*White*", "MeshInstance3D", true, false):
 		(w_part as MeshInstance3D).set_surface_override_material(0, mat_white)
 
-	# 5. Pastel Pink Armor Material
+	# 6. High School White Knee Socks with Navy Stripes
+	var mat_sock = StandardMaterial3D.new()
+	mat_sock.albedo_color = Color(0.96, 0.96, 0.98)
+	mat_sock.roughness = 0.4
+	for sock in find_children("*Stocking*", "MeshInstance3D", true, false):
+		(sock as MeshInstance3D).set_surface_override_material(0, mat_sock)
+
+	# 7. Red Student Council Armband & Tie
+	var mat_red = StandardMaterial3D.new()
+	mat_red.albedo_color = Color(0.92, 0.12, 0.18)
+	mat_red.roughness = 0.3
+	for red_part in find_children("*Red*", "MeshInstance3D", true, false):
+		(red_part as MeshInstance3D).set_surface_override_material(0, mat_red)
+
+	# 8. Pastel Pink Armor Material
 	var mat_pink = StandardMaterial3D.new()
 	mat_pink.albedo_color = Color(0.96, 0.56, 0.69)
 	mat_pink.metallic = 0.08
@@ -76,7 +102,7 @@ func _load_materials() -> void:
 	for pink_part in find_children("*Pink*", "MeshInstance3D", true, false):
 		(pink_part as MeshInstance3D).set_surface_override_material(0, mat_pink)
 
-	# 6. Glowing Mint Green Accents (Ears, Dials, Core)
+	# 9. Glowing Mint Green Accents (Ears, Dials, Core)
 	var mat_mint = StandardMaterial3D.new()
 	mat_mint.albedo_color = Color(0.47, 0.92, 0.82)
 	mat_mint.emission_enabled = true
@@ -86,7 +112,12 @@ func _load_materials() -> void:
 	for mint_part in find_children("*Mint*", "MeshInstance3D", true, false):
 		(mint_part as MeshInstance3D).set_surface_override_material(0, mat_mint)
 
-	# 7. Dark Charcoal Chassis & Loafers
+	# 10. Classic Dark Brown Leather Loafers & Dark Joints
+	var mat_loafer = StandardMaterial3D.new()
+	mat_loafer.albedo_color = Color(0.24, 0.16, 0.12)
+	mat_loafer.roughness = 0.35
+	for loafer in find_children("*Loafer*", "MeshInstance3D", true, false):
+		(loafer as MeshInstance3D).set_surface_override_material(0, mat_loafer)
 	var mat_dark = StandardMaterial3D.new()
 	mat_dark.albedo_color = Color(0.18, 0.20, 0.24)
 	mat_dark.metallic = 0.25
@@ -94,7 +125,7 @@ func _load_materials() -> void:
 	for dark_part in find_children("*Dark*", "MeshInstance3D", true, false):
 		(dark_part as MeshInstance3D).set_surface_override_material(0, mat_dark)
 
-	# 8. Metal Prongs
+	# 11. Metal Prongs
 	var mat_metal = StandardMaterial3D.new()
 	mat_metal.albedo_color = Color(0.85, 0.88, 0.92)
 	mat_metal.metallic = 0.95
@@ -133,7 +164,7 @@ func interact() -> void:
 	var rm = get_node_or_null("/root/RobotManager")
 	if rm and rm.has_method("show_message"):
 		var phrases = [
-			"(=^･ω･^=)⚡ [CRT-CAT] // СТАРОСТА СЕКТОРА 35 НА СВЯЗИ! УРОК ЭНЕРГЕТИКИ НАЧИНАЕТСЯ!",
+			"(=^･ω･^=)⚡ [СТАРОСТА CRT-CAT] // УРОК ЭНЕРГЕТИКИ СЕКТОРА 35 НАЧИНАЕТСЯ!",
 			"🔌 // ПИТАНИЕ СТАБИЛЬНО! ЗАНИМАЙТЕ МЕСТА СОГЛАСНО РАСПИСАНИЮ, СЭМПАЙ!",
 			"(^•ﻌ•^ ⚡) // 100% ЗАРЯДКИ ДЛЯ ЛУЧШЕГО УЧЕНИКА АКАДЕМИИ РОБОТОВ!"
 		]
