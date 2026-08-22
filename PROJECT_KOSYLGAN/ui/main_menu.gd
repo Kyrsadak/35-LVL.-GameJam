@@ -4,6 +4,8 @@ extends Node3D
 @onready var contraption_root: Node3D = $Contraption
 @onready var gear_top: MeshInstance3D = $Contraption/GearTop
 @onready var gear_bottom: MeshInstance3D = $Contraption/GearBottom
+@onready var slider_music: Node3D = $Contraption/FrontPlate/SliderMusic
+@onready var slider_sound: Node3D = $Contraption/FrontPlate/SliderSound
 @onready var slider_cube_music: MeshInstance3D = $Contraption/FrontPlate/SliderMusic/CubeMusic
 @onready var slider_cube_sound: MeshInstance3D = $Contraption/FrontPlate/SliderSound/CubeSound
 @onready var audio_player: AudioStreamPlayer = $AudioStreamPlayer
@@ -21,9 +23,9 @@ var sound_vol_ratio: float = 0.85
 var is_dragging_music: bool = false
 var is_dragging_sound: bool = false
 
-# Slider geometry bounds in local X
-const SLIDER_X_MIN: float = -0.48
-const SLIDER_X_MAX: float = 0.48
+# Slider geometry bounds in local X coordinates of SliderMusic / SliderSound
+const SLIDER_LOCAL_MIN: float = -0.45
+const SLIDER_LOCAL_MAX: float = 0.45
 
 func _ready() -> void:
 	_build_procedural_gears()
@@ -128,18 +130,28 @@ func _handle_mouse_click(screen_pos: Vector2) -> void:
 var _last_hovered_collider: Node = null
 func _handle_mouse_hover(screen_pos: Vector2) -> void:
 	var hit = _raycast_mouse(screen_pos)
-	var collider = hit.collider if not hit.is_empty() else null
+	var collider = hit.collider if not hit.is_empty() and hit.has("collider") else null
 	if collider != _last_hovered_collider:
 		_last_hovered_collider = collider
 		if collider:
 			_play_hover()
 
 func _handle_slider_drag(screen_pos: Vector2) -> void:
-	var hit = _raycast_mouse(screen_pos)
-	if hit.is_empty():
+	var slider_node = slider_music if is_dragging_music else slider_sound
+	if not slider_node or not camera:
 		return
-	var local_hit_pos = contraption_root.to_local(hit.position)
-	var t = clamp(inverse_lerp(SLIDER_X_MIN, SLIDER_X_MAX, local_hit_pos.x), 0.0, 1.0)
+		
+	var from = camera.project_ray_origin(screen_pos)
+	var dir = camera.project_ray_normal(screen_pos)
+	
+	# Project ray onto slider plane
+	var slider_plane = Plane(slider_node.global_transform.basis.z, slider_node.global_position)
+	var hit_world = slider_plane.intersects_ray(from, dir)
+	if hit_world == null:
+		return
+		
+	var local_pos = slider_node.to_local(hit_world)
+	var t = clamp(inverse_lerp(SLIDER_LOCAL_MIN, SLIDER_LOCAL_MAX, local_pos.x), 0.0, 1.0)
 	
 	if is_dragging_music:
 		music_vol_ratio = t
@@ -151,20 +163,24 @@ func _handle_slider_drag(screen_pos: Vector2) -> void:
 
 func _update_slider_positions() -> void:
 	if slider_cube_music:
-		slider_cube_music.position.x = lerp(SLIDER_X_MIN, SLIDER_X_MAX, music_vol_ratio)
+		slider_cube_music.position.x = lerp(SLIDER_LOCAL_MIN, SLIDER_LOCAL_MAX, music_vol_ratio)
 	if slider_cube_sound:
-		slider_cube_sound.position.x = lerp(SLIDER_X_MIN, SLIDER_X_MAX, sound_vol_ratio)
+		slider_cube_sound.position.x = lerp(SLIDER_LOCAL_MIN, SLIDER_LOCAL_MAX, sound_vol_ratio)
 
 func _apply_music_volume() -> void:
-	var db = linear_to_db(max(0.001, music_vol_ratio))
 	if audio_player:
-		audio_player.volume_db = db
+		if music_vol_ratio <= 0.01:
+			audio_player.volume_db = -80.0
+		else:
+			audio_player.volume_db = linear_to_db(music_vol_ratio)
 
 func _apply_sound_volume() -> void:
 	var bus_idx = AudioServer.get_bus_index("Master")
 	if bus_idx >= 0:
-		var db = linear_to_db(max(0.001, sound_vol_ratio))
-		AudioServer.set_bus_volume_db(bus_idx, db)
+		if sound_vol_ratio <= 0.01:
+			AudioServer.set_bus_volume_db(bus_idx, -80.0)
+		else:
+			AudioServer.set_bus_volume_db(bus_idx, linear_to_db(sound_vol_ratio))
 
 func _animate_click_feedback(node: Node) -> void:
 	if not node is Node3D:
