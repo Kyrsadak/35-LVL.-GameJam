@@ -42,6 +42,8 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_wall_poster.tscn" id="40_poster"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_trash_bin.tscn" id="46_trash_bin"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_robocat_girl.tscn" id="47_robocat"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_poster_monster_white.tscn" id="48_poster_monster"]
+
 
 
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_sealed.tscn" id="41_box_sealed"]
@@ -258,6 +260,10 @@ transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -3.2, 0, -
 
 [node name="RoboCatGirl1" parent="Furniture" instance=ExtResource("47_robocat")]
 transform = Transform3D(0.819152, 0, -0.573576, 0, 1, 0, 0.573576, 0, 0.819152, 5.8, 0, -3.2)
+
+
+[node name="PosterMonsterWhite1" parent="Furniture" instance=ExtResource("48_poster_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 2.0, -6.4)
 
 [node name="TrashBin1" parent="Furniture" instance=ExtResource("46_trash_bin")]
 transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -6.8, 0, -5.6)
