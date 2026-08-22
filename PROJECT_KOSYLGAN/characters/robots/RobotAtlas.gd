@@ -28,7 +28,7 @@ func interact() -> void:
 				key_module_inserted.emit()
 				return
 		else:
-			# Put down / drop carried object in front of robot
+			# Put down / drop carried object in front of robot in facing direction
 			_drop_carried_object()
 			return
 
@@ -49,12 +49,15 @@ func interact() -> void:
 		_pick_up_object(current_interactable)
 		return
 
-	# 5. Also check push_ray if standing right in front of a box
-	if push_ray and push_ray.is_colliding():
-		var col = push_ray.get_collider()
-		if col and (col.is_in_group("pushable_box") or col.is_in_group("boxes")):
-			_pick_up_object(col)
-			return
+	# 5. Also check push_ray oriented to facing direction if standing right in front of a box
+	if push_ray:
+		push_ray.global_rotation.y = skin.global_rotation.y if skin else global_rotation.y
+		push_ray.force_raycast_update()
+		if push_ray.is_colliding():
+			var col = push_ray.get_collider()
+			if col and (col.is_in_group("pushable_box") or col.is_in_group("boxes")):
+				_pick_up_object(col)
+				return
 
 func _pick_up_object(obj: Node3D) -> void:
 	if obj and obj.has_method("pick_up"):
@@ -69,7 +72,8 @@ func _drop_carried_object() -> void:
 	if carried_object and carried_object.has_method("drop"):
 		if skin and skin.has_method("set_holding"):
 			skin.set_holding(false)
-		var drop_pos = global_position + (-global_transform.basis.z * 1.5)
+		var forward = get_facing_direction()
+		var drop_pos = global_position + (forward * 1.5)
 		drop_pos.y = max(drop_pos.y, 0.0)
 		carried_object.drop(drop_pos)
 		carried_object = null
@@ -81,10 +85,13 @@ func _physics_process(delta: float) -> void:
 		_check_box_push()
 
 func _check_box_push() -> void:
-	if not push_ray or not push_ray.is_colliding():
+	if not push_ray or not skin:
 		return
-	var collider = push_ray.get_collider()
-	if collider and collider.is_in_group("pushable_box"):
-		if collider.has_method("push"):
-			var push_dir = -global_transform.basis.z
-			collider.push(push_dir, velocity.length())
+	push_ray.global_rotation.y = skin.global_rotation.y
+	push_ray.force_raycast_update()
+	if push_ray.is_colliding():
+		var collider = push_ray.get_collider()
+		if collider and collider.is_in_group("pushable_box"):
+			if collider.has_method("push"):
+				var push_dir = get_facing_direction()
+				collider.push(push_dir, velocity.length())

@@ -45,11 +45,21 @@ func set_active(active: bool) -> void:
 		if skin:
 			skin.update_move_animation(0.0, 0.0)
 
+func get_facing_direction() -> Vector3:
+	if skin:
+		return -skin.global_transform.basis.z.normalized()
+	return -global_transform.basis.z.normalized()
+
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	else:
 		velocity.y = 0.0
+
+	# Keep carry pivot aligned with the direction the robot is facing
+	if skin and carry_pivot:
+		carry_pivot.global_position = global_position + Vector3(0, 1.3, 0) + get_facing_direction() * 0.5
+		carry_pivot.global_rotation.y = skin.global_rotation.y
 
 	if is_discharged:
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
