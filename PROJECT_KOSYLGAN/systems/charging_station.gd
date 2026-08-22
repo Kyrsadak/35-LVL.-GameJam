@@ -3,7 +3,8 @@ extends Area3D
 
 ## High-Tech Sci-Fi Cryo-Charging Capsule based on user reference concept art.
 ## Features stepped docking pedestal, 3D glowing energy conduits, dynamic stencil digit display,
-## volumetric energy lighting, single-robot capacity limit, and [E] key docking/undocking mechanic.
+## clean titanium base plate (no yellow hazard stripes), full solid physical perimeter collision,
+## and [E] key only docking and undocking.
 
 signal robot_docked(robot: Node3D)
 signal robot_undocked(robot: Node3D)
@@ -19,6 +20,7 @@ signal robot_undocked(robot: Node3D)
 @onready var plasma_ring_2: MeshInstance3D = $EnergyField/PlasmaRing2
 @onready var floor_dock_pad: MeshInstance3D = $BasePlatform/FloorDockPad
 @onready var outer_hazard_mesh: MeshInstance3D = $BasePlatform/OuterHazardMesh
+@onready var station_collider: StaticBody3D = $StationCollider
 @onready var clamp_leds: Array[MeshInstance3D] = []
 @onready var conduit_meshes: Array[MeshInstance3D] = []
 
@@ -54,7 +56,7 @@ func _setup_materials_and_textures() -> void:
 	dark_metal_material.metallic = 0.85
 	dark_metal_material.roughness = 0.32
 	
-	# 2. Hazard Yellow Trim
+	# 2. Yellow Trim (Caps & Clamps)
 	yellow_trim_material = StandardMaterial3D.new()
 	yellow_trim_material.albedo_color = Color(1.0, 0.78, 0.08)
 	yellow_trim_material.metallic = 0.5
@@ -87,15 +89,15 @@ func _setup_materials_and_textures() -> void:
 	if glass_decal_mesh:
 		glass_decal_mesh.set_surface_override_material(0, decal_material)
 	
-	# 5. Outer Base Radial Hazard Stripes Texture (High-Res 512x512)
-	var hazard_tex = _generate_hazard_stripes_texture()
-	var hazard_mat = StandardMaterial3D.new()
-	hazard_mat.albedo_texture = hazard_tex
-	hazard_mat.metallic = 0.65
-	hazard_mat.roughness = 0.40
-	hazard_mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+	# 5. Outer Base Sleek Titanium Plate Texture (No yellow stripes)
+	var base_tex = _generate_sleek_base_texture()
+	var base_mat = StandardMaterial3D.new()
+	base_mat.albedo_texture = base_tex
+	base_mat.metallic = 0.75
+	base_mat.roughness = 0.35
+	base_mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	if outer_hazard_mesh:
-		outer_hazard_mesh.set_surface_override_material(0, hazard_mat)
+		outer_hazard_mesh.set_surface_override_material(0, base_mat)
 	
 	# 6. 3D Energy Conduits / Cables Material
 	conduit_material = StandardMaterial3D.new()
@@ -174,20 +176,13 @@ func _process(delta: float) -> void:
 		
 		# Vertical floating plasma rings
 		if plasma_ring_1:
-			plasma_ring_1.position.y = 0.65 + sin(scan_time * 1.8) * 0.4
+			plasma_ring_1.position.y = 0.70 + sin(scan_time * 1.8) * 0.4
 			plasma_ring_1.rotation.y += delta * 1.2
 		if plasma_ring_2:
-			plasma_ring_2.position.y = 1.35 - sin(scan_time * 1.8) * 0.4
+			plasma_ring_2.position.y = 1.45 - sin(scan_time * 1.8) * 0.4
 			plasma_ring_2.rotation.y -= delta * 1.5
 		if laser_ring:
 			laser_ring.position.y = -0.12 + sin(scan_time * 2.0) * 0.06
-		
-		# Check if docked robot tries to walk away -> auto undock
-		if docked_robot and "velocity" in docked_robot:
-			var vel = (docked_robot as CharacterBody3D).velocity
-			var horiz_speed = Vector2(vel.x, vel.z).length()
-			if horiz_speed > 1.2:
-				undock_robot(docked_robot)
 	else:
 		if light_omni:
 			light_omni.light_energy = 1.3 + sin(scan_time * 0.8) * 0.2
@@ -196,10 +191,10 @@ func _process(delta: float) -> void:
 		if plasma_material:
 			plasma_material.emission_energy_multiplier = 0.9 + sin(scan_time * 1.2) * 0.3
 		if plasma_ring_1:
-			plasma_ring_1.position.y = 0.95 + sin(scan_time * 0.8) * 0.12
+			plasma_ring_1.position.y = 1.05 + sin(scan_time * 0.8) * 0.12
 			plasma_ring_1.rotation.y += delta * 0.4
 		if plasma_ring_2:
-			plasma_ring_2.position.y = 1.45 - sin(scan_time * 0.8) * 0.12
+			plasma_ring_2.position.y = 1.55 - sin(scan_time * 0.8) * 0.12
 			plasma_ring_2.rotation.y -= delta * 0.5
 
 ## Called when robot presses interaction key [E]
@@ -228,11 +223,10 @@ func dock_robot(robot: Node3D) -> void:
 	if "is_on_charging_station" in robot:
 		robot.is_on_charging_station = true
 	
-	# Smoothly align robot to the center of the charging pad
-	var target_dock_pos = global_position + Vector3(0, 0.22, 0)
+	# Smoothly glide robot inside to the center of the docking pad
+	var target_dock_pos = global_position + Vector3(0, 0.24, 0)
 	var glide_tween = create_tween().set_parallel(true)
-	glide_tween.tween_property(robot, "global_position:x", target_dock_pos.x, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	glide_tween.tween_property(robot, "global_position:z", target_dock_pos.z, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	glide_tween.tween_property(robot, "global_position", target_dock_pos, 0.30).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	
 	# Play high-tech docking animation
 	_play_dock_animation(true)
@@ -255,6 +249,11 @@ func undock_robot(robot: Node3D) -> void:
 	docked_robot = null
 	is_docked = false
 	
+	# Smoothly step robot OUT in front of the capsule
+	var exit_pos = global_position + Vector3(0, 0.05, 1.45)
+	var exit_tween = create_tween()
+	exit_tween.tween_property(robot, "global_position", exit_pos, 0.30).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
 	_play_dock_animation(false)
 	if SoundManager and SoundManager.has_method("play_drop"):
 		SoundManager.play_drop()
@@ -270,7 +269,7 @@ func _play_dock_animation(dock: bool) -> void:
 	if dock:
 		# Lower overhead charging contact arm down into capsule
 		if charger_arm:
-			anim_tween.tween_property(charger_arm, "position:y", 1.65, 0.45)
+			anim_tween.tween_property(charger_arm, "position:y", 1.80, 0.45)
 		# Radiant Emerald Plasma Power Light
 		if light_omni:
 			anim_tween.tween_property(light_omni, "light_color", Color(0.15, 1.0, 0.50), 0.3)
@@ -287,7 +286,7 @@ func _play_dock_animation(dock: bool) -> void:
 	else:
 		# Retract overhead charging arm up into top generator cap
 		if charger_arm:
-			anim_tween.tween_property(charger_arm, "position:y", 2.25, 0.40).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+			anim_tween.tween_property(charger_arm, "position:y", 2.45, 0.40).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		# Standby Calm Neon Cyan Light
 		if light_omni:
 			anim_tween.tween_property(light_omni, "light_color", Color(0.0, 0.85, 1.0), 0.3)
@@ -304,7 +303,7 @@ func _play_dock_animation(dock: bool) -> void:
 
 func _update_visuals(dock: bool) -> void:
 	if charger_arm:
-		charger_arm.position.y = 1.65 if dock else 2.25
+		charger_arm.position.y = 1.80 if dock else 2.45
 	if light_omni:
 		light_omni.light_color = Color(0.15, 1.0, 0.50) if dock else Color(0.0, 0.85, 1.0)
 		light_omni.light_energy = 3.0 if dock else 1.3
@@ -400,19 +399,20 @@ func _draw_stencil_digit(img: Image, digit: String, x: int, y: int, w: int, h: i
 	if bot_right: _draw_img_rect(img, x + w - thick, y + half_h, thick, half_h, col)
 	if bot: _draw_img_rect(img, x, y + h - thick, w, thick, col)
 
-## Procedurally generates the high-res circular radial hazard stripes base texture
-func _generate_hazard_stripes_texture() -> ImageTexture:
+## Procedurally generates sleek clean titanium base plate texture (No yellow stripes)
+func _generate_sleek_base_texture() -> ImageTexture:
 	var size = 512
 	var img = Image.create(size, size, true, Image.FORMAT_RGBA8)
-	var col_dark_outer = Color(0.14, 0.16, 0.22, 1.0)
-	var col_steel_inner = Color(0.22, 0.26, 0.34, 1.0)
-	var col_yellow = Color(1.0, 0.78, 0.08, 1.0)
-	var col_black = Color(0.08, 0.09, 0.12, 1.0)
+	var col_dark_outer = Color(0.12, 0.14, 0.19, 1.0)
+	var col_steel_plate = Color(0.20, 0.24, 0.32, 1.0)
+	var col_panel_groove = Color(0.08, 0.09, 0.12, 1.0)
+	var col_cyan_glow = Color(0.0, 0.85, 1.0, 0.9)
+	var col_bolt = Color(0.35, 0.40, 0.50, 1.0)
 	
 	var center = Vector2(size * 0.5, size * 0.5)
 	var radius_max = float(size) * 0.48
-	var radius_stripe_out = float(size) * 0.45
-	var radius_stripe_in = float(size) * 0.33
+	var radius_groove_out = float(size) * 0.45
+	var radius_plate = float(size) * 0.33
 	var radius_pedestal = float(size) * 0.27
 	
 	for y in range(size):
@@ -420,24 +420,26 @@ func _generate_hazard_stripes_texture() -> ImageTexture:
 			var pos = Vector2(x, y)
 			var dist = pos.distance_to(center)
 			
-			if dist <= radius_stripe_out and dist >= radius_stripe_in:
-				# Clean radial angle with diagonal swirl chevrons
-				var angle = atan2(pos.y - center.y, pos.x - center.x) # -PI to PI
-				var stripe_phase = fmod((angle / TAU) * 16.0 + (dist - radius_stripe_in) * 0.08, 1.0)
-				if stripe_phase < 0.0:
-					stripe_phase += 1.0
-					
-				if stripe_phase < 0.50:
-					img.set_pixel(x, y, col_yellow)
-				else:
-					img.set_pixel(x, y, col_black)
-			elif dist <= radius_max and dist > radius_stripe_out:
+			if dist <= radius_max and dist > radius_groove_out:
 				img.set_pixel(x, y, col_dark_outer)
-			elif dist < radius_stripe_in and dist >= radius_pedestal:
-				if dist <= radius_pedestal + 4.0:
-					img.set_pixel(x, y, col_yellow)
+			elif dist <= radius_groove_out and dist > radius_groove_out - 4.0:
+				# Outer neon cyan telemetry ring
+				img.set_pixel(x, y, col_cyan_glow)
+			elif dist <= radius_groove_out - 4.0 and dist >= radius_plate:
+				# Clean dark titanium panel plate
+				var angle = atan2(pos.y - center.y, pos.x - center.x)
+				# 8 radial panel seams
+				var seam_phase = fmod(abs(angle) / (PI / 4.0), 1.0)
+				if seam_phase < 0.04 or seam_phase > 0.96:
+					img.set_pixel(x, y, col_panel_groove)
 				else:
-					img.set_pixel(x, y, col_steel_inner)
+					img.set_pixel(x, y, col_steel_plate)
+			elif dist < radius_plate and dist >= radius_pedestal:
+				# Inner plate step
+				if dist <= radius_plate and dist > radius_plate - 3.0:
+					img.set_pixel(x, y, col_panel_groove)
+				else:
+					img.set_pixel(x, y, col_dark_outer)
 			elif dist < radius_pedestal:
 				img.set_pixel(x, y, col_dark_outer)
 			else:
