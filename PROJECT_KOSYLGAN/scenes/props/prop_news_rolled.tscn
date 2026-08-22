@@ -3,13 +3,13 @@
 [ext_resource type="Script" path="res://scenes/props/PropNewsRolled.gd" id="1_r"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_tube"]
-top_radius = 0.05
-bottom_radius = 0.05
-height = 0.44
+top_radius = 0.075
+bottom_radius = 0.075
+height = 0.65
 
 [sub_resource type="TorusMesh" id="TorusMesh_band"]
-inner_radius = 0.048
-outer_radius = 0.054
+inner_radius = 0.072
+outer_radius = 0.080
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rubber"]
 albedo_color = Color(0.85, 0.25, 0.20, 1)
@@ -18,10 +18,10 @@ albedo_color = Color(0.85, 0.25, 0.20, 1)
 script = ExtResource("1_r")
 
 [node name="RolledTube" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.05, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.075, 0)
 mesh = SubResource("CylinderMesh_tube")
 
 [node name="RubberBand" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.05, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.075, 0)
 mesh = SubResource("TorusMesh_band")
 surface_material_override/0 = SubResource("StandardMaterial3D_rubber")

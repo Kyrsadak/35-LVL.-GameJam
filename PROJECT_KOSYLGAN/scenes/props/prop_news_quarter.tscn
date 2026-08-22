@@ -3,10 +3,10 @@
 [ext_resource type="Script" path="res://scenes/props/PropNewsQuarter.gd" id="1_q"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_thick"]
-size = Vector3(0.32, 0.032, 0.24)
+size = Vector3(0.48, 0.045, 0.36)
 
 [sub_resource type="QuadMesh" id="QuadMesh_q"]
-size = Vector2(0.32, 0.24)
+size = Vector2(0.48, 0.36)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_paper"]
 albedo_color = Color(0.92, 0.89, 0.82, 1)
@@ -16,11 +16,11 @@ roughness = 0.85
 script = ExtResource("1_q")
 
 [node name="ThickBase" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.016, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.022, 0)
 mesh = SubResource("BoxMesh_thick")
 surface_material_override/0 = SubResource("StandardMaterial3D_paper")
 
 [node name="TopQuad" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.033, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.046, 0)
 mesh = SubResource("QuadMesh_q")
 surface_material_override/0 = SubResource("StandardMaterial3D_paper")

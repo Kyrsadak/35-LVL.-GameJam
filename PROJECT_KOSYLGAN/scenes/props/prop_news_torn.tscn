@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/props/PropNewsTorn.gd" id="1_trn"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_torn"]
-size = Vector2(0.48, 0.44)
+size = Vector2(0.72, 0.65)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trans_paper"]
 transparency = 1
