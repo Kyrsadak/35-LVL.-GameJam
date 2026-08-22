@@ -12,12 +12,13 @@ func _apply_tex(tex_path: String, group_prefix: String, metallic: float, roughne
 	var global_p = ProjectSettings.globalize_path(tex_path)
 	var img = Image.load_from_file(global_p)
 	if img:
+		img.generate_mipmaps()
 		var tex = ImageTexture.create_from_image(img)
 		var mat = StandardMaterial3D.new()
 		mat.albedo_texture = tex
 		mat.metallic = metallic
 		mat.roughness = roughness
-		mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+		mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 		
 		for child in find_children("*", "MeshInstance3D", true, false):
 			var m = child as MeshInstance3D
