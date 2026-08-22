@@ -218,3 +218,39 @@ func play_dialogue_blip(is_catgirl: bool = false) -> void:
 	player.volume_db = -12.0
 	player.pitch_scale = randf_range(0.94, 1.18)
 	player.play()
+
+# 10. UI Hover Sound
+func play_ui_hover() -> void:
+	var duration = 0.04
+	var num_samples = int(sample_rate * duration)
+	var bytes = PackedByteArray()
+	bytes.resize(num_samples * 2)
+	for i in range(num_samples):
+		var t = float(i) / sample_rate
+		var env = 1.0 - (float(i) / num_samples)
+		var s = sin(t * 980.0 * TAU) * 0.35
+		var val = int(clamp(s * env * 14000.0, -32767, 32767))
+		bytes.encode_s16(i * 2, val)
+	var player = _get_free_player()
+	player.stream = _create_wav(bytes)
+	player.volume_db = -16.0
+	player.pitch_scale = randf_range(0.98, 1.05)
+	player.play()
+
+# 11. UI Click Sound
+func play_ui_click() -> void:
+	var duration = 0.09
+	var num_samples = int(sample_rate * duration)
+	var bytes = PackedByteArray()
+	bytes.resize(num_samples * 2)
+	for i in range(num_samples):
+		var t = float(i) / sample_rate
+		var env = 1.0 - (float(i) / num_samples)
+		var s = sin(t * (650.0 + t * 400.0) * TAU) * 0.6
+		var val = int(clamp(s * env * 22000.0, -32767, 32767))
+		bytes.encode_s16(i * 2, val)
+	var player = _get_free_player()
+	player.stream = _create_wav(bytes)
+	player.volume_db = -8.0
+	player.play()
+
