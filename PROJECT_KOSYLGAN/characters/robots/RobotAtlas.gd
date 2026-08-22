@@ -44,7 +44,7 @@ func interact() -> void:
 		_pick_up_object(current_interactable)
 		return
 
-	# 4. Check if near pushable box to lift / carry
+	# 4. Check if near box to lift / carry
 	if current_interactable and (current_interactable.is_in_group("pushable_box") or current_interactable.is_in_group("boxes")):
 		_pick_up_object(current_interactable)
 		return
@@ -77,21 +77,3 @@ func _drop_carried_object() -> void:
 		drop_pos.y = max(drop_pos.y, 0.0)
 		carried_object.drop(drop_pos)
 		carried_object = null
-
-func _physics_process(delta: float) -> void:
-	super._physics_process(delta)
-	# Check box pushing for ATLAS only when not carrying
-	if is_active and not is_discharged and carried_object == null:
-		_check_box_push()
-
-func _check_box_push() -> void:
-	if not push_ray or not skin:
-		return
-	push_ray.global_rotation.y = skin.global_rotation.y
-	push_ray.force_raycast_update()
-	if push_ray.is_colliding():
-		var collider = push_ray.get_collider()
-		if collider and collider.is_in_group("pushable_box"):
-			if collider.has_method("push"):
-				var push_dir = get_facing_direction()
-				collider.push(push_dir, velocity.length())
