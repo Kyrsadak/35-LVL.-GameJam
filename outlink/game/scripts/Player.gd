@@ -4,7 +4,7 @@ class_name Player
 
 ## Дрон-игрок. FSM: TETHERED (на кабеле) <-> INDEPENDENT (автономность).
 ## В TETHERED — бесконечная энергия, но радиус ограничен.
-## В INDEPENDENT — 6 секунд свободы, потом смерть.
+## В INDEPENDENT — запас батареи (увеличивается от найденных Оазисов Свободы!).
 
 enum State { TETHERED, INDEPENDENT }
 
@@ -38,9 +38,15 @@ var alive: bool = true
 @onready var visual_body: Node2D = $VisualBody
 @onready var direction_pointer: Polygon2D = $DirectionPointer
 
+func get_effective_max_battery() -> float:
+	return max_battery + GameManager.get_battery_bonus()
+
+func get_effective_slingshot_max() -> float:
+	return slingshot_power_max * (1.0 + GameManager.get_slingshot_bonus())
+
 func _ready() -> void:
 	add_to_group("Player")
-	current_battery = max_battery
+	current_battery = get_effective_max_battery()
 	current_socket_pos = global_position
 	alive = true
 
@@ -50,7 +56,7 @@ func _ready() -> void:
 
 	# Стартовое состояние — на кабеле
 	current_state = State.TETHERED
-	EventBus.battery_changed.emit(current_battery, max_battery)
+	EventBus.battery_changed.emit(current_battery, get_effective_max_battery())
 	EventBus.tension_changed.emit(0.0)
 
 func _physics_process(delta: float) -> void:
@@ -126,7 +132,7 @@ func _physics_independent(delta: float, input_vector: Vector2) -> void:
 
 	# Таймер батареи
 	current_battery -= delta
-	EventBus.battery_changed.emit(current_battery, max_battery)
+	EventBus.battery_changed.emit(current_battery, get_effective_max_battery())
 	if current_battery <= 0.0:
 		die()
 
@@ -136,7 +142,7 @@ func _physics_independent(delta: float, input_vector: Vector2) -> void:
 
 func break_tether() -> void:
 	current_state = State.INDEPENDENT
-	current_battery = max_battery
+	current_battery = get_effective_max_battery()
 	tension = 0.0
 	EventBus.tension_changed.emit(0.0)
 
@@ -152,8 +158,8 @@ func break_tether() -> void:
 	if move_dir != Vector2.ZERO and move_dir.dot(away_from_socket) > 0.2:
 		dir = move_dir
 
-	# Сила рывка пропорциональна натяжению
-	var power: float = lerpf(slingshot_power_min, slingshot_power_max, tension)
+	# Сила рывка пропорциональна натяжению с учетом апгрейда
+	var power: float = lerpf(slingshot_power_min, get_effective_slingshot_max(), tension)
 	dash_velocity = dir * power
 	velocity = dash_velocity
 
@@ -169,14 +175,13 @@ func break_tether() -> void:
 func attach_to_socket(pos: Vector2, progress_value: int) -> void:
 	current_state = State.TETHERED
 	current_socket_pos = pos
-	current_battery = max_battery
+	current_battery = get_effective_max_battery()
 	dash_velocity = Vector2.ZERO
-	# Небольшая коррекция позиции — притянуться к оазису
 	global_position = pos
 	velocity = Vector2.ZERO
 
 	GameManager.set_checkpoint(pos)
-	EventBus.battery_changed.emit(current_battery, max_battery)
+	EventBus.battery_changed.emit(current_battery, get_effective_max_battery())
 	EventBus.tension_changed.emit(0.0)
 	EventBus.socket_reached.emit(pos, progress_value)
 	EventBus.request_camera_shake.emit(4.0, 0.12)
@@ -195,8 +200,8 @@ func respawn_at(pos: Vector2) -> void:
 	global_position = pos
 	velocity = Vector2.ZERO
 	dash_velocity = Vector2.ZERO
-	current_battery = max_battery
+	current_battery = get_effective_max_battery()
 	current_state = State.TETHERED
 	current_socket_pos = pos
-	EventBus.battery_changed.emit(current_battery, max_battery)
+	EventBus.battery_changed.emit(current_battery, get_effective_max_battery())
 	EventBus.tension_changed.emit(0.0)

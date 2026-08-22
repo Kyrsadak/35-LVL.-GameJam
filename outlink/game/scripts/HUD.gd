@@ -29,13 +29,21 @@ func _ready() -> void:
 	EventBus.player_died.connect(_on_player_died)
 	EventBus.player_respawned.connect(_on_player_respawned)
 
-	battery_bar.max_value = 6.0
-	battery_bar.value = 6.0
+	var max_bat := 6.0 + GameManager.get_battery_bonus()
+	battery_bar.max_value = max_bat
+	battery_bar.value = max_bat
 	tension_bar.value = 0.0
 	_set_status("РЕЖИМ: НА ПРИВЯЗИ (БЕЗОПАСНОСТЬ)", Color(0.35, 0.85, 1.0))
-	counter_label.text = "ОАЗИСЫ: %d / %d" % [GameManager.oases_collected, GameManager.TOTAL_OASES]
+	_update_counter_label(GameManager.oases_collected, GameManager.TOTAL_OASES)
 	level_label.text = GameManager.get_level_name(GameManager.current_level_index)
 	flash_rect.color = Color(0, 0, 0, 0)
+
+func _update_counter_label(current: int, total: int) -> void:
+	var bonus_text := ""
+	var bonus_sec := GameManager.get_battery_bonus()
+	if bonus_sec > 0.0:
+		bonus_text = " [+%.1fc]" % bonus_sec
+	counter_label.text = "ОАЗИСЫ: %d / %d%s" % [current, total, bonus_text]
 
 func _on_battery_changed(current: float, max_val: float) -> void:
 	battery_bar.max_value = max_val
@@ -67,18 +75,22 @@ func _on_tether_broken(_impulse: Vector2, _tension: float) -> void:
 	tension_label.text = "НАТЯЖЕНИЕ: ТРОС ОТОДРАН"
 	tension_bar.value = 0.0
 
-func _on_socket_reached(_pos: Vector2, _progress_value: int) -> void:
-	_set_status("ПОДЗАРЯДКА / ПРИВЯЗЬ ВОССТАНОВЛЕНА", Color(0.4, 1.0, 0.55))
-	_show_toast("+ ЗАРЯД")
+func _on_socket_reached(_pos: Vector2, progress_value: int) -> void:
+	if progress_value > 0:
+		_set_status("✨ НОВЫЙ ОАЗИС ПРОБУЖДЕН (+%d)!" % progress_value, Color(1.0, 0.9, 0.3))
+		_show_toast("✨ ОАЗИС АКТИВИРОВАН (+%d)" % progress_value)
+	else:
+		_set_status("ПОДЗАРЯДКА / ПРИВЯЗЬ ВОССТАНОВЛЕНА", Color(0.4, 1.0, 0.55))
+		_show_toast("⚡ ЗАРЯД ВОССТАНОВЛЕН")
 
 func _on_level_completed() -> void:
 	_set_status("СЕКТОР ЗАЧИЩЕН! ПЕРЕХОД...", Color(1.0, 0.85, 0.2))
 	_show_toast("СЕКТОР ПРОЙДЕН")
 
 func _on_progress_changed(current: int, total: int) -> void:
-	counter_label.text = "ОАЗИСЫ: %d / %d" % [current, total]
-	counter_label.modulate = Color(0.4, 1.0, 0.55)
-	get_tree().create_timer(0.5).timeout.connect(func():
+	_update_counter_label(current, total)
+	counter_label.modulate = Color(1.0, 0.9, 0.3)
+	get_tree().create_timer(0.6).timeout.connect(func():
 		if is_instance_valid(counter_label):
 			counter_label.modulate = Color(1, 1, 1, 1)
 	)
@@ -106,7 +118,7 @@ func _show_toast(text: String) -> void:
 	toast_label.scale = Vector2(1.2, 1.2)
 	_toast_tween = create_tween().set_parallel(true)
 	_toast_tween.tween_property(toast_label, "scale", Vector2(1.0, 1.0), 0.25)
-	_toast_tween.tween_property(toast_label, "modulate:a", 0.0, 1.2).set_delay(0.4)
+	_toast_tween.tween_property(toast_label, "modulate:a", 0.0, 1.2).set_delay(0.5)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):

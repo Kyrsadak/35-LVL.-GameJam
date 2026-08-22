@@ -1,7 +1,7 @@
 # res://game/scripts/VictoryScreen.gd
 extends Control
 
-## Экран победы: показывает статистику и предлагает вернуться в меню.
+## Экран победы: показывает статистику, финальный ранг и результаты прохождения.
 
 @onready var stats_label: Label = $Panel/VBox/StatsLabel
 @onready var menu_button: Button = $Panel/VBox/MenuButton
@@ -14,9 +14,11 @@ func _ready() -> void:
 
 func _build_stats() -> void:
 	var lines: Array[String] = []
-	lines.append("ОАЗИСОВ СОБРАНО: %d / %d" % [GameManager.oases_collected, GameManager.TOTAL_OASES])
+	lines.append("🏆 %s" % GameManager.get_rank_title())
+	lines.append("ОАЗИСОВ СВОБОДЫ: %d / %d" % [GameManager.oases_collected, GameManager.TOTAL_OASES])
+	lines.append("ВСЕГО СМЕРТЕЙ: %d" % GameManager.total_deaths)
 	lines.append("")
-	lines.append("ЛУЧШИЕ ВРЕМЕНА:")
+	lines.append("ЛУЧШИЕ ВРЕМЕНА ПО СЕКТОРАМ:")
 	for i in range(GameManager.LEVELS.size()):
 		if GameManager.best_times.has(i):
 			lines.append("  %s : %s" % [GameManager.get_level_name(i), GameManager.format_time(GameManager.best_times[i])])
