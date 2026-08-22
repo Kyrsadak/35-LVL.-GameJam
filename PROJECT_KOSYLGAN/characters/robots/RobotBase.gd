@@ -55,8 +55,8 @@ func set_active(active: bool) -> void:
 
 func get_facing_direction() -> Vector3:
 	if skin:
-		return -skin.global_transform.basis.z.normalized()
-	return -global_transform.basis.z.normalized()
+		return skin.global_transform.basis.z.normalized()
+	return global_transform.basis.z.normalized()
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -64,9 +64,9 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.y = 0.0
 
-	# Keep carry pivot aligned with the direction the robot is facing
+	# Keep carry pivot aligned with the direction the robot is facing (in front of loader scoops)
 	if skin and carry_pivot:
-		carry_pivot.global_position = global_position + Vector3(0, 1.3, 0) + get_facing_direction() * 0.5
+		carry_pivot.global_position = global_position + Vector3(0, 1.05, 0) + get_facing_direction() * 0.85
 		carry_pivot.global_rotation.y = skin.global_rotation.y
 
 	if is_discharged:

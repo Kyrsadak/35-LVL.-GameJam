@@ -519,25 +519,30 @@ mesh = SubResource("BoxMesh_button")
 surface_material_override/0 = SubResource("StandardMaterial3D_gold_clip")
 
 [node name="TailPivot" type="Node3D" parent="Visuals"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.76, -0.09)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.74, -0.08)
+
+[node name="TailSocket" type="MeshInstance3D" parent="Visuals/TailPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_ear_dial")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_trousers")
 
 [node name="TailCable" type="MeshInstance3D" parent="Visuals/TailPivot"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0.14, -0.22)
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0.17, -0.17)
 mesh = SubResource("CylinderMesh_tail_cable")
 surface_material_override/0 = SubResource("StandardMaterial3D_cable_rubber")
 
 [node name="PlugBody" type="MeshInstance3D" parent="Visuals/TailPivot"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0.38, -0.42)
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0.34, -0.34)
 mesh = SubResource("BoxMesh_plug_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_emerald_casing")
 
 [node name="Prong1" type="MeshInstance3D" parent="Visuals/TailPivot/PlugBody"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, 0.10, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, 0.08, 0)
 mesh = SubResource("BoxMesh_prong_metal")
 surface_material_override/0 = SubResource("StandardMaterial3D_gold_pin")
 
 [node name="Prong2" type="MeshInstance3D" parent="Visuals/TailPivot/PlugBody"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04, 0.10, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04, 0.08, 0)
 mesh = SubResource("BoxMesh_prong_metal")
 surface_material_override/0 = SubResource("StandardMaterial3D_gold_pin")
 

@@ -30,9 +30,9 @@ collision_mask = 12
 shape = SubResource("SphereShape3D_interact")
 
 [node name="CarryPivot" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -0.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0.85)
 
 [node name="PushRay" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-target_position = Vector3(0, 0, -1.2)
+target_position = Vector3(0, 0, 1.2)
 collision_mask = 12
