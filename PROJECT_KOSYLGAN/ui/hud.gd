@@ -15,13 +15,11 @@ var message_timer: SceneTreeTimer = null
 func _ready() -> void:
 	if atlas_battery_display:
 		atlas_battery_display.robot_name = "ATLAS"
-		atlas_battery_display.robot_role = "HEAVY LOADER // SHIELD"
 		atlas_battery_display.theme_color = Color(0.20, 0.65, 0.95) # Vibrant Cyan-Blue
 		atlas_battery_display.set_active(true)
 		
 	if cipher_battery_display:
 		cipher_battery_display.robot_name = "CIPHER"
-		cipher_battery_display.robot_role = "INFILTRATOR // HACKER"
 		cipher_battery_display.theme_color = Color(0.98, 0.56, 0.16) # Vibrant Amber-Orange
 		cipher_battery_display.set_active(false)
 

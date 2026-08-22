@@ -24,3 +24,5 @@ func interact() -> void:
 	elif current_interactable and current_interactable.is_in_group("key_module"):
 		if RobotManager:
 			RobotManager.show_message("Модуль слишком тяжелый! Нужен ATLAS, чтобы поднять его.")
+	elif current_interactable and current_interactable.has_method("interact"):
+		current_interactable.interact()
