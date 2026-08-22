@@ -1,8 +1,10 @@
-[gd_resource type="StandardMaterial3D" format=3]
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" uid="uid://0wdi6ih7yym" path="res://assets/space_base_bits/spacebits_texture.png" id="1_space"]
 
 [resource]
-resource_name = "space_floor"
-albedo_color = Color(0.24, 0.27, 0.32, 1.0)
-metallic = 0.35
-roughness = 0.65
-uv1_scale = Vector3(4, 4, 1)
+resource_name = "mat_space_floor"
+albedo_texture = ExtResource("1_space")
+roughness = 0.55
+uv1_scale = Vector3(6, 6, 1)
+texture_filter = 2

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scenes/levels/level1.gd" id="1_lvl1"]
 [ext_resource type="PackedScene" path="res://characters/robots/RobotAtlas.tscn" id="2_atlas"]
@@ -14,12 +14,13 @@
 [ext_resource type="PackedScene" path="res://ui/hud.tscn" id="12_hud"]
 [ext_resource type="Material" path="res://assets/materials/mat_space_floor.tres" id="13_floor"]
 [ext_resource type="Material" path="res://assets/materials/mat_space_wall.tres" id="14_wall"]
-[ext_resource type="Environment" path="res://scenes/default_env.tres" id="15_env"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_pallet.tscn" id="16_pallet"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_locker.tscn" id="17_locker"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_workbench.tscn" id="18_workbench"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_server.tscn" id="19_server"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_barrel.tscn" id="20_barrel"]
+[ext_resource type="Environment" path="res://scenes/level1_env.tres" id="15_env"]
+[ext_resource type="PackedScene" path="res://scenes/modular_kit/Pallet_Large.tscn" id="16_pallet_lg"]
+[ext_resource type="PackedScene" path="res://scenes/modular_kit/Pillar_A.tscn" id="17_pillar"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_locker.tscn" id="18_locker"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_workbench.tscn" id="19_workbench"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_server.tscn" id="20_server"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_barrel.tscn" id="21_barrel"]
 
 [node name="Level1" type="Node3D"]
 script = ExtResource("1_lvl1")
@@ -29,7 +30,7 @@ environment = ExtResource("15_env")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.819152, -0.40558, 0.40558, 0, 0.707107, 0.707107, -0.573576, -0.579228, 0.579228, 0, 16, 0)
-light_color = Color(0.96, 0.98, 1.0, 1)
+light_color = Color(0.98, 0.96, 0.92, 1)
 light_energy = 1.15
 shadow_enabled = true
 shadow_bias = 0.03
@@ -94,44 +95,38 @@ material = ExtResource("14_wall")
 
 [node name="Furniture" type="Node3D" parent="."]
 
-[node name="Server1" parent="Furniture" instance=ExtResource("19_server")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.0, 0, 5.5)
+[node name="PillarLeft" parent="Furniture" instance=ExtResource("17_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0, -6.5)
 
-[node name="Server2" parent="Furniture" instance=ExtResource("19_server")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.0, 0, 4.2)
+[node name="PillarRight" parent="Furniture" instance=ExtResource("17_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, -6.5)
 
-[node name="Pallet1" parent="Furniture" instance=ExtResource("16_pallet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 6.0)
+[node name="PalletLarge1" parent="Furniture" instance=ExtResource("16_pallet_lg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 5.5)
 
-[node name="Barrels1" parent="Furniture" instance=ExtResource("20_barrel")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 2.0)
+[node name="Server1" parent="Furniture" instance=ExtResource("20_server")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.0, 0, 2.5)
 
-[node name="Locker1" parent="Furniture" instance=ExtResource("17_locker")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.0, 0, -0.5)
+[node name="Server2" parent="Furniture" instance=ExtResource("20_server")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.0, 0, 1.2)
 
-[node name="Locker2" parent="Furniture" instance=ExtResource("17_locker")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.0, 0, -2.0)
+[node name="Locker1" parent="Furniture" instance=ExtResource("18_locker")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.0, 0, -1.0)
 
-[node name="Workbench1" parent="Furniture" instance=ExtResource("18_workbench")]
+[node name="Workbench1" parent="Furniture" instance=ExtResource("19_workbench")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 6.8, 0, 5.0)
 
-[node name="ServerRight" parent="Furniture" instance=ExtResource("19_server")]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 7.0, 0, 2.0)
+[node name="BarrelsRight" parent="Furniture" instance=ExtResource("21_barrel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 1.5)
 
-[node name="PalletRight" parent="Furniture" instance=ExtResource("16_pallet")]
-transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 6.0, 0, -1.5)
+[node name="LockerRight" parent="Furniture" instance=ExtResource("18_locker")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 7.0, 0, -1.0)
 
-[node name="BarrelsRight" parent="Furniture" instance=ExtResource("20_barrel")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -4.0)
-
-[node name="RearServerLeft" parent="Furniture" instance=ExtResource("19_server")]
+[node name="RearServerLeft" parent="Furniture" instance=ExtResource("20_server")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, -15.8)
 
-[node name="RearWorkbench" parent="Furniture" instance=ExtResource("18_workbench")]
+[node name="RearWorkbench" parent="Furniture" instance=ExtResource("19_workbench")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0, 0, -15.8)
-
-[node name="RearLockers" parent="Furniture" instance=ExtResource("17_locker")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.0, 0, -11.0)
 
 [node name="ChargingStation" parent="." instance=ExtResource("4_station")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.5)

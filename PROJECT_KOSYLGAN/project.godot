@@ -29,7 +29,6 @@ GameManager="*res://scenes/game_manager.gd"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/always_on_top=false
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
@@ -109,7 +108,7 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
 environment/defaults/default_clear_color=Color(0.06, 0.08, 0.12, 1)
 environment/defaults/default_environment="res://scenes/default_env.tres"
-lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
 vram_compression/import_etc=true
