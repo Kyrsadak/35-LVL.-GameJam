@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://characters/robots/RobotBase.tscn" id="1_base"]
+[ext_resource type="Script" path="res://characters/robots/RobotAtlas.gd" id="2_atlas"]
+
+[node name="RobotAtlas" instance=ExtResource("1_base")]
+script = ExtResource("2_atlas")
+robot_id = "atlas"
+robot_display_name = "ATLAS"
+robot_color = Color(0.1, 0.75, 1, 1)

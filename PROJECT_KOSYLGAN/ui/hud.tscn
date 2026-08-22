@@ -1,0 +1,234 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://ui/hud.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_atlas_bg"]
+bg_color = Color(0.06, 0.1, 0.16, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.1, 0.7, 1, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_atlas_fg"]
+bg_color = Color(0.1, 0.75, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cipher_bg"]
+bg_color = Color(0.16, 0.1, 0.06, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.55, 0.1, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cipher_fg"]
+bg_color = Color(1, 0.55, 0.1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clue"]
+bg_color = Color(0.05, 0.15, 0.1, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.9, 0.4, 0.7)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 15.0
+content_margin_top = 10.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="TopMargin" type="MarginContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 100.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 30
+
+[node name="HBox" type="HBoxContainer" parent="TopMargin"]
+layout_mode = 2
+alignment = 1
+
+[node name="AtlasBox" type="VBoxContainer" parent="TopMargin/HBox"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="HBox" type="HBoxContainer" parent="TopMargin/HBox/AtlasBox"]
+layout_mode = 2
+
+[node name="AtlasLabel" type="Label" parent="TopMargin/HBox/AtlasBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "🔵 ATLAS: 100%"
+
+[node name="AtlasStatus" type="Label" parent="TopMargin/HBox/AtlasBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 1, 0.4, 1)
+theme_override_font_sizes/font_size = 14
+text = "▶ АКТИВЕН"
+
+[node name="AtlasBar" type="ProgressBar" parent="TopMargin/HBox/AtlasBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_atlas_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_atlas_fg")
+value = 100.0
+show_percentage = false
+
+[node name="LevelInfo" type="VBoxContainer" parent="TopMargin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="LevelTitle" type="Label" parent="TopMargin/HBox/LevelInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "УРОВЕНЬ 1: ЭНЕРГОБЛОК"
+horizontal_alignment = 1
+
+[node name="CipherBox" type="VBoxContainer" parent="TopMargin/HBox"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="HBox" type="HBoxContainer" parent="TopMargin/HBox/CipherBox"]
+layout_mode = 2
+
+[node name="CipherLabel" type="Label" parent="TopMargin/HBox/CipherBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "🟠 CIPHER: 100%"
+
+[node name="CipherStatus" type="Label" parent="TopMargin/HBox/CipherBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+text = "⏸ ОЖИДАНИЕ"
+
+[node name="CipherBar" type="ProgressBar" parent="TopMargin/HBox/CipherBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_cipher_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_cipher_fg")
+value = 100.0
+show_percentage = false
+
+[node name="CluePanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(350, 0)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -380.0
+offset_top = -60.0
+offset_right = -30.0
+offset_bottom = 60.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_clue")
+
+[node name="VBox" type="VBoxContainer" parent="CluePanel"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="CluePanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 1, 0.5, 1)
+theme_override_font_sizes/font_size = 16
+text = "📋 НАЙДЕННАЯ СХЕМА:"
+
+[node name="ClueText" type="Label" parent="CluePanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "..."
+autowrap_mode = 2
+
+[node name="MessageBanner" type="Label" parent="."]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -200.0
+offset_right = 450.0
+offset_bottom = -140.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.2, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 24
+text = "СООБЩЕНИЕ"
+horizontal_alignment = 1
+
+[node name="InteractPrompt" type="Label" parent="."]
+unique_name_in_owner = true
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -120.0
+offset_right = 200.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.2, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 22
+text = "[E] ВЗАИМОДЕЙСТВИЕ"
+horizontal_alignment = 1
+
+[node name="ControlsReminder" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = -45.0
+offset_right = 600.0
+offset_bottom = -15.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.6, 0.7, 0.8, 0.8)
+theme_override_font_sizes/font_size = 14
+text = "WASD: Движение | TAB: Смена робота | E: Действие | R: Рестарт уровня"

@@ -1,0 +1,140 @@
+class_name RobotBase
+extends CharacterBody3D
+
+signal battery_changed(current: float, max_value: float)
+signal discharged()
+signal interact_target_changed(target: Node)
+
+@export var robot_id: String = "base"
+@export var robot_display_name: String = "ROBOT"
+@export var robot_color: Color = Color.WHITE
+
+@export var move_speed: float = 6.0
+@export var acceleration: float = 18.0
+@export var friction: float = 20.0
+@export var gravity: float = 25.0
+
+@export var max_battery: float = 100.0
+@export var discharge_rate: float = 2.5 # ~40 sec default
+@export var charge_rate: float = 22.0    # ~4.5 sec to 100%
+
+var battery: float = 100.0
+var is_active: bool = false
+var is_on_charging_station: bool = false
+var is_discharged: bool = false
+var current_interactable: Node = null
+
+@onready var skin = $Skin
+@onready var interaction_area: Area3D = $InteractionArea
+@onready var carry_pivot: Marker3D = $CarryPivot
+
+var carried_object: Node3D = null
+
+func _ready() -> void:
+	battery = max_battery
+	if interaction_area:
+		interaction_area.area_entered.connect(_on_interaction_area_entered)
+		interaction_area.area_exited.connect(_on_interaction_area_exited)
+		interaction_area.body_entered.connect(_on_interaction_body_entered)
+		interaction_area.body_exited.connect(_on_interaction_body_exited)
+
+func set_active(active: bool) -> void:
+	is_active = active
+	if not is_active:
+		velocity = Vector3.ZERO
+		if skin:
+			skin.update_move_animation(0.0, 0.0)
+
+func _physics_process(delta: float) -> void:
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+	else:
+		velocity.y = 0.0
+
+	if is_discharged:
+		velocity.x = move_toward(velocity.x, 0, friction * delta)
+		velocity.z = move_toward(velocity.z, 0, friction * delta)
+		move_and_slide()
+		return
+
+	# Battery logic
+	if is_on_charging_station:
+		if battery < max_battery:
+			battery = min(max_battery, battery + charge_rate * delta)
+			battery_changed.emit(battery, max_battery)
+	elif is_active:
+		battery = max(0.0, battery - discharge_rate * delta)
+		battery_changed.emit(battery, max_battery)
+		if battery <= 0.0:
+			on_battery_depleted()
+
+	if is_active and not is_discharged:
+		_handle_movement(delta)
+		_handle_input()
+	else:
+		velocity.x = move_toward(velocity.x, 0, friction * delta)
+		velocity.z = move_toward(velocity.z, 0, friction * delta)
+		if skin:
+			skin.update_move_animation(0.0, delta)
+
+	move_and_slide()
+
+func _handle_movement(delta: float) -> void:
+	var input_vec = Input.get_vector("p1_move_left", "p1_move_right", "p1_move_up", "p1_move_down")
+	var move_dir = Vector3(input_vec.x, 0, input_vec.y).normalized()
+
+	if move_dir.length_squared() > 0.01:
+		velocity.x = move_toward(velocity.x, move_dir.x * move_speed, acceleration * delta)
+		velocity.z = move_toward(velocity.z, move_dir.z * move_speed, acceleration * delta)
+		if skin:
+			skin.orient_model_to_direction(move_dir, delta)
+			skin.update_move_animation(velocity.length() / move_speed, delta)
+	else:
+		velocity.x = move_toward(velocity.x, 0, friction * delta)
+		velocity.z = move_toward(velocity.z, 0, friction * delta)
+		if skin:
+			skin.update_move_animation(velocity.length() / move_speed, delta)
+
+func _handle_input() -> void:
+	if Input.is_action_just_pressed("p1_interact"):
+		interact()
+
+func interact() -> void:
+	# Overridden in Atlas / Cipher subclasses
+	pass
+
+func on_battery_depleted() -> void:
+	if is_discharged:
+		return
+	is_discharged = true
+	velocity = Vector3.ZERO
+	if skin:
+		skin.move_to_dead()
+	discharged.emit()
+
+func restore_battery() -> void:
+	battery = max_battery
+	is_discharged = false
+	if skin:
+		skin.reset_animations()
+	battery_changed.emit(battery, max_battery)
+
+func _on_interaction_area_entered(area: Area3D) -> void:
+	if area.is_in_group("interactable"):
+		current_interactable = area
+		interact_target_changed.emit(area)
+
+func _on_interaction_area_exited(area: Area3D) -> void:
+	if current_interactable == area:
+		current_interactable = null
+		interact_target_changed.emit(null)
+
+func _on_interaction_body_entered(body: Node3D) -> void:
+	if body.is_in_group("interactable"):
+		current_interactable = body
+		interact_target_changed.emit(body)
+
+func _on_interaction_body_exited(body: Node3D) -> void:
+	if current_interactable == body:
+		current_interactable = null
+		interact_target_changed.emit(null)

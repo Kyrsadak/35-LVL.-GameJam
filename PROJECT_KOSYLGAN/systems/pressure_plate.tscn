@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://systems/pressure_plate.gd" id="1_plate"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_plate"]
+size = Vector3(1.6, 0.4, 1.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rim"]
+size = Vector3(1.8, 0.08, 1.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rim"]
+albedo_color = Color(0.2, 0.22, 0.25, 1)
+metallic = 0.8
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_btn"]
+size = Vector3(1.4, 0.1, 1.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_btn"]
+albedo_color = Color(0.9, 0.7, 0.1, 1)
+metallic = 0.5
+roughness = 0.2
+emission_enabled = true
+emission = Color(1, 0.8, 0.0, 1)
+emission_energy_multiplier = 0.7
+
+[node name="PressurePlate" type="Area3D" groups=["pressure_plate"]]
+collision_layer = 0
+collision_mask = 5
+script = ExtResource("1_plate")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("BoxShape3D_plate")
+
+[node name="RimMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+mesh = SubResource("BoxMesh_rim")
+surface_material_override/0 = SubResource("StandardMaterial3D_rim")
+
+[node name="ButtonMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
+mesh = SubResource("BoxMesh_btn")
+surface_material_override/0 = SubResource("StandardMaterial3D_btn")
