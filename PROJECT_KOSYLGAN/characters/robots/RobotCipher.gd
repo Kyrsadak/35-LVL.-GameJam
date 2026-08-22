@@ -25,4 +25,4 @@ func interact() -> void:
 		if RobotManager:
 			RobotManager.show_message("Модуль слишком тяжелый! Нужен ATLAS, чтобы поднять его.")
 	elif current_interactable and current_interactable.has_method("interact"):
-		current_interactable.interact()
+		current_interactable.interact(self)

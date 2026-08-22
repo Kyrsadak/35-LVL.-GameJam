@@ -124,7 +124,23 @@ func _on_clue_revealed(text: String) -> void:
 
 func _on_interact_target_changed(target: Node) -> void:
 	if target:
-		interact_prompt.text = "[E] ВЗАИМОДЕЙСТВИЕ"
+		if target.is_in_group("charging_station"):
+			if "docked_robot" in target and target.docked_robot != null:
+				if RobotManager and RobotManager.active_robot == target.docked_robot:
+					interact_prompt.text = "[E] ВЫЙТИ ИЗ КАПСУЛЫ"
+				else:
+					var occ_name = target.docked_robot.robot_display_name if "robot_display_name" in target.docked_robot else "ЗАНЯТО"
+					interact_prompt.text = "🔒 КАПСУЛА ЗАНЯТА (" + occ_name + ")"
+			else:
+				interact_prompt.text = "[E] СТЫКОВКА / ЗАРЯДКА"
+		elif target.is_in_group("guide_tablet"):
+			interact_prompt.text = "[E] ИЗУЧИТЬ СХЕМУ"
+		elif target.is_in_group("terminal"):
+			interact_prompt.text = "[E] ВЗЛОМАТЬ ТЕРМИНАЛ"
+		elif target.is_in_group("key_module") or target.is_in_group("pushable_box") or target.is_in_group("boxes"):
+			interact_prompt.text = "[E] ПОДНЯТЬ ПРЕДМЕТ"
+		else:
+			interact_prompt.text = "[E] ВЗАИМОДЕЙСТВИЕ"
 		interact_prompt.visible = true
 	else:
 		interact_prompt.visible = false
