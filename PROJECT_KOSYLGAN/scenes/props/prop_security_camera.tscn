@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://scenes/props/prop_security_camera.gd" id="1_cam"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_mount_base"]
-top_radius = 0.06
-bottom_radius = 0.06
-height = 0.4
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.35
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_arm"]
 albedo_color = Color(0.24, 0.32, 0.48, 1)
@@ -15,7 +15,7 @@ roughness = 0.35
 [sub_resource type="CylinderMesh" id="CylinderMesh_swivel_post"]
 top_radius = 0.04
 bottom_radius = 0.04
-height = 0.18
+height = 0.16
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_metal"]
 albedo_color = Color(0.18, 0.20, 0.26, 1)
@@ -23,7 +23,7 @@ metallic = 0.9
 roughness = 0.3
 
 [sub_resource type="BoxMesh" id="BoxMesh_housing"]
-size = Vector3(0.24, 0.22, 0.45)
+size = Vector3(0.24, 0.20, 0.42)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_casing"]
 albedo_color = Color(0.25, 0.38, 0.62, 1)
@@ -31,7 +31,7 @@ metallic = 0.65
 roughness = 0.4
 
 [sub_resource type="BoxMesh" id="BoxMesh_hood"]
-size = Vector3(0.28, 0.26, 0.12)
+size = Vector3(0.28, 0.24, 0.12)
 
 [sub_resource type="BoxMesh" id="BoxMesh_lens"]
 size = Vector3(0.14, 0.14, 0.04)
@@ -49,12 +49,12 @@ size = Vector3(0.04, 0.04, 0.08)
 script = ExtResource("1_cam")
 
 [node name="MountArm" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.2)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.18)
 mesh = SubResource("CylinderMesh_mount_base")
 surface_material_override/0 = SubResource("StandardMaterial3D_arm")
 
 [node name="SwivelPivot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0.38)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0.35)
 
 [node name="SwivelPost" type="MeshInstance3D" parent="SwivelPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
@@ -62,7 +62,7 @@ mesh = SubResource("CylinderMesh_swivel_post")
 surface_material_override/0 = SubResource("StandardMaterial3D_metal")
 
 [node name="Housing" type="MeshInstance3D" parent="SwivelPivot"]
-transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, -0.08, 0.1)
+transform = Transform3D(1, 0, 0, 0, 0.882948, -0.469472, 0, 0.469472, 0.882948, 0, -0.06, 0.1)
 mesh = SubResource("BoxMesh_housing")
 surface_material_override/0 = SubResource("StandardMaterial3D_casing")
 
@@ -72,19 +72,19 @@ mesh = SubResource("BoxMesh_hood")
 surface_material_override/0 = SubResource("StandardMaterial3D_arm")
 
 [node name="RedLens" type="MeshInstance3D" parent="SwivelPivot/Housing"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.23)
 mesh = SubResource("BoxMesh_lens")
 surface_material_override/0 = SubResource("StandardMaterial3D_red_lens")
 
 [node name="LedIndicator" type="MeshInstance3D" parent="SwivelPivot/Housing"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, -0.12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, -0.1)
 mesh = SubResource("BoxMesh_led_top")
 surface_material_override/0 = SubResource("StandardMaterial3D_red_lens")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="SwivelPivot/Housing"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.26)
 light_color = Color(1.0, 0.25, 0.25, 1)
-light_energy = 0.6
+light_energy = 0.7
 spot_range = 8.0
 spot_angle = 35.0
 spot_angle_attenuation = 1.5
