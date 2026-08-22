@@ -1,9 +1,12 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://systems/terminal.gd" id="1_term"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_terminal"]
-size = Vector3(1.2, 1.8, 1.2)
+[sub_resource type="BoxShape3D" id="BoxShape3D_terminal_interact"]
+size = Vector3(1.8, 1.8, 1.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_terminal_solid"]
+size = Vector3(0.9, 1.2, 0.7)
 
 [sub_resource type="BoxMesh" id="BoxMesh_base"]
 size = Vector3(0.9, 1.1, 0.7)
@@ -29,7 +32,15 @@ script = ExtResource("1_term")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-shape = SubResource("BoxShape3D_terminal")
+shape = SubResource("BoxShape3D_terminal_interact")
+
+[node name="SolidBody" type="StaticBody3D" parent="."]
+collision_layer = 2
+collision_mask = 7
+
+[node name="SolidCollision" type="CollisionShape3D" parent="SolidBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("BoxShape3D_terminal_solid")
 
 [node name="Base" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)

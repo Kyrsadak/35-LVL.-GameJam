@@ -1,9 +1,15 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://systems/laser_gate.gd" id="1_gate"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_collision"]
-size = Vector3(4.0, 3.0, 0.4)
+[sub_resource type="BoxShape3D" id="BoxShape3D_laser_barrier"]
+size = Vector3(3.2, 3.0, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_post_left"]
+size = Vector3(0.5, 3.0, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_post_right"]
+size = Vector3(0.5, 3.0, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_pillar"]
 size = Vector3(0.45, 3.0, 0.5)
@@ -40,7 +46,15 @@ script = ExtResource("1_gate")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-shape = SubResource("BoxShape3D_collision")
+shape = SubResource("BoxShape3D_laser_barrier")
+
+[node name="PostLeftCol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 1.5, 0)
+shape = SubResource("BoxShape3D_post_left")
+
+[node name="PostRightCol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 1.5, 0)
+shape = SubResource("BoxShape3D_post_right")
 
 [node name="PillarLeft" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 1.5, 0)

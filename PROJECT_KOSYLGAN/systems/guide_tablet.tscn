@@ -1,10 +1,14 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://systems/guide_tablet.gd" id="1_tablet"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_tablet"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tablet_interact"]
 height = 2.0
-radius = 1.0
+radius = 1.2
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tablet_solid"]
+height = 1.0
+radius = 0.45
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_pedestal"]
 top_radius = 0.35
@@ -42,7 +46,15 @@ script = ExtResource("1_tablet")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
-shape = SubResource("CylinderShape3D_tablet")
+shape = SubResource("CylinderShape3D_tablet_interact")
+
+[node name="SolidBody" type="StaticBody3D" parent="."]
+collision_layer = 2
+collision_mask = 7
+
+[node name="SolidCollision" type="CollisionShape3D" parent="SolidBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_tablet_solid")
 
 [node name="Pedestal" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
