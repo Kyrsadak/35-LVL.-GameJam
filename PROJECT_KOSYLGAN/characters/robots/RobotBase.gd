@@ -9,9 +9,9 @@ signal interact_target_changed(target: Node)
 @export var robot_display_name: String = "ROBOT"
 @export var robot_color: Color = Color.WHITE
 
-@export var move_speed: float = 6.0
-@export var acceleration: float = 18.0
-@export var friction: float = 20.0
+@export var move_speed: float = 6.8
+@export var acceleration: float = 26.0
+@export var friction: float = 28.0
 @export var gravity: float = 25.0
 
 @export var max_battery: float = 100.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://scenes/levels/level2.gd" id="1_lvl2"]
 [ext_resource type="PackedScene" path="res://characters/robots/RobotAtlas.tscn" id="2_atlas"]
@@ -16,16 +16,11 @@
 [ext_resource type="Material" path="res://assets/materials/mat_space_floor.tres" id="14_floor"]
 [ext_resource type="Material" path="res://assets/materials/mat_space_wall.tres" id="15_wall"]
 [ext_resource type="Environment" path="res://scenes/default_env.tres" id="16_env"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_prop_barrel"]
-albedo_color = Color(0.2, 0.45, 0.6, 1)
-metallic = 0.8
-roughness = 0.4
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_barrel"]
-top_radius = 0.35
-bottom_radius = 0.35
-height = 0.9
+[ext_resource type="PackedScene" path="res://scenes/props/prop_pallet.tscn" id="17_pallet"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_locker.tscn" id="18_locker"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_workbench.tscn" id="19_workbench"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_server.tscn" id="20_server"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_barrel.tscn" id="21_barrel"]
 
 [node name="Level2" type="Node3D"]
 script = ExtResource("1_lvl2")
@@ -36,9 +31,9 @@ environment = ExtResource("16_env")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.819152, -0.40558, 0.40558, 0, 0.707107, 0.707107, -0.573576, -0.579228, 0.579228, 0, 16, 0)
 light_color = Color(0.96, 0.98, 1.0, 1)
-light_energy = 1.1
+light_energy = 1.15
 shadow_enabled = true
-shadow_bias = 0.04
+shadow_bias = 0.03
 
 [node name="Geometry" type="Node3D" parent="."]
 
@@ -47,63 +42,121 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -8)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(16, 0.5, 30)
+size = Vector3(17, 0.5, 31)
 material = ExtResource("14_floor")
 
 [node name="WallLeft" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 1.5, -8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.75, 1.5, -8)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(0.5, 3, 30)
+size = Vector3(0.5, 3, 31)
 material = ExtResource("15_wall")
 
 [node name="WallRight" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.25, 1.5, -8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.75, 1.5, -8)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(0.5, 3, 30)
+size = Vector3(0.5, 3, 31)
 material = ExtResource("15_wall")
 
 [node name="WallBack" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 7.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 7.75)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(17, 3, 0.5)
+size = Vector3(18, 3, 0.5)
 material = ExtResource("15_wall")
 
 [node name="WallFront" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -23.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -23.75)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(17, 3, 0.5)
+size = Vector3(18, 3, 0.5)
 material = ExtResource("15_wall")
 
-[node name="Props" type="Node3D" parent="."]
+[node name="Divider1Left" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, 1.5, -6.0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(5.0, 3, 0.5)
+material = ExtResource("15_wall")
 
-[node name="Barrel1" type="MeshInstance3D" parent="Props"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0.45, 5.5)
-mesh = SubResource("CylinderMesh_barrel")
-surface_material_override/0 = SubResource("StandardMaterial3D_prop_barrel")
+[node name="Divider1Right" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 1.5, -6.0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(5.0, 3, 0.5)
+material = ExtResource("15_wall")
 
-[node name="Barrel2" type="MeshInstance3D" parent="Props"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0.45, 5.5)
-mesh = SubResource("CylinderMesh_barrel")
-surface_material_override/0 = SubResource("StandardMaterial3D_prop_barrel")
+[node name="Divider2Left" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, 1.5, -15.0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(5.0, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="Divider2Right" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 1.5, -15.0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(5.0, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="Furniture" type="Node3D" parent="."]
+
+[node name="Pallet1" parent="Furniture" instance=ExtResource("17_pallet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 6.0)
+
+[node name="Server1" parent="Furniture" instance=ExtResource("20_server")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.0, 0, 3.5)
+
+[node name="Server2" parent="Furniture" instance=ExtResource("20_server")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.0, 0, 2.2)
+
+[node name="Locker1" parent="Furniture" instance=ExtResource("18_locker")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.0, 0, 0.0)
+
+[node name="Workbench1" parent="Furniture" instance=ExtResource("19_workbench")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 7.8, 0, 5.0)
+
+[node name="ServerRight1" parent="Furniture" instance=ExtResource("20_server")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.0, 0, 2.5)
+
+[node name="Barrels1" parent="Furniture" instance=ExtResource("21_barrel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, -2.5)
+
+[node name="PalletMid" parent="Furniture" instance=ExtResource("17_pallet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0, 0, -8.5)
+
+[node name="WorkbenchMid" parent="Furniture" instance=ExtResource("19_workbench")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.8, 0, -11.5)
+
+[node name="ServerMid" parent="Furniture" instance=ExtResource("20_server")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.0, 0, -11.5)
+
+[node name="RearServerLeft" parent="Furniture" instance=ExtResource("20_server")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, -22.5)
+
+[node name="RearWorkbenchRight" parent="Furniture" instance=ExtResource("19_workbench")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 0, -22.5)
 
 [node name="ChargingStation" parent="." instance=ExtResource("4_station")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.5)
 
 [node name="Robots" type="Node3D" parent="."]
 
 [node name="RobotAtlas" parent="Robots" instance=ExtResource("2_atlas")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.1, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.1, 4.5)
 
 [node name="RobotCipher" parent="Robots" instance=ExtResource("3_cipher")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.1, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0.1, 4.5)
 
 [node name="PressurePlate" parent="." instance=ExtResource("7_plate")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -2)
@@ -116,7 +169,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.6, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6)
 
 [node name="GuideTablet" parent="." instance=ExtResource("8_tablet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0, 0, -10)
 guide_id = "guide_2"
 clue_text = "КОД СЕКТОРА 2: СИНИЙ(2) И ЖЕЛТЫЙ(4)"
 
@@ -135,7 +188,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -18.5)
 
 [node name="SocketTerminal" parent="." instance=ExtResource("11_sock")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -21.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -22.0)
 
 [node name="TopDownCamera" parent="." instance=ExtResource("12_cam")]
 

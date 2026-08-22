@@ -1,7 +1,7 @@
 class_name PlayerSkin
 extends Node3D
 
-@export var rotation_speed := 14.0
+@export var rotation_speed := 16.0
 
 var _last_strong_direction := Vector3(0, 0, -1)
 var anim_player: AnimationPlayer = null
@@ -22,13 +22,15 @@ func update_move_animation(velocity_ratio: float, delta: float) -> void:
 	if velocity_ratio > 0.1:
 		if current_anim != "Run":
 			if anim_player.has_animation("Run"):
-				anim_player.play("Run", 0.15)
+				anim_player.play("Run", 0.1)
 				current_anim = "Run"
+		anim_player.speed_scale = clamp(velocity_ratio * 1.2, 0.7, 1.4)
 	else:
 		if current_anim != "Idle":
 			if anim_player.has_animation("Idle"):
 				anim_player.play("Idle", 0.15)
 				current_anim = "Idle"
+		anim_player.speed_scale = 1.0
 
 func move_to_dead() -> void:
 	if anim_player:
