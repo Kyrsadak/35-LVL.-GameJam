@@ -22,8 +22,8 @@ var is_dragging_music: bool = false
 var is_dragging_sound: bool = false
 
 # Slider geometry bounds in local X
-const SLIDER_X_MIN: float = -0.65
-const SLIDER_X_MAX: float = 0.65
+const SLIDER_X_MIN: float = -0.48
+const SLIDER_X_MAX: float = 0.48
 
 func _ready() -> void:
 	_build_procedural_gears()

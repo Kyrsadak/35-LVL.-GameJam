@@ -43,16 +43,16 @@ metallic = 0.45
 roughness = 0.40
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_hex_bolt"]
-top_radius = 0.08
-bottom_radius = 0.08
+top_radius = 0.075
+bottom_radius = 0.075
 height = 0.07
 radial_segments = 6
 
 [sub_resource type="BoxMesh" id="BoxMesh_cross_slot_1"]
-size = Vector3(0.10, 0.022, 0.08)
+size = Vector3(0.09, 0.02, 0.08)
 
 [sub_resource type="BoxMesh" id="BoxMesh_cross_slot_2"]
-size = Vector3(0.022, 0.10, 0.08)
+size = Vector3(0.02, 0.09, 0.08)
 
 [sub_resource type="BoxMesh" id="BoxMesh_bracket"]
 size = Vector3(0.14, 0.32, 0.16)
@@ -62,7 +62,7 @@ albedo_color = Color(0.12, 0.08, 0.05, 1)
 roughness = 0.9
 
 [sub_resource type="BoxMesh" id="BoxMesh_slider_groove"]
-size = Vector3(1.30, 0.14, 0.04)
+size = Vector3(1.10, 0.13, 0.04)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slider_cube"]
 albedo_color = Color(0.68, 0.76, 0.84, 1)
@@ -70,7 +70,7 @@ metallic = 0.35
 roughness = 0.35
 
 [sub_resource type="BoxMesh" id="BoxMesh_cube"]
-size = Vector3(0.17, 0.17, 0.13)
+size = Vector3(0.16, 0.16, 0.13)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red_hex"]
 albedo_color = Color(0.88, 0.22, 0.16, 1)
@@ -107,7 +107,7 @@ roughness = 0.4
 size = Vector3(1.95, 0.38, 0.15)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_slider_area"]
-size = Vector3(1.4, 0.25, 0.2)
+size = Vector3(1.2, 0.25, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hex_exit"]
 size = Vector3(0.4, 0.4, 0.2)
@@ -233,7 +233,8 @@ mesh = SubResource("BoxMesh_bracket")
 surface_material_override/0 = SubResource("StandardMaterial3D_metal_purple")
 
 [node name="LabelTitle" type="Label3D" parent="Contraption/FrontPlate"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, 0.045)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, 0.05)
+render_priority = 3
 pixel_size = 0.0036
 text = "PROJECT: KOSYLGAN"
 font_size = 44
@@ -249,7 +250,8 @@ mesh = SubResource("BoxMesh_btn_play")
 surface_material_override/0 = SubResource("StandardMaterial3D_btn_gold")
 
 [node name="Label" type="Label3D" parent="Contraption/FrontPlate/BtnPlay"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.07)
+render_priority = 3
 pixel_size = 0.0038
 text = "▶ НАЧАТЬ ИГРУ"
 font_size = 40
@@ -261,23 +263,25 @@ outline_modulate = Color(1, 0.9, 0.7, 1)
 shape = SubResource("BoxShape3D_clickable_area")
 
 [node name="SliderMusic" type="StaticBody3D" parent="Contraption/FrontPlate"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, -0.20, 0.04)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.32, -0.20, 0.04)
 
 [node name="Groove" type="MeshInstance3D" parent="Contraption/FrontPlate/SliderMusic"]
 mesh = SubResource("BoxMesh_slider_groove")
 surface_material_override/0 = SubResource("StandardMaterial3D_slot_dark")
 
 [node name="CubeMusic" type="MeshInstance3D" parent="Contraption/FrontPlate/SliderMusic"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.32, 0, 0.05)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 0, 0.05)
 mesh = SubResource("BoxMesh_cube")
 surface_material_override/0 = SubResource("StandardMaterial3D_slider_cube")
 
 [node name="Label" type="Label3D" parent="Contraption/FrontPlate/SliderMusic"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.74, 0, 0.02)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 0, 0.05)
+render_priority = 3
 pixel_size = 0.0035
 text = "MUSIC"
 font_size = 32
 outline_size = 8
+horizontal_alignment = 2
 modulate = Color(1, 1, 1, 1)
 outline_modulate = Color(0.15, 0.2, 0.25, 1)
 
@@ -285,23 +289,25 @@ outline_modulate = Color(0.15, 0.2, 0.25, 1)
 shape = SubResource("BoxShape3D_slider_area")
 
 [node name="SliderSound" type="StaticBody3D" parent="Contraption/FrontPlate"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, -0.44, 0.04)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.32, -0.44, 0.04)
 
 [node name="Groove" type="MeshInstance3D" parent="Contraption/FrontPlate/SliderSound"]
 mesh = SubResource("BoxMesh_slider_groove")
 surface_material_override/0 = SubResource("StandardMaterial3D_slot_dark")
 
 [node name="CubeSound" type="MeshInstance3D" parent="Contraption/FrontPlate/SliderSound"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0, 0.05)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0, 0.05)
 mesh = SubResource("BoxMesh_cube")
 surface_material_override/0 = SubResource("StandardMaterial3D_slider_cube")
 
 [node name="Label" type="Label3D" parent="Contraption/FrontPlate/SliderSound"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.74, 0, 0.02)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 0, 0.05)
+render_priority = 3
 pixel_size = 0.0035
 text = "SOUND"
 font_size = 32
 outline_size = 8
+horizontal_alignment = 2
 modulate = Color(1, 1, 1, 1)
 outline_modulate = Color(0.15, 0.2, 0.25, 1)
 
@@ -316,7 +322,8 @@ mesh = SubResource("BoxMesh_btn_play")
 surface_material_override/0 = SubResource("StandardMaterial3D_wood_plank")
 
 [node name="Label" type="Label3D" parent="Contraption/BtnRules"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.07)
+render_priority = 3
 pixel_size = 0.0034
 text = "📜 ПРАВИЛА И УПРАВЛЕНИЕ"
 font_size = 30
