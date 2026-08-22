@@ -23,6 +23,8 @@ func interact() -> void:
 			if current_interactable.has_method("insert_module"):
 				current_interactable.insert_module(carried_object)
 				carried_object = null
+				if skin and skin.has_method("set_holding"):
+					skin.set_holding(false)
 				key_module_inserted.emit()
 				return
 		else:
@@ -56,6 +58,8 @@ func interact() -> void:
 
 func _pick_up_object(obj: Node3D) -> void:
 	if obj and obj.has_method("pick_up"):
+		if skin and skin.has_method("play_lift"):
+			skin.play_lift()
 		obj.pick_up(carry_pivot)
 		carried_object = obj
 		if obj.is_in_group("key_module"):
@@ -63,6 +67,8 @@ func _pick_up_object(obj: Node3D) -> void:
 
 func _drop_carried_object() -> void:
 	if carried_object and carried_object.has_method("drop"):
+		if skin and skin.has_method("set_holding"):
+			skin.set_holding(false)
 		var drop_pos = global_position + (-global_transform.basis.z * 1.5)
 		drop_pos.y = max(drop_pos.y, 0.0)
 		carried_object.drop(drop_pos)

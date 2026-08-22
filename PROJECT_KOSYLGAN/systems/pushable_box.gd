@@ -19,20 +19,34 @@ func pick_up(carrier: Marker3D) -> void:
 	if collision_shape:
 		collision_shape.disabled = true
 	velocity = Vector3.ZERO
+	
+	var start_global_pos = global_position
+	var start_global_rot = global_rotation
 	get_parent().remove_child(self)
 	carrier.add_child(self)
-	position = Vector3(0, 0.4, 0)
-	rotation = Vector3.ZERO
+	global_position = start_global_pos
+	global_rotation = start_global_rot
+
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(self, "position", Vector3(0, 0.4, 0), 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "rotation", Vector3.ZERO, 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func drop(drop_pos: Vector3) -> void:
 	is_carried = false
-	if collision_shape:
-		collision_shape.disabled = false
 	var scene_root = get_tree().current_scene
+	var start_global_pos = global_position
 	get_parent().remove_child(self)
 	scene_root.add_child(self)
-	global_position = drop_pos
+	global_position = start_global_pos
 	velocity = Vector3.ZERO
+
+	var tween = create_tween()
+	tween.tween_property(self, "global_position", drop_pos, 0.22).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_callback(func():
+		if collision_shape:
+			collision_shape.disabled = false
+	)
 
 func push(direction: Vector3, strength: float) -> void:
 	if is_carried:
