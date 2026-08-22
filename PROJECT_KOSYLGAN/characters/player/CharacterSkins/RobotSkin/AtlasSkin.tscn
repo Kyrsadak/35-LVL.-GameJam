@@ -1,0 +1,203 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://characters/player/CharacterSkins/PlayerSkin.gd" id="1_skin"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_armor"]
+albedo_color = Color(0.72, 0.75, 0.80, 1.0)
+metallic = 0.75
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_joints"]
+albedo_color = Color(0.18, 0.20, 0.24, 1.0)
+metallic = 0.85
+roughness = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_visor"]
+albedo_color = Color(0.05, 0.75, 1.0, 1.0)
+emission_enabled = true
+emission = Color(0.0, 0.85, 1.0, 1.0)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glow"]
+albedo_color = Color(0.05, 0.75, 1.0, 1.0)
+emission_enabled = true
+emission = Color(0.0, 0.85, 1.0, 1.0)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_head"]
+size = Vector3(0.32, 0.32, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_visor"]
+size = Vector3(0.22, 0.1, 0.04)
+
+[sub_resource type="BoxMesh" id="BoxMesh_neck"]
+size = Vector3(0.12, 0.08, 0.12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_torso"]
+size = Vector3(0.44, 0.46, 0.26)
+
+[sub_resource type="BoxMesh" id="BoxMesh_core"]
+size = Vector3(0.18, 0.16, 0.03)
+
+[sub_resource type="BoxMesh" id="BoxMesh_arm"]
+size = Vector3(0.12, 0.48, 0.12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hips"]
+size = Vector3(0.36, 0.12, 0.22)
+
+[sub_resource type="BoxMesh" id="BoxMesh_leg"]
+size = Vector3(0.14, 0.65, 0.14)
+
+[sub_resource type="BoxMesh" id="BoxMesh_foot"]
+size = Vector3(0.15, 0.08, 0.22)
+
+[sub_resource type="Animation" id="Animation_idle"]
+resource_name = "Idle"
+length = 1.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.04, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_run"]
+resource_name = "Run"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.08, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visuals:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.06, 0, 0.05), Vector3(0.06, 0, -0.05), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_dead"]
+resource_name = "Dead"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-1.57, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visuals:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.4, 0.3)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_skin"]
+_data = {
+"Dead": SubResource("Animation_dead"),
+"Idle": SubResource("Animation_idle"),
+"Run": SubResource("Animation_run")
+}
+
+[node name="AtlasSkin" type="Node3D"]
+script = ExtResource("1_skin")
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="Head" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+mesh = SubResource("BoxMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_armor")
+
+[node name="Visor" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, -0.16)
+mesh = SubResource("BoxMesh_visor")
+surface_material_override/0 = SubResource("StandardMaterial3D_visor")
+
+[node name="Neck" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("BoxMesh_neck")
+surface_material_override/0 = SubResource("StandardMaterial3D_joints")
+
+[node name="Torso" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_armor")
+
+[node name="Core" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, -0.14)
+mesh = SubResource("BoxMesh_core")
+surface_material_override/0 = SubResource("StandardMaterial3D_glow")
+
+[node name="LeftArm" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.95, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_joints")
+
+[node name="RightArm" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.95, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_joints")
+
+[node name="Hips" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.84, 0)
+mesh = SubResource("BoxMesh_hips")
+surface_material_override/0 = SubResource("StandardMaterial3D_joints")
+
+[node name="LeftLeg" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, 0.42, 0)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_armor")
+
+[node name="RightLeg" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, 0.42, 0)
+mesh = SubResource("BoxMesh_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_armor")
+
+[node name="LeftFoot" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, 0.05, -0.04)
+mesh = SubResource("BoxMesh_foot")
+surface_material_override/0 = SubResource("StandardMaterial3D_joints")
+
+[node name="RightFoot" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, 0.05, -0.04)
+mesh = SubResource("BoxMesh_foot")
+surface_material_override/0 = SubResource("StandardMaterial3D_joints")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_skin")
+}

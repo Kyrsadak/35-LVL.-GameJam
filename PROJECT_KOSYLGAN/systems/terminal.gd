@@ -8,13 +8,15 @@ extends Area3D
 @export var clue_id: String = "guide_1"
 @export var target_gate_path: NodePath
 
-@onready var screen_mesh: MeshInstance3D = $ScreenMesh
-@onready var omni_light: OmniLight3D = $OmniLight3D
+var screen_mesh: MeshInstance3D = null
+var omni_light: OmniLight3D = null
 
 var is_hacked: bool = false
 var minigame_scene = preload("res://minigames/wire_cutting.tscn")
 
 func _ready() -> void:
+	screen_mesh = find_child("ScreenMesh", true, false) as MeshInstance3D
+	omni_light = find_child("OmniLight3D", true, false) as OmniLight3D
 	add_to_group("terminal")
 	add_to_group("interactable")
 
@@ -32,19 +34,19 @@ func start_hack(robot: Node) -> void:
 func _on_hack_completed(success: bool) -> void:
 	if success:
 		is_hacked = true
-		_update_visuals_hacked()
-		if target_gate_path != NodePath():
+		if omni_light:
+			omni_light.light_color = Color(0.1, 1.0, 0.3)
+		if screen_mesh:
+			var mat = StandardMaterial3D.new()
+			mat.albedo_color = Color(0.1, 1.0, 0.3)
+			mat.emission_enabled = true
+			mat.emission = Color(0.1, 1.0, 0.3)
+			screen_mesh.material_override = mat
+
+		if not target_gate_path.is_empty():
 			var gate = get_node_or_null(target_gate_path)
 			if gate and gate.has_method("open"):
 				gate.open()
 
-func _update_visuals_hacked() -> void:
-	if omni_light:
-		omni_light.light_color = Color(0.2, 1.0, 0.4)
-	if screen_mesh:
-		var mat = StandardMaterial3D.new()
-		mat.albedo_color = Color(0.1, 0.9, 0.3)
-		mat.emission_enabled = true
-		mat.emission = Color(0.1, 1.0, 0.3)
-		mat.emission_energy_multiplier = 2.0
-		screen_mesh.material_override = mat
+		if RobotManager:
+			RobotManager.show_message("🔓 Взлом успешен! Защитный барьер отключен.")
