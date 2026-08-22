@@ -1,20 +1,43 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://minigames/wire_cutting.gd" id="1_wire"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-bg_color = Color(0.08, 0.11, 0.16, 0.94)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.1, 0.7, 1, 0.8)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_among_box"]
+bg_color = Color(0.12, 0.14, 0.18, 0.98)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.28, 0.32, 0.40, 1)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
-shadow_color = Color(0, 0, 0, 0.7)
-shadow_size = 20
+shadow_color = Color(0, 0, 0, 0.8)
+shadow_size = 28
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header_band"]
+bg_color = Color(0.18, 0.20, 0.26, 1)
+border_width_bottom = 2
+border_color = Color(0.9, 0.65, 0.1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_close"]
+bg_color = Color(0.22, 0.25, 0.32, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.45, 0.55, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [node name="WireCuttingMinigame" type="CanvasLayer"]
 layer = 10
@@ -26,73 +49,144 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.55)
+color = Color(0, 0, 0, 0.65)
 
 [node name="MainPanel" type="Panel" parent="."]
-custom_minimum_size = Vector2(800, 600)
+custom_minimum_size = Vector2(860, 620)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -300.0
-offset_right = 400.0
-offset_bottom = 300.0
+offset_left = -430.0
+offset_top = -310.0
+offset_right = 430.0
+offset_bottom = 310.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+theme_override_styles/panel = SubResource("StyleBoxFlat_among_box")
+
+[node name="BoltTL" type="Label" parent="MainPanel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 40.0
+offset_bottom = 36.0
+theme_override_font_sizes/font_size = 18
+text = "🔩"
+
+[node name="BoltTR" type="Label" parent="MainPanel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -38.0
+offset_top = 8.0
+offset_right = -10.0
+offset_bottom = 36.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 18
+text = "🔩"
+
+[node name="BoltBL" type="Label" parent="MainPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -38.0
+offset_right = 40.0
+offset_bottom = -10.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 18
+text = "🔩"
+
+[node name="BoltBR" type="Label" parent="MainPanel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -38.0
+offset_top = -38.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 18
+text = "🔩"
 
 [node name="VBox" type="VBoxContainer" parent="MainPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = 25.0
-offset_right = -30.0
-offset_bottom = -25.0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = -32.0
+offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="MainPanel/VBox"]
+[node name="HeaderPanel" type="PanelContainer" parent="MainPanel/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.2, 0.85, 1, 1)
-theme_override_font_sizes/font_size = 26
-text = "🛠️ ПАНЕЛЬ БЛОКИРОВКИ: ПЕРЕРЕЗАНИЕ ПРОВОДОВ"
-horizontal_alignment = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_header_band")
+
+[node name="HBoxHeader" type="HBoxContainer" parent="MainPanel/VBox/HeaderPanel"]
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="MainPanel/VBox/HeaderPanel/HBoxHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1.0, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 20
+text = "⚡ ЭЛЕКТРОЩИТОК: ПЕРЕРЕЗАНИЕ ПРОВОДОВ"
+
+[node name="PanelLED" type="ColorRect" parent="MainPanel/VBox/HeaderPanel/HBoxHeader"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.9, 0.2, 0.2, 1)
+
+[node name="PanelLEDLabel" type="Label" parent="MainPanel/VBox/HeaderPanel/HBoxHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "⚡ ПИТАНИЕ АКТИВНО"
 
 [node name="HintLabel" type="Label" parent="MainPanel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.2, 1, 0.4, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.3, 0.95, 0.5, 1)
+theme_override_font_sizes/font_size = 16
 text = "📋 СХЕМА: НАЙДИТЕ ПЛАНШЕТ С ПОДСКАЗКОЙ"
 horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="MainPanel/VBox"]
-layout_mode = 2
 
 [node name="StatusLabel" type="Label" parent="MainPanel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 20
-text = "ВЫБЕРИТЕ ПРАВИЛЬНЫЙ ПРОВОД"
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 16
+text = "НАЖМИТЕ НА ПРОВОД ИЛИ КНОПКУ, ЧТОБЫ ПЕРЕРЕЗАТЬ ЕГО"
 horizontal_alignment = 1
 
 [node name="WiresContainer" type="VBoxContainer" parent="MainPanel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
 alignment = 1
 
 [node name="CloseBtn" type="Button" parent="MainPanel/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 45)
+custom_minimum_size = Vector2(220, 42)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 18
-text = "ВЫЙТИ ИЗ ТЕРМИНАЛА"
+theme_override_styles/normal = SubResource("StyleBoxFlat_button_close")
+theme_override_font_sizes/font_size = 16
+text = "ЗАКРЫТЬ ЩИТОК"
