@@ -17,7 +17,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="PROJECT: KOSYLGAN"
 config/tags=PackedStringArray("gamejam", "puzzle", "3d")
 run/main_scene="res://ui/main_menu.tscn"
-config/features=PackedStringArray("4.6")
+config/features=PackedStringArray("4.7")
 config/icon="res://project_icon.png"
 
 [autoload]
@@ -30,10 +30,11 @@ SoundManager="*res://systems/sound_manager.gd"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/window_width_override=1280
-window/size/window_height_override=720
+window/size/mode=3
+window/size/resizable=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+window/stretch/scale_mode="fractional"
 
 [input]
 

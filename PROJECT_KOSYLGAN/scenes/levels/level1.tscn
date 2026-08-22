@@ -94,11 +94,11 @@ size = Vector3(0.5, 3, 24)
 material = ExtResource("14_wall")
 
 [node name="WallBack" type="CSGBox3D" parent="Geometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 7.75)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 7.75)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(16, 3, 0.5)
+size = Vector3(16, 0.8, 0.5)
 material = ExtResource("14_wall")
 
 [node name="WallFront" type="CSGBox3D" parent="Geometry"]

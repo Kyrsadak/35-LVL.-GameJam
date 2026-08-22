@@ -17,34 +17,23 @@ var default_dialogue_offset_top: float = -140.0
 func _ready() -> void:
 	if atlas_battery_display:
 		atlas_battery_display.robot_name = "ATLAS"
-		atlas_battery_display.theme_color = Color(0.20, 0.65, 0.95) # Vibrant Cyan-Blue
+		atlas_battery_display.theme_color = Color(0.0, 0.90, 1.0) # Electric Neon Cyan
 		atlas_battery_display.set_active(true)
 		
 	if cipher_battery_display:
 		cipher_battery_display.robot_name = "CIPHER"
-		cipher_battery_display.theme_color = Color(0.98, 0.56, 0.16) # Vibrant Amber-Orange
+		cipher_battery_display.theme_color = Color(1.0, 0.60, 0.05) # Electric Cyber Amber
 		cipher_battery_display.set_active(false)
 
 	if RobotManager:
 		RobotManager.robot_switched.connect(_on_robot_switched)
 		RobotManager.hud_message_requested.connect(show_banner_message)
 		RobotManager.clue_revealed.connect(_on_clue_revealed)
-		
-		if RobotManager.atlas:
-			if RobotManager.atlas.has_signal("battery_changed"):
-				RobotManager.atlas.battery_changed.connect(_on_atlas_battery_changed)
-			if RobotManager.atlas.has_signal("charging_state_changed"):
-				RobotManager.atlas.charging_state_changed.connect(func(c): if atlas_battery_display: atlas_battery_display.set_charging(c))
-			if RobotManager.atlas.has_signal("interact_target_changed"):
-				RobotManager.atlas.interact_target_changed.connect(_on_interact_target_changed)
-		if RobotManager.cipher:
-			if RobotManager.cipher.has_signal("battery_changed"):
-				RobotManager.cipher.battery_changed.connect(_on_cipher_battery_changed)
-			if RobotManager.cipher.has_signal("charging_state_changed"):
-				RobotManager.cipher.charging_state_changed.connect(func(c): if cipher_battery_display: cipher_battery_display.set_charging(c))
-			if RobotManager.cipher.has_signal("interact_target_changed"):
-				RobotManager.cipher.interact_target_changed.connect(_on_interact_target_changed)
-			
+		if RobotManager.atlas and RobotManager.atlas.has_signal("interact_target_changed"):
+			RobotManager.atlas.interact_target_changed.connect(_on_interact_target_changed)
+		if RobotManager.cipher and RobotManager.cipher.has_signal("interact_target_changed"):
+			RobotManager.cipher.interact_target_changed.connect(_on_interact_target_changed)
+
 	clue_panel.visible = false
 	interact_prompt.visible = false
 	if dialogue_container:
@@ -52,16 +41,25 @@ func _ready() -> void:
 		dialogue_container.modulate.a = 0.0
 		default_dialogue_offset_top = dialogue_container.offset_top
 
+func _process(_delta: float) -> void:
+	# Real-time frame-by-frame polling to guarantee 100% sync with active/inactive robot battery & charging
+	if not RobotManager:
+		return
+
+	if RobotManager.atlas and atlas_battery_display:
+		if "battery" in RobotManager.atlas and "max_battery" in RobotManager.atlas:
+			atlas_battery_display.set_battery(RobotManager.atlas.battery, RobotManager.atlas.max_battery)
+		if "is_on_charging_station" in RobotManager.atlas:
+			atlas_battery_display.set_charging(RobotManager.atlas.is_on_charging_station)
+
+	if RobotManager.cipher and cipher_battery_display:
+		if "battery" in RobotManager.cipher and "max_battery" in RobotManager.cipher:
+			cipher_battery_display.set_battery(RobotManager.cipher.battery, RobotManager.cipher.max_battery)
+		if "is_on_charging_station" in RobotManager.cipher:
+			cipher_battery_display.set_charging(RobotManager.cipher.is_on_charging_station)
+
 func set_level_info(level_num: int, title: String, mode_desc: String) -> void:
 	level_title.text = "УРОВЕНЬ " + str(level_num) + ": " + title.to_upper() + "\n" + mode_desc
-
-func _on_atlas_battery_changed(current: float, max_val: float) -> void:
-	if atlas_battery_display:
-		atlas_battery_display.set_battery(current, max_val)
-
-func _on_cipher_battery_changed(current: float, max_val: float) -> void:
-	if cipher_battery_display:
-		cipher_battery_display.set_battery(current, max_val)
 
 func _on_robot_switched(active_robot: Node) -> void:
 	if not active_robot:

@@ -112,7 +112,20 @@ var _step_timer: float = 0.0
 
 func _handle_movement(delta: float) -> void:
 	var input_vec = Input.get_vector("p1_move_left", "p1_move_right", "p1_move_up", "p1_move_down")
-	var move_dir = Vector3(input_vec.x, 0, input_vec.y).normalized()
+	var move_dir: Vector3 = Vector3.ZERO
+
+	if input_vec.length_squared() > 0.01:
+		var cam = get_viewport().get_camera_3d()
+		if cam:
+			var cam_forward = -cam.global_transform.basis.z
+			cam_forward.y = 0.0
+			cam_forward = cam_forward.normalized()
+			var cam_right = cam.global_transform.basis.x
+			cam_right.y = 0.0
+			cam_right = cam_right.normalized()
+			move_dir = (cam_right * input_vec.x + cam_forward * -input_vec.y).normalized()
+		else:
+			move_dir = Vector3(input_vec.x, 0, input_vec.y).normalized()
 
 	if move_dir.length_squared() > 0.01:
 		velocity.x = move_toward(velocity.x, move_dir.x * move_speed, acceleration * delta)
