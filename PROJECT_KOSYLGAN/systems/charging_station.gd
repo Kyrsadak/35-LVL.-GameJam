@@ -63,7 +63,7 @@ func _setup_materials_and_textures() -> void:
 	# 3. Transparent Cryo Glass
 	glass_material = StandardMaterial3D.new()
 	glass_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	glass_material.albedo_color = Color(0.65, 0.90, 1.0, 0.22)
+	glass_material.albedo_color = Color(0.65, 0.90, 1.0, 0.20)
 	glass_material.metallic = 0.15
 	glass_material.roughness = 0.05
 	glass_material.rim_enabled = true
@@ -73,24 +73,26 @@ func _setup_materials_and_textures() -> void:
 	if glass_mesh:
 		glass_mesh.set_surface_override_material(0, glass_material)
 	
-	# 4. Glass Decal "20" Texture
+	# 4. Glass Decal "20" Texture (High-Res 512x512)
 	var decal_tex = _generate_decal_texture()
 	var decal_mat = StandardMaterial3D.new()
 	decal_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	decal_mat.albedo_texture = decal_tex
 	decal_mat.emission_enabled = true
 	decal_mat.emission_texture = decal_tex
-	decal_mat.emission_energy_multiplier = 0.8
+	decal_mat.emission_energy_multiplier = 1.0
+	decal_mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	decal_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	if glass_decal_mesh:
 		glass_decal_mesh.set_surface_override_material(0, decal_mat)
 	
-	# 5. Outer Base Hazard Stripes Texture
+	# 5. Outer Base Radial Hazard Stripes Texture (High-Res 512x512)
 	var hazard_tex = _generate_hazard_stripes_texture()
 	var hazard_mat = StandardMaterial3D.new()
 	hazard_mat.albedo_texture = hazard_tex
-	hazard_mat.metallic = 0.6
-	hazard_mat.roughness = 0.45
+	hazard_mat.metallic = 0.65
+	hazard_mat.roughness = 0.40
+	hazard_mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	if outer_hazard_mesh:
 		outer_hazard_mesh.set_surface_override_material(0, hazard_mat)
 	
@@ -126,21 +128,21 @@ func _process(delta: float) -> void:
 	if is_docked:
 		# Pulsing volumetric energy light
 		if light_omni:
-			light_omni.light_energy = 3.2 + sin(scan_time * 2.5) * 0.7
+			light_omni.light_energy = 3.0 + sin(scan_time * 2.5) * 0.6
 		if light_spot:
-			light_spot.light_energy = 4.0 + sin(scan_time * 2.5) * 0.8
+			light_spot.light_energy = 3.8 + sin(scan_time * 2.5) * 0.7
 		if plasma_material:
 			plasma_material.emission_energy_multiplier = 2.5 + sin(scan_time * 4.0) * 1.0
 		
 		# Vertical floating plasma rings
 		if plasma_ring_1:
-			plasma_ring_1.position.y = 0.8 + sin(scan_time * 1.8) * 0.5
+			plasma_ring_1.position.y = 0.65 + sin(scan_time * 1.8) * 0.4
 			plasma_ring_1.rotation.y += delta * 1.2
 		if plasma_ring_2:
-			plasma_ring_2.position.y = 1.6 - sin(scan_time * 1.8) * 0.5
+			plasma_ring_2.position.y = 1.35 - sin(scan_time * 1.8) * 0.4
 			plasma_ring_2.rotation.y -= delta * 1.5
 		if laser_ring:
-			laser_ring.position.y = -0.15 + sin(scan_time * 2.0) * 0.08
+			laser_ring.position.y = -0.12 + sin(scan_time * 2.0) * 0.06
 		
 		# Check if docked robot tries to walk away -> auto undock
 		if docked_robot and "velocity" in docked_robot:
@@ -150,16 +152,16 @@ func _process(delta: float) -> void:
 				undock_robot(docked_robot)
 	else:
 		if light_omni:
-			light_omni.light_energy = 1.4 + sin(scan_time * 0.8) * 0.2
+			light_omni.light_energy = 1.3 + sin(scan_time * 0.8) * 0.2
 		if light_spot:
-			light_spot.light_energy = 1.8 + sin(scan_time * 0.8) * 0.3
+			light_spot.light_energy = 1.6 + sin(scan_time * 0.8) * 0.3
 		if plasma_material:
 			plasma_material.emission_energy_multiplier = 0.9 + sin(scan_time * 1.2) * 0.3
 		if plasma_ring_1:
-			plasma_ring_1.position.y = 1.2 + sin(scan_time * 0.8) * 0.15
+			plasma_ring_1.position.y = 0.95 + sin(scan_time * 0.8) * 0.12
 			plasma_ring_1.rotation.y += delta * 0.4
 		if plasma_ring_2:
-			plasma_ring_2.position.y = 1.8 - sin(scan_time * 0.8) * 0.15
+			plasma_ring_2.position.y = 1.45 - sin(scan_time * 0.8) * 0.12
 			plasma_ring_2.rotation.y -= delta * 0.5
 
 ## Called when robot presses interaction key [E]
@@ -189,7 +191,7 @@ func dock_robot(robot: Node3D) -> void:
 		robot.is_on_charging_station = true
 	
 	# Smoothly align robot to the center of the charging pad
-	var target_dock_pos = global_position + Vector3(0, 0.26, 0)
+	var target_dock_pos = global_position + Vector3(0, 0.22, 0)
 	var glide_tween = create_tween().set_parallel(true)
 	glide_tween.tween_property(robot, "global_position:x", target_dock_pos.x, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	glide_tween.tween_property(robot, "global_position:z", target_dock_pos.z, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
@@ -230,7 +232,7 @@ func _play_dock_animation(dock: bool) -> void:
 	if dock:
 		# Lower overhead charging contact arm down into capsule
 		if charger_arm:
-			anim_tween.tween_property(charger_arm, "position:y", 1.95, 0.45)
+			anim_tween.tween_property(charger_arm, "position:y", 1.65, 0.45)
 		# Radiant Emerald Plasma Power Light
 		if light_omni:
 			anim_tween.tween_property(light_omni, "light_color", Color(0.15, 1.0, 0.50), 0.3)
@@ -247,7 +249,7 @@ func _play_dock_animation(dock: bool) -> void:
 	else:
 		# Retract overhead charging arm up into top generator cap
 		if charger_arm:
-			anim_tween.tween_property(charger_arm, "position:y", 2.65, 0.40).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+			anim_tween.tween_property(charger_arm, "position:y", 2.25, 0.40).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		# Standby Calm Neon Cyan Light
 		if light_omni:
 			anim_tween.tween_property(light_omni, "light_color", Color(0.0, 0.85, 1.0), 0.3)
@@ -264,13 +266,13 @@ func _play_dock_animation(dock: bool) -> void:
 
 func _update_visuals(dock: bool) -> void:
 	if charger_arm:
-		charger_arm.position.y = 1.95 if dock else 2.65
+		charger_arm.position.y = 1.65 if dock else 2.25
 	if light_omni:
 		light_omni.light_color = Color(0.15, 1.0, 0.50) if dock else Color(0.0, 0.85, 1.0)
-		light_omni.light_energy = 3.2 if dock else 1.4
+		light_omni.light_energy = 3.0 if dock else 1.3
 	if light_spot:
 		light_spot.light_color = Color(0.20, 1.0, 0.55) if dock else Color(0.0, 0.90, 1.0)
-		light_spot.light_energy = 4.0 if dock else 1.8
+		light_spot.light_energy = 3.8 if dock else 1.6
 	if laser_ring:
 		laser_ring.visible = dock
 
@@ -305,67 +307,95 @@ func _get_closest_nearby_robot() -> Node3D:
 			closest = r
 	return closest
 
-## Procedurally generates the "20" stencil decal texture for the glass capsule
+## Procedurally generates the high-res "20" stencil decal texture for the glass capsule
 func _generate_decal_texture() -> ImageTexture:
-	var w = 256
-	var h = 320
+	var w = 512
+	var h = 512
 	var img = Image.create(w, h, false, Image.FORMAT_RGBA8)
-	img.fill(Color(0, 0, 0, 0)) # Fully transparent base
+	img.fill(Color(0, 0, 0, 0)) # Transparent base
 	
-	# Draw stencil Number "2"
-	var col_white = Color(1.0, 1.0, 1.0, 0.92)
-	var col_yellow = Color(1.0, 0.80, 0.08, 0.95)
+	var col_white = Color(1.0, 1.0, 1.0, 0.96)
+	var col_yellow = Color(1.0, 0.78, 0.08, 0.96)
+	var col_yellow_fill = Color(1.0, 0.78, 0.08, 0.40)
 	
-	# Number "2"
-	_draw_img_rect(img, 40, 40, 70, 16, col_white)  # top bar
-	_draw_img_rect(img, 94, 56, 16, 50, col_white)  # top-right
-	_draw_img_rect(img, 40, 106, 70, 16, col_white) # middle bar
-	_draw_img_rect(img, 40, 122, 16, 50, col_white) # bot-left
-	_draw_img_rect(img, 40, 172, 70, 16, col_white) # bot bar
+	# --- Number "2" (Clean Cyber Stencil) ---
+	_draw_img_rect(img, 70, 70, 150, 32, col_white)   # top bar
+	_draw_img_rect(img, 188, 102, 32, 100, col_white) # top right
+	_draw_img_rect(img, 70, 202, 150, 32, col_white)  # middle bar
+	_draw_img_rect(img, 70, 234, 32, 100, col_white)  # bot left
+	_draw_img_rect(img, 70, 334, 150, 32, col_white)  # bot bar
 	
-	# Number "0"
-	_draw_img_rect(img, 130, 40, 70, 16, col_white)  # top bar
-	_draw_img_rect(img, 130, 56, 16, 116, col_white) # left bar
-	_draw_img_rect(img, 184, 56, 16, 116, col_white) # right bar
-	_draw_img_rect(img, 130, 172, 70, 16, col_white) # bot bar
+	# --- Number "0" (Clean Cyber Stencil) ---
+	_draw_img_rect(img, 270, 70, 150, 32, col_white)   # top bar
+	_draw_img_rect(img, 270, 102, 32, 232, col_white)  # left bar
+	_draw_img_rect(img, 388, 102, 32, 232, col_white)  # right bar
+	_draw_img_rect(img, 270, 334, 150, 32, col_white)  # bot bar
 	
-	# Lower Yellow Hazard Stencil Bracket [ 20 ]
-	_draw_img_rect(img, 30, 210, 180, 8, col_yellow)   # bracket bottom
-	_draw_img_rect(img, 30, 180, 8, 30, col_yellow)    # left hook
-	_draw_img_rect(img, 202, 180, 8, 30, col_yellow)   # right hook
-	_draw_img_rect(img, 50, 226, 140, 32, Color(1.0, 0.80, 0.08, 0.45)) # filled accent
+	# Stencil middle slit for "0"
+	_draw_img_rect(img, 328, 70, 34, 32, Color(0, 0, 0, 0))
+	_draw_img_rect(img, 328, 334, 34, 32, Color(0, 0, 0, 0))
 	
+	# --- Lower Hazard Frame Bracket [ 20 ] ---
+	_draw_img_rect(img, 50, 390, 390, 14, col_yellow)   # bracket bottom rail
+	_draw_img_rect(img, 50, 340, 14, 50, col_yellow)    # left corner hook
+	_draw_img_rect(img, 426, 340, 14, 50, col_yellow)   # right corner hook
+	_draw_img_rect(img, 90, 420, 310, 44, col_yellow_fill) # lower caution fill plate
+	_draw_img_rect(img, 90, 420, 310, 8, col_yellow)    # plate accent line
+	
+	img.generate_mipmaps()
 	return ImageTexture.create_from_image(img)
 
-## Procedurally generates the outer circular hazard stripes texture
+## Procedurally generates the high-res circular radial hazard stripes base texture
 func _generate_hazard_stripes_texture() -> ImageTexture:
-	var size = 256
-	var img = Image.create(size, size, false, Image.FORMAT_RGBA8)
-	var col_dark = Color(0.14, 0.16, 0.22, 1.0)
-	var col_steel = Color(0.24, 0.28, 0.36, 1.0)
-	var col_yellow = Color(1.0, 0.80, 0.08, 1.0)
+	var size = 512
+	var img = Image.create(size, size, true, Image.FORMAT_RGBA8)
+	var col_dark_outer = Color(0.14, 0.16, 0.22, 1.0)
+	var col_steel_inner = Color(0.22, 0.26, 0.34, 1.0)
+	var col_yellow = Color(1.0, 0.78, 0.08, 1.0)
 	var col_black = Color(0.08, 0.09, 0.12, 1.0)
+	var col_cyan_line = Color(0.0, 0.90, 1.0, 0.9)
 	
 	var center = Vector2(size * 0.5, size * 0.5)
 	var radius_max = float(size) * 0.48
-	var radius_inner = float(size) * 0.34
+	var radius_stripe_out = float(size) * 0.45
+	var radius_stripe_in = float(size) * 0.33
+	var radius_pedestal = float(size) * 0.27
 	
 	for y in range(size):
 		for x in range(size):
 			var pos = Vector2(x, y)
 			var dist = pos.distance_to(center)
-			if dist <= radius_max and dist >= radius_inner:
-				# Diagonal stripes angle
-				var angle = (x + y) % 24
-				if angle < 12:
+			
+			if dist <= radius_stripe_out and dist >= radius_stripe_in:
+				# Clean radial angle with diagonal swirl chevrons
+				var angle = atan2(pos.y - center.y, pos.x - center.x) # -PI to PI
+				# 16 clean continuous angled chevrons curving around the disc
+				var stripe_phase = fmod((angle / TAU) * 16.0 + (dist - radius_stripe_in) * 0.08, 1.0)
+				if stripe_phase < 0.0:
+					stripe_phase += 1.0
+					
+				if stripe_phase < 0.50:
 					img.set_pixel(x, y, col_yellow)
 				else:
 					img.set_pixel(x, y, col_black)
-			elif dist < radius_inner:
-				img.set_pixel(x, y, col_steel)
+			elif dist <= radius_max and dist > radius_stripe_out:
+				# Outer dark titanium bezel with subtle cyan groove
+				if dist >= radius_max - 4.0:
+					img.set_pixel(x, y, col_cyan_line)
+				else:
+					img.set_pixel(x, y, col_dark_outer)
+			elif dist < radius_stripe_in and dist >= radius_pedestal:
+				# Inner steel plate ring
+				if dist <= radius_pedestal + 4.0:
+					img.set_pixel(x, y, col_yellow)
+				else:
+					img.set_pixel(x, y, col_steel_inner)
+			elif dist < radius_pedestal:
+				img.set_pixel(x, y, col_dark_outer)
 			else:
-				img.set_pixel(x, y, col_dark)
+				img.set_pixel(x, y, Color(0, 0, 0, 0))
 				
+	img.generate_mipmaps()
 	return ImageTexture.create_from_image(img)
 
 func _draw_img_rect(img: Image, x: int, y: int, w: int, h: int, col: Color) -> void:
