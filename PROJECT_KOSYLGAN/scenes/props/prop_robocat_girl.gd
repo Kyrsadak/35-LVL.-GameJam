@@ -128,16 +128,16 @@ func _process(delta: float) -> void:
 	if proximity_cooldown > 0.0:
 		proximity_cooldown -= delta
 
-	# Head and hip idle breathing sway
+	# Head idle breathing sway
 	if head_node:
 		head_node.position.y = 1.34 + 0.006 * sin(anim_time * 2.0)
 		head_node.rotation.z = 0.025 * sin(anim_time * 1.5)
 
-	# Long Tail Fan-like Sweeping Animation (веерная широкая анимация влево-вправо)
+	# Long Tail Fan-like Sweeping Animation (staying strictly behind her back & to the side!)
 	if tail_root:
-		tail_root.rotation.y = 0.75 * sin(anim_time * 2.6) # Wide sweeping fan (веер)
-		tail_root.rotation.z = 0.25 * cos(anim_time * 2.6)
-		tail_root.rotation.x = 0.18 + 0.12 * sin(anim_time * 3.2)
+		tail_root.rotation.y = 0.45 * sin(anim_time * 2.4) # Wide sweeping fan behind her back
+		tail_root.rotation.z = 0.20 * cos(anim_time * 2.4)
+		tail_root.rotation.x = -0.10 + 0.08 * sin(anim_time * 3.0) # Always angled backwards (-Z)!
 
 	# CRT Screen Blink Animation
 	if blink_timer > 3.2:
