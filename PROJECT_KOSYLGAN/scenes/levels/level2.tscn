@@ -25,6 +25,8 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_security_camera.tscn" id="23_cam_prop"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_wall_fan.tscn" id="24_fan"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_pipes.tscn" id="25_pipes"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_cardboard_box_open.tscn" id="26_cbox"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_cardboard_stack.tscn" id="27_cstack"]
 
 [node name="Level2" type="Node3D"]
 script = ExtResource("1_lvl2")
@@ -175,6 +177,15 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.45, 1.8, 1.0)
 
 [node name="Pipes2" parent="Furniture" instance=ExtResource("25_pipes")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.45, 1.8, -18.0)
+
+[node name="CardboardStack1" parent="Furniture" instance=ExtResource("27_cstack")]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -6.5, 0, 3.5)
+
+[node name="CardboardBoxOpen1" parent="Furniture" instance=ExtResource("26_cbox")]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 6.5, 0, 3.5)
+
+[node name="CardboardStack2" parent="Furniture" instance=ExtResource("27_cstack")]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -6.5, 0, -19.5)
 
 [node name="ChargingStation" parent="." instance=ExtResource("4_station")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.5)
