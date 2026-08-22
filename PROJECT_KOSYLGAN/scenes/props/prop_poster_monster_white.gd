@@ -14,7 +14,8 @@ func _load_poster_material() -> void:
 		mat.emission_enabled = true
 		mat.emission_texture = mat.albedo_texture
 		mat.emission_energy_multiplier = 0.35
-		mat.roughness = 0.4
+		mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+		mat.roughness = 0.35
 		mat.metallic = 0.05
 		mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 		var face = find_child("PosterFace", true, false) as MeshInstance3D
