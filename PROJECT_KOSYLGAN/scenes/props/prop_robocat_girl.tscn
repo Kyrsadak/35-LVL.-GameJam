@@ -1,81 +1,115 @@
-[gd_scene load_steps=22 format=3]
+[gd_scene load_steps=32 format=3]
 
 [ext_resource type="Script" path="res://scenes/props/prop_robocat_girl.gd" id="1_script"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_col"]
-height = 0.9
-radius = 0.35
+height = 1.8
+radius = 0.45
 
-[sub_resource type="BoxMesh" id="BoxMesh_thigh"]
-size = Vector3(0.09, 0.10, 0.28)
+[sub_resource type="BoxMesh" id="BoxMesh_shoe_sole"]
+size = Vector3(0.12, 0.05, 0.24)
 
-[sub_resource type="BoxMesh" id="BoxMesh_shin"]
-size = Vector3(0.08, 0.07, 0.26)
+[sub_resource type="BoxMesh" id="BoxMesh_shoe_upper"]
+size = Vector3(0.11, 0.08, 0.18)
 
-[sub_resource type="SphereMesh" id="SphereMesh_shoe"]
-radius = 0.045
-height = 0.07
+[sub_resource type="BoxMesh" id="BoxMesh_shoe_strap"]
+size = Vector3(0.115, 0.03, 0.05)
 
-[sub_resource type="BoxMesh" id="BoxMesh_hips"]
-size = Vector3(0.20, 0.12, 0.16)
+[sub_resource type="BoxMesh" id="BoxMesh_ankle_joint"]
+size = Vector3(0.08, 0.06, 0.08)
 
-[sub_resource type="BoxMesh" id="BoxMesh_skirt"]
-size = Vector3(0.26, 0.14, 0.22)
+[sub_resource type="BoxMesh" id="BoxMesh_shin_dark"]
+size = Vector3(0.09, 0.32, 0.09)
 
-[sub_resource type="BoxMesh" id="BoxMesh_waist"]
-size = Vector3(0.18, 0.12, 0.13)
+[sub_resource type="BoxMesh" id="BoxMesh_calf_armor_pink"]
+size = Vector3(0.095, 0.20, 0.05)
 
-[sub_resource type="BoxMesh" id="BoxMesh_chest"]
-size = Vector3(0.22, 0.16, 0.15)
+[sub_resource type="BoxMesh" id="BoxMesh_knee_pad_pink"]
+size = Vector3(0.11, 0.10, 0.06)
 
-[sub_resource type="BoxMesh" id="BoxMesh_collar"]
-size = Vector3(0.24, 0.12, 0.02)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_neck"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_knee_dial_mint"]
 top_radius = 0.04
 bottom_radius = 0.04
-height = 0.07
+height = 0.02
 
-[sub_resource type="BoxMesh" id="BoxMesh_upper_arm"]
-size = Vector3(0.06, 0.16, 0.06)
+[sub_resource type="BoxMesh" id="BoxMesh_thigh_pink"]
+size = Vector3(0.13, 0.34, 0.15)
 
-[sub_resource type="BoxMesh" id="BoxMesh_forearm"]
-size = Vector3(0.055, 0.05, 0.16)
+[sub_resource type="BoxMesh" id="BoxMesh_thigh_joint_dark"]
+size = Vector3(0.11, 0.10, 0.12)
 
-[sub_resource type="SphereMesh" id="SphereMesh_head_base"]
-radius = 0.11
-height = 0.20
+[sub_resource type="BoxMesh" id="BoxMesh_pelvis_chassis"]
+size = Vector3(0.24, 0.14, 0.18)
 
-[sub_resource type="QuadMesh" id="QuadMesh_face"]
-size = Vector2(0.19, 0.19)
+[sub_resource type="BoxMesh" id="BoxMesh_hip_armor_pink"]
+size = Vector3(0.06, 0.16, 0.19)
 
-[sub_resource type="BoxMesh" id="BoxMesh_bangs"]
-size = Vector3(0.22, 0.08, 0.08)
+[sub_resource type="BoxMesh" id="BoxMesh_waist_midriff_dark"]
+size = Vector3(0.18, 0.16, 0.14)
 
-[sub_resource type="BoxMesh" id="BoxMesh_sidelock"]
-size = Vector3(0.04, 0.20, 0.06)
+[sub_resource type="BoxMesh" id="BoxMesh_chest_core_dark"]
+size = Vector3(0.24, 0.20, 0.16)
 
-[sub_resource type="TorusMesh" id="TorusMesh_ribbon"]
-inner_radius = 0.02
-outer_radius = 0.04
+[sub_resource type="PrismMesh" id="PrismMesh_chest_gem_mint"]
+size = Vector3(0.08, 0.06, 0.03)
 
-[sub_resource type="BoxMesh" id="BoxMesh_ponytail_seg"]
-size = Vector3(0.06, 0.18, 0.06)
+[sub_resource type="BoxMesh" id="BoxMesh_jacket_torso_hood"]
+size = Vector3(0.34, 0.22, 0.22)
 
-[sub_resource type="PrismMesh" id="PrismMesh_cat_ear"]
-size = Vector3(0.08, 0.11, 0.06)
+[sub_resource type="BoxMesh" id="BoxMesh_strap_dark"]
+size = Vector3(0.035, 0.24, 0.02)
 
-[sub_resource type="PrismMesh" id="PrismMesh_ear_led"]
-size = Vector3(0.05, 0.07, 0.02)
+[sub_resource type="BoxMesh" id="BoxMesh_sleeve_left_hood"]
+size = Vector3(0.14, 0.26, 0.14)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_tail_seg"]
+[sub_resource type="BoxMesh" id="BoxMesh_cuff_left_hood"]
+size = Vector3(0.16, 0.14, 0.16)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hand_left_dark"]
+size = Vector3(0.07, 0.08, 0.07)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sleeve_right_hood"]
+size = Vector3(0.14, 0.30, 0.14)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cuff_right_hood"]
+size = Vector3(0.18, 0.20, 0.18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hand_right_dark"]
+size = Vector3(0.07, 0.10, 0.07)
+
+[sub_resource type="BoxMesh" id="BoxMesh_monitor_casing_pink"]
+size = Vector3(0.36, 0.30, 0.26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_screen_face"]
+size = Vector2(0.28, 0.24)
+
+[sub_resource type="BoxMesh" id="BoxMesh_antenna_pink"]
+size = Vector3(0.045, 0.20, 0.04)
+
+[sub_resource type="BoxMesh" id="BoxMesh_antenna_slot_mint"]
+size = Vector3(0.025, 0.14, 0.015)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ear_dial_mint"]
+top_radius = 0.06
+bottom_radius = 0.06
+height = 0.02
+
+[sub_resource type="BoxMesh" id="BoxMesh_hoodie_back_hood"]
+size = Vector3(0.42, 0.38, 0.18)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tail_cable_dark"]
 top_radius = 0.025
 bottom_radius = 0.025
-height = 0.12
+height = 0.14
 
-[sub_resource type="SphereMesh" id="SphereMesh_tail_led"]
-radius = 0.04
-height = 0.06
+[sub_resource type="BoxMesh" id="BoxMesh_tail_clamp_pink"]
+size = Vector3(0.08, 0.08, 0.08)
+
+[sub_resource type="BoxMesh" id="BoxMesh_plug_body_pink"]
+size = Vector3(0.14, 0.10, 0.08)
+
+[sub_resource type="BoxMesh" id="BoxMesh_prong_metal"]
+size = Vector3(0.02, 0.07, 0.01)
 
 [node name="PropRoboCatGirl" type="Area3D"]
 collision_layer = 2
@@ -83,140 +117,206 @@ collision_mask = 7
 script = ExtResource("1_script")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CylinderShape3D_col")
 
-[node name="ThighLeftStocking" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07, 0.08, 0.06)
-mesh = SubResource("BoxMesh_thigh")
+[node name="ShoeSoleLeftDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12, 0.025, 0.03)
+mesh = SubResource("BoxMesh_shoe_sole")
 
-[node name="ThighRightStocking" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07, 0.08, 0.06)
-mesh = SubResource("BoxMesh_thigh")
+[node name="ShoeUpperLeftPink" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12, 0.08, 0.01)
+mesh = SubResource("BoxMesh_shoe_upper")
 
-[node name="ShinLeftStocking" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07, 0.035, 0.02)
-mesh = SubResource("BoxMesh_shin")
+[node name="ShoeStrapLeftMint" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12, 0.09, 0.03)
+mesh = SubResource("BoxMesh_shoe_strap")
 
-[node name="ShinRightStocking" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07, 0.035, 0.02)
-mesh = SubResource("BoxMesh_shin")
+[node name="ShoeSoleRightDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0.16, 0.025, 0.03)
+mesh = SubResource("BoxMesh_shoe_sole")
 
-[node name="ShoeLeftNavy" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07, 0.04, -0.15)
-mesh = SubResource("SphereMesh_shoe")
+[node name="ShoeUpperRightPink" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0.16, 0.08, 0.01)
+mesh = SubResource("BoxMesh_shoe_upper")
 
-[node name="ShoeRightNavy" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07, 0.04, -0.15)
-mesh = SubResource("SphereMesh_shoe")
+[node name="ShoeStrapRightMint" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0.16, 0.09, 0.03)
+mesh = SubResource("BoxMesh_shoe_strap")
 
-[node name="HipsNavy" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, -0.02)
-mesh = SubResource("BoxMesh_hips")
+[node name="ShinLeftDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12, 0.27, 0)
+mesh = SubResource("BoxMesh_shin_dark")
 
-[node name="SkirtMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0.18, 0.01)
-mesh = SubResource("BoxMesh_skirt")
+[node name="CalfArmorLeftPink" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12, 0.24, -0.04)
+mesh = SubResource("BoxMesh_calf_armor_pink")
 
-[node name="WaistNavy" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, -0.02)
-mesh = SubResource("BoxMesh_waist")
+[node name="KneePadLeftPink" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12, 0.44, 0.04)
+mesh = SubResource("BoxMesh_knee_pad_pink")
 
-[node name="TorsoMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.39, -0.01)
-mesh = SubResource("BoxMesh_chest")
+[node name="KneeDialLeftMint" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.17, 0.44, 0)
+mesh = SubResource("CylinderMesh_knee_dial_mint")
 
-[node name="CollarFlapNavy" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.44, -0.09)
-mesh = SubResource("BoxMesh_collar")
+[node name="ShinRightDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13, 0.27, 0)
+mesh = SubResource("BoxMesh_shin_dark")
 
-[node name="NeckSkin" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49, -0.01)
-mesh = SubResource("CylinderMesh_neck")
+[node name="CalfArmorRightPink" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13, 0.24, -0.04)
+mesh = SubResource("BoxMesh_calf_armor_pink")
 
-[node name="UpperArmLeftSkin" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.984808, 0.173648, 0, -0.157379, 0.892399, -0.422618, -0.073388, 0.416206, 0.906308, -0.14, 0.36, 0.02)
-mesh = SubResource("BoxMesh_upper_arm")
+[node name="KneePadRightPink" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13, 0.44, 0.04)
+mesh = SubResource("BoxMesh_knee_pad_pink")
 
-[node name="HandLeftSkin" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, -0.08, 0.15, 0.14)
-mesh = SubResource("BoxMesh_forearm")
+[node name="KneeDialRightMint" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.18, 0.44, 0)
+mesh = SubResource("CylinderMesh_knee_dial_mint")
 
-[node name="UpperArmRightSkin" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.984808, -0.173648, 0, 0.157379, 0.892399, -0.422618, 0.073388, 0.416206, 0.906308, 0.14, 0.36, 0.02)
-mesh = SubResource("BoxMesh_upper_arm")
+[node name="ThighLeftPink" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0, 0, 0, 1, -0.10, 0.65, 0)
+mesh = SubResource("BoxMesh_thigh_pink")
 
-[node name="HandRightSkin" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0.08, 0.15, 0.14)
-mesh = SubResource("BoxMesh_forearm")
+[node name="ThighJointLeftDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10, 0.54, 0)
+mesh = SubResource("BoxMesh_thigh_joint_dark")
+
+[node name="ThighRightPink" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, 0, 0, 1, 0.11, 0.65, 0)
+mesh = SubResource("BoxMesh_thigh_pink")
+
+[node name="ThighJointRightDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11, 0.54, 0)
+mesh = SubResource("BoxMesh_thigh_joint_dark")
+
+[node name="PelvisChassisDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0)
+mesh = SubResource("BoxMesh_pelvis_chassis")
+
+[node name="HipArmorLeftPink" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.78, 0)
+mesh = SubResource("BoxMesh_hip_armor_pink")
+
+[node name="HipArmorRightPink" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 0.78, 0)
+mesh = SubResource("BoxMesh_hip_armor_pink")
+
+[node name="WaistMidriffDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90, 0)
+mesh = SubResource("BoxMesh_waist_midriff_dark")
+
+[node name="ChestCoreDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04, 0)
+mesh = SubResource("BoxMesh_chest_core_dark")
+
+[node name="ChestGemMint" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 1.12, 0.10)
+mesh = SubResource("PrismMesh_chest_gem_mint")
+
+[node name="JacketTorsoHood" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
+mesh = SubResource("BoxMesh_jacket_torso_hood")
+
+[node name="StrapLeftDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 0.98, 0.115)
+mesh = SubResource("BoxMesh_strap_dark")
+
+[node name="StrapRightDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09, 0.98, 0.115)
+mesh = SubResource("BoxMesh_strap_dark")
+
+[node name="SleeveLeftHood" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.906308, 0.422618, 0, -0.383022, 0.821394, -0.422618, -0.178606, 0.383022, 0.906308, -0.25, 0.98, 0)
+mesh = SubResource("BoxMesh_sleeve_left_hood")
+
+[node name="CuffLeftHood" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -0.24, 0.84, 0.07)
+mesh = SubResource("BoxMesh_cuff_left_hood")
+
+[node name="HandLeftDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18, 0.77, 0.04)
+mesh = SubResource("BoxMesh_hand_left_dark")
+
+[node name="SleeveRightHood" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, 0.27, 0.96, 0)
+mesh = SubResource("BoxMesh_sleeve_right_hood")
+
+[node name="CuffRightHood" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33, 0.76, 0.02)
+mesh = SubResource("BoxMesh_cuff_right_hood")
+
+[node name="HandRightDark" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33, 0.62, 0.02)
+mesh = SubResource("BoxMesh_hand_right_dark")
 
 [node name="HeadNode" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58, 0.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36, 0)
 
-[node name="HeadBaseSkin" type="MeshInstance3D" parent="HeadNode"]
-mesh = SubResource("SphereMesh_head_base")
+[node name="MonitorCasingPink" type="MeshInstance3D" parent="HeadNode"]
+mesh = SubResource("BoxMesh_monitor_casing_pink")
 
-[node name="FaceMesh" type="MeshInstance3D" parent="HeadNode"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.095)
-mesh = SubResource("QuadMesh_face")
+[node name="ScreenFace" type="MeshInstance3D" parent="HeadNode"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.132)
+mesh = SubResource("QuadMesh_screen_face")
 
-[node name="BangsHair" type="MeshInstance3D" parent="HeadNode"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07, 0.07)
-mesh = SubResource("BoxMesh_bangs")
+[node name="HoodieBackHood" type="MeshInstance3D" parent="HeadNode"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.06)
+mesh = SubResource("BoxMesh_hoodie_back_hood")
 
-[node name="SidelockLeftHair" type="MeshInstance3D" parent="HeadNode"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11, -0.04, 0.05)
-mesh = SubResource("BoxMesh_sidelock")
+[node name="AntennaLeftPink" type="MeshInstance3D" parent="HeadNode"]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, -0.12, 0.22, 0)
+mesh = SubResource("BoxMesh_antenna_pink")
 
-[node name="SidelockRightHair" type="MeshInstance3D" parent="HeadNode"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11, -0.04, 0.05)
-mesh = SubResource("BoxMesh_sidelock")
+[node name="AntennaSlotLeftMint" type="MeshInstance3D" parent="HeadNode"]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, -0.12, 0.22, 0.021)
+mesh = SubResource("BoxMesh_antenna_slot_mint")
 
-[node name="PonytailRoot" type="Node3D" parent="HeadNode"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, -0.10)
+[node name="AntennaRightPink" type="MeshInstance3D" parent="HeadNode"]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, 0.12, 0.22, 0)
+mesh = SubResource("BoxMesh_antenna_pink")
 
-[node name="HairTieRed" type="MeshInstance3D" parent="HeadNode/PonytailRoot"]
-mesh = SubResource("TorusMesh_ribbon")
+[node name="AntennaSlotRightMint" type="MeshInstance3D" parent="HeadNode"]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, 0.12, 0.22, 0.021)
+mesh = SubResource("BoxMesh_antenna_slot_mint")
 
-[node name="PonytailStrandHair" type="MeshInstance3D" parent="HeadNode/PonytailRoot"]
-transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, -0.08, -0.04)
-mesh = SubResource("BoxMesh_ponytail_seg")
+[node name="EarDialLeftMint" type="MeshInstance3D" parent="HeadNode"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.19, 0.04, 0)
+mesh = SubResource("CylinderMesh_ear_dial_mint")
 
-[node name="EarLeft" type="Node3D" parent="HeadNode"]
-transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, -0.08, 0.12, 0.01)
-
-[node name="EarMeshHair" type="MeshInstance3D" parent="HeadNode/EarLeft"]
-mesh = SubResource("PrismMesh_cat_ear")
-
-[node name="InnerLED" type="MeshInstance3D" parent="HeadNode/EarLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.031)
-mesh = SubResource("PrismMesh_ear_led")
-
-[node name="EarRight" type="Node3D" parent="HeadNode"]
-transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, 0.08, 0.12, 0.01)
-
-[node name="EarMeshHair" type="MeshInstance3D" parent="HeadNode/EarRight"]
-mesh = SubResource("PrismMesh_cat_ear")
-
-[node name="InnerLED" type="MeshInstance3D" parent="HeadNode/EarRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.031)
-mesh = SubResource("PrismMesh_ear_led")
+[node name="EarDialRightMint" type="MeshInstance3D" parent="HeadNode"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.19, 0.04, 0)
+mesh = SubResource("CylinderMesh_ear_dial_mint")
 
 [node name="TailRoot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0.18, -0.12)
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.74, -0.10)
 
-[node name="TailSeg1Navy" type="MeshInstance3D" parent="TailRoot"]
-transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0.05, -0.04)
-mesh = SubResource("CylinderMesh_tail_seg")
+[node name="CableSeg1Dark" type="MeshInstance3D" parent="TailRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0.06, -0.06)
+mesh = SubResource("CylinderMesh_tail_cable_dark")
 
-[node name="TailSeg2Navy" type="MeshInstance3D" parent="TailRoot"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0, 0.15, -0.06)
-mesh = SubResource("CylinderMesh_tail_seg")
+[node name="CableSeg2Dark" type="MeshInstance3D" parent="TailRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0.18, -0.12)
+mesh = SubResource("CylinderMesh_tail_cable_dark")
 
-[node name="TailSeg3Navy" type="MeshInstance3D" parent="TailRoot"]
-transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0.25, -0.04)
-mesh = SubResource("CylinderMesh_tail_seg")
+[node name="TailClampPink" type="MeshInstance3D" parent="TailRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, -0.16)
+mesh = SubResource("BoxMesh_tail_clamp_pink")
 
-[node name="TailTipLED" type="MeshInstance3D" parent="TailRoot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, 0.02)
-mesh = SubResource("SphereMesh_tail_led")
+[node name="CableSeg3Dark" type="MeshInstance3D" parent="TailRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, 0.36, -0.12)
+mesh = SubResource("CylinderMesh_tail_cable_dark")
+
+[node name="PlugBodyPink" type="MeshInstance3D" parent="TailRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0, 0.46, -0.04)
+mesh = SubResource("BoxMesh_plug_body_pink")
+
+[node name="ProngLeftMetal" type="MeshInstance3D" parent="TailRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, -0.04, 0.52, 0.01)
+mesh = SubResource("BoxMesh_prong_metal")
+
+[node name="ProngRightMetal" type="MeshInstance3D" parent="TailRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0.04, 0.52, 0.01)
+mesh = SubResource("BoxMesh_prong_metal")
