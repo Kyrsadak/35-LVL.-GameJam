@@ -11,7 +11,8 @@ extends CanvasLayer
 @onready var clue_text: Label = %ClueText
 @onready var interact_prompt: Label = %InteractPrompt
 
-var message_timer: SceneTreeTimer = null
+var active_typing_tween: Tween = null
+var hide_timer: SceneTreeTimer = null
 
 func _ready() -> void:
 	if atlas_battery_display:
@@ -48,6 +49,7 @@ func _ready() -> void:
 	interact_prompt.visible = false
 	if dialogue_container:
 		dialogue_container.visible = false
+		dialogue_container.modulate.a = 0.0
 
 func set_level_info(level_num: int, title: String, mode_desc: String) -> void:
 	level_title.text = "УРОВЕНЬ " + str(level_num) + ": " + title.to_upper() + "\n" + mode_desc
@@ -69,18 +71,47 @@ func _on_robot_switched(active_robot: Node) -> void:
 	if cipher_battery_display:
 		cipher_battery_display.set_active(r_id == "cipher")
 
-func show_banner_message(text: String, duration: float = 2.0) -> void:
-	message_banner.text = text
-	if dialogue_container:
-		dialogue_container.visible = true
-	if message_timer:
-		message_timer.timeout.disconnect(_hide_banner)
-	message_timer = get_tree().create_timer(duration)
-	message_timer.timeout.connect(_hide_banner)
+func show_banner_message(text: String, duration: float = 2.5) -> void:
+	if not dialogue_container or not message_banner:
+		return
+		
+	# Cancel previous animations
+	if active_typing_tween and active_typing_tween.is_valid():
+		active_typing_tween.kill()
 
-func _hide_banner() -> void:
-	if dialogue_container:
+	dialogue_container.visible = true
+	message_banner.text = text
+	message_banner.visible_characters = 0
+	
+	var total_chars = text.length()
+	var char_speed = 0.032 # ~30 characters per second
+	var type_duration = max(0.4, total_chars * char_speed)
+	var is_catgirl = "Weo" in text or "(=^" in text or "CRT-CAT" in text
+
+	# Lively entrance animation
+	dialogue_container.scale = Vector2(0.92, 0.92)
+	dialogue_container.pivot_offset = dialogue_container.size / 2.0
+	
+	var pop_tween = create_tween().set_parallel(true)
+	pop_tween.tween_property(dialogue_container, "scale", Vector2(1.0, 1.0), 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	pop_tween.tween_property(dialogue_container, "modulate:a", 1.0, 0.15)
+
+	# Typewriter character reveal tween
+	active_typing_tween = create_tween()
+	active_typing_tween.tween_method(func(val: int):
+		message_banner.visible_characters = val
+		if val > 0 and val <= total_chars and val % 2 == 0:
+			var ch = text[val - 1]
+			if ch != " " and SoundManager and SoundManager.has_method("play_dialogue_blip"):
+				SoundManager.play_dialogue_blip(is_catgirl)
+	, 0, total_chars, type_duration)
+
+	# Keep message on screen after typing finishes, then fade out
+	active_typing_tween.tween_interval(duration)
+	active_typing_tween.tween_property(dialogue_container, "modulate:a", 0.0, 0.35)
+	active_typing_tween.tween_callback(func():
 		dialogue_container.visible = false
+	)
 
 func _on_clue_revealed(text: String) -> void:
 	clue_text.text = text

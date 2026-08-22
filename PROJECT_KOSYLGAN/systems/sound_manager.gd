@@ -4,7 +4,7 @@ extends Node
 # Generates and plays audio effects in pure GDScript (zero external assets needed)
 
 var sfx_players: Array[AudioStreamPlayer] = []
-var max_players: int = 8
+var max_players: int = 12
 
 var sample_rate: int = 22050
 
@@ -195,4 +195,26 @@ func play_tablet_read() -> void:
 	var player = _get_free_player()
 	player.stream = _create_wav(bytes)
 	player.volume_db = -6.0
+	player.play()
+
+# 9. Typewriter / Cyber Dialogue Blip
+func play_dialogue_blip(is_catgirl: bool = false) -> void:
+	var duration = 0.032
+	var num_samples = int(sample_rate * duration)
+	var bytes = PackedByteArray()
+	bytes.resize(num_samples * 2)
+	
+	var base_freq = 720.0 if is_catgirl else 440.0
+	for i in range(num_samples):
+		var t = float(i) / sample_rate
+		var env = sin((float(i) / num_samples) * PI)
+		var freq = base_freq + sin(t * 140.0) * 100.0
+		var s = sin(t * freq * TAU) * 0.5 + sin(t * freq * 2.0 * TAU) * 0.2
+		var val = int(clamp(s * env * 20000.0, -32767, 32767))
+		bytes.encode_s16(i * 2, val)
+	
+	var player = _get_free_player()
+	player.stream = _create_wav(bytes)
+	player.volume_db = -12.0
+	player.pitch_scale = randf_range(0.94, 1.18)
 	player.play()
