@@ -84,8 +84,8 @@ func show_banner_message(text: String, duration: float = 2.5) -> void:
 	message_banner.visible_characters = 0
 	
 	var total_chars = text.length()
-	var char_speed = 0.032 # ~30 characters per second
-	var type_duration = max(0.4, total_chars * char_speed)
+	var char_speed = 0.042 # 30% slower typing speed for better readability
+	var type_duration = max(0.55, total_chars * char_speed)
 	var is_catgirl = "Weo" in text or "(=^" in text or "CRT-CAT" in text
 
 	# Lively entrance animation
