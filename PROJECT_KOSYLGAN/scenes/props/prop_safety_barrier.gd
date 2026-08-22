@@ -1,44 +1,43 @@
 class_name PropSafetyBarrier
 extends StaticBody3D
 
-@onready var flasher_left: MeshInstance3D = find_child("FlasherLeft", true, false) as MeshInstance3D
-@onready var flasher_right: MeshInstance3D = find_child("FlasherRight", true, false) as MeshInstance3D
-
-var flasher_mat: StandardMaterial3D
-var anim_time: float = 0.0
-
 func _ready() -> void:
-	# 1. Main Barrier Texture
-	var path = "res://assets/textures/tex_safety_barrier.png"
-	var global_p = ProjectSettings.globalize_path(path)
-	var img = Image.load_from_file(global_p)
-	if img:
-		img.generate_mipmaps()
-		var tex = ImageTexture.create_from_image(img)
-		var mat = StandardMaterial3D.new()
-		mat.albedo_texture = tex
-		mat.metallic = 0.1
-		mat.roughness = 0.6
-		mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-		
-		for child in find_children("*", "MeshInstance3D", true, false):
-			var m = child as MeshInstance3D
-			if m and not m.name.begins_with("Flasher"):
-				m.set_surface_override_material(0, mat)
+	# 1. Main Board with Diagonal Stripes
+	var path_stripes = "res://assets/textures/tex_safety_barrier_stripes.png"
+	var img_stripes = Image.load_from_file(ProjectSettings.globalize_path(path_stripes))
+	if img_stripes:
+		img_stripes.generate_mipmaps()
+		var mat_s = StandardMaterial3D.new()
+		mat_s.albedo_texture = ImageTexture.create_from_image(img_stripes)
+		mat_s.metallic = 0.02
+		mat_s.roughness = 0.45
+		mat_s.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+		var board = find_child("MainBoard", true, false) as MeshInstance3D
+		if board: board.set_surface_override_material(0, mat_s)
 
-	# 2. Amber Flasher Beacon Material
-	flasher_mat = StandardMaterial3D.new()
-	flasher_mat.albedo_color = Color(1.0, 0.75, 0.15)
-	flasher_mat.emission_enabled = true
-	flasher_mat.emission = Color(1.0, 0.70, 0.10)
-	flasher_mat.emission_energy_multiplier = 1.8
-	flasher_mat.roughness = 0.2
-	
-	if flasher_left: flasher_left.set_surface_override_material(0, flasher_mat)
-	if flasher_right: flasher_right.set_surface_override_material(0, flasher_mat)
+	# 2. Smooth Orange for Legs and Frame
+	var mat_orange = StandardMaterial3D.new()
+	mat_orange.albedo_color = Color(0.97, 0.44, 0.09)
+	mat_orange.metallic = 0.02
+	mat_orange.roughness = 0.5
+	for leg in find_children("Leg*", "MeshInstance3D", true, false):
+		(leg as MeshInstance3D).set_surface_override_material(0, mat_orange)
+	var lower = find_child("LowerBeam", true, false) as MeshInstance3D
+	if lower: lower.set_surface_override_material(0, mat_orange)
 
-func _process(delta: float) -> void:
-	anim_time += delta * 5.0
-	if flasher_mat:
-		var flash = 0.8 + 1.2 * max(0.0, sin(anim_time))
-		flasher_mat.emission_energy_multiplier = flash
+	# 3. Dark Collars for Beacons
+	var mat_collar = StandardMaterial3D.new()
+	mat_collar.albedo_color = Color(0.25, 0.18, 0.14)
+	mat_collar.roughness = 0.6
+	for collar in find_children("Collar*", "MeshInstance3D", true, false):
+		(collar as MeshInstance3D).set_surface_override_material(0, mat_collar)
+
+	# 4. Glowing Warm Yellow Disc Lights
+	var mat_light = StandardMaterial3D.new()
+	mat_light.albedo_color = Color(1.0, 0.76, 0.12)
+	mat_light.emission_enabled = true
+	mat_light.emission = Color(1.0, 0.72, 0.10)
+	mat_light.emission_energy_multiplier = 1.4
+	mat_light.roughness = 0.25
+	for lens in find_children("Lens*", "MeshInstance3D", true, false):
+		(lens as MeshInstance3D).set_surface_override_material(0, mat_light)
