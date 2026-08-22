@@ -8,17 +8,60 @@ extends Area3D
 @export var clue_id: String = "guide_1"
 @export var target_gate_path: NodePath
 
-var screen_mesh: MeshInstance3D = null
-var omni_light: OmniLight3D = null
+@onready var front_hatch: MeshInstance3D = $FrontHatch
+@onready var screen_mesh: MeshInstance3D = $AngledTop/ScreenMesh
+@onready var omni_light: OmniLight3D = $OmniLight3D
 
 var is_hacked: bool = false
 var minigame_scene = preload("res://minigames/wire_cutting.tscn")
+var time_passed: float = 0.0
 
 func _ready() -> void:
-	screen_mesh = find_child("ScreenMesh", true, false) as MeshInstance3D
-	omni_light = find_child("OmniLight3D", true, false) as OmniLight3D
 	add_to_group("terminal")
 	add_to_group("interactable")
+
+	# Apply Front Hatch Texture
+	if front_hatch:
+		var path_f = "res://assets/textures/tex_terminal_front.png"
+		var global_f = ProjectSettings.globalize_path(path_f)
+		var img_f = Image.load_from_file(global_f)
+		if img_f:
+			var tex_f = ImageTexture.create_from_image(img_f)
+			var mat_f = StandardMaterial3D.new()
+			mat_f.albedo_texture = tex_f
+			mat_f.metallic = 0.55
+			mat_f.roughness = 0.4
+			mat_f.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			front_hatch.set_surface_override_material(0, mat_f)
+
+	# Apply Screen Deck Texture (Locked)
+	_update_screen_texture(false)
+
+func _process(delta: float) -> void:
+	time_passed += delta
+	if omni_light:
+		if is_hacked:
+			omni_light.light_energy = 0.8 + 0.15 * sin(time_passed * 2.0)
+		else:
+			# Slow pulsing amber/red security beacon
+			omni_light.light_energy = 0.6 + 0.3 * sin(time_passed * 3.5)
+
+func _update_screen_texture(solved: bool) -> void:
+	if screen_mesh:
+		var path_s = "res://assets/textures/tex_terminal_screen_solved.png" if solved else "res://assets/textures/tex_terminal_screen.png"
+		var global_s = ProjectSettings.globalize_path(path_s)
+		var img_s = Image.load_from_file(global_s)
+		if img_s:
+			var tex_s = ImageTexture.create_from_image(img_s)
+			var mat_s = StandardMaterial3D.new()
+			mat_s.albedo_texture = tex_s
+			mat_s.emission_enabled = true
+			mat_s.emission_texture = tex_s
+			mat_s.emission_energy_multiplier = 0.9 if solved else 0.75
+			mat_s.metallic = 0.45
+			mat_s.roughness = 0.35
+			mat_s.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			screen_mesh.set_surface_override_material(0, mat_s)
 
 func start_hack(robot: Node) -> void:
 	if is_hacked:
@@ -35,13 +78,10 @@ func _on_hack_completed(success: bool) -> void:
 	if success:
 		is_hacked = true
 		if omni_light:
-			omni_light.light_color = Color(0.1, 1.0, 0.3)
-		if screen_mesh:
-			var mat = StandardMaterial3D.new()
-			mat.albedo_color = Color(0.1, 1.0, 0.3)
-			mat.emission_enabled = true
-			mat.emission = Color(0.1, 1.0, 0.3)
-			screen_mesh.material_override = mat
+			omni_light.light_color = Color(0.2, 1.0, 0.4)
+			omni_light.light_energy = 1.0
+		
+		_update_screen_texture(true)
 
 		if not target_gate_path.is_empty():
 			var gate = get_node_or_null(target_gate_path)
