@@ -13,26 +13,24 @@ var charging_station: Node3D = null
 var camera_pivot: Node3D = null
 
 var current_level_index: int = 1
-var is_auto_switch_mode: bool = true
 var is_game_paused: bool = false
 
 var discovered_clues: Dictionary = {}
 
 func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station: Node3D, cam_pivot: Node3D = null) -> void:
 	current_level_index = level_idx
-	is_auto_switch_mode = (level_idx == 1)
 	atlas = atlas_node
 	cipher = cipher_node
 	charging_station = station
 	camera_pivot = cam_pivot
 	discovered_clues.clear()
 
-	# Configure battery discharge rates per level according to design doc
-	var rate = 2.2 # ~45s on lvl 1
+	# Configure battery discharge rates per level
+	var rate = 2.0 # ~50s on lvl 1
 	if level_idx == 2:
-		rate = 2.85 # ~35s on lvl 2
+		rate = 2.5 # ~40s on lvl 2
 	elif level_idx >= 3:
-		rate = 3.33 # ~30s on lvl 3
+		rate = 3.0 # ~33s on lvl 3
 
 	if atlas:
 		if "discharge_rate" in atlas:
@@ -77,23 +75,14 @@ func try_switch_robot() -> void:
 	
 	var target_robot = cipher if active_robot == atlas else atlas
 	var target_name = target_robot.robot_display_name if "robot_display_name" in target_robot else "РОБОТ"
-	var current_name = active_robot.robot_display_name if "robot_display_name" in active_robot else "РОБОТ"
 
-	if is_auto_switch_mode:
-		# Level 1: Auto dock current robot at station
-		if charging_station:
-			active_robot.global_position = charging_station.global_position
-			active_robot.velocity = Vector3.ZERO
-		set_active_robot(target_robot)
-		show_message("🔄 Переключение на " + target_name, 1.5)
-	else:
-		# Level 2 & 3: Must be at charging station to switch
-		var on_station = active_robot.is_on_charging_station if "is_on_charging_station" in active_robot else false
-		if on_station:
-			set_active_robot(target_robot)
-			show_message("🔄 Переключение на " + target_name, 1.5)
-		else:
-			show_message("⚠️ Верните " + current_name + " на зарядную станцию для смены!", 2.5)
+	# Stop motion of current robot so it stands still where it is
+	if active_robot is CharacterBody3D:
+		active_robot.velocity = Vector3.ZERO
+
+	# Switch control without any teleportation
+	set_active_robot(target_robot)
+	show_message("🔄 Управление: " + target_name, 1.5)
 
 func _on_robot_discharged(robot: Node) -> void:
 	var r_name = robot.robot_display_name if "robot_display_name" in robot else "РОБОТ"

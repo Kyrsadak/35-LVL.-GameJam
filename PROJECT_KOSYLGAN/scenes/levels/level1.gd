@@ -10,4 +10,4 @@ func _ready() -> void:
 	if RobotManager:
 		RobotManager.register_level(1, atlas, cipher, charging_station, camera_pivot)
 	if hud and hud.has_method("set_level_info"):
-		hud.set_level_info(1, "Энергоблок", "Обучение: Нажмите TAB для авто-смены робота")
+		hud.set_level_info(1, "Энергоблок", "TAB: Смена робота | E: Действие / Поднять ящик (Atlas)")
