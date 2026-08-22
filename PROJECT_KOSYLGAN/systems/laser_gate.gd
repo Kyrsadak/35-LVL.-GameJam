@@ -18,7 +18,7 @@ func _ready() -> void:
 	_apply_door_state(is_active, true)
 
 func _load_textures() -> void:
-	# 1. Door Leaf texture
+	# 1. Door Leaf Texture
 	var path_leaf = "res://assets/textures/tex_lab_door_leaf.png"
 	var global_leaf = ProjectSettings.globalize_path(path_leaf)
 	var img_leaf = Image.load_from_file(global_leaf)
@@ -27,8 +27,8 @@ func _load_textures() -> void:
 		var tex_l = ImageTexture.create_from_image(img_leaf)
 		var mat_l = StandardMaterial3D.new()
 		mat_l.albedo_texture = tex_l
-		mat_l.metallic = 0.65
-		mat_l.roughness = 0.35
+		mat_l.metallic = 0.4
+		mat_l.roughness = 0.5
 		mat_l.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 		
 		var mesh_l = find_child("MeshLeft", true, false) as MeshInstance3D
@@ -36,7 +36,7 @@ func _load_textures() -> void:
 		if mesh_l: mesh_l.set_surface_override_material(0, mat_l)
 		if mesh_r: mesh_r.set_surface_override_material(0, mat_l)
 	
-	# 2. Door Frame texture
+	# 2. Door Frame Texture
 	if door_frame:
 		var path_f = "res://assets/textures/tex_lab_door_frame.png"
 		var global_f = ProjectSettings.globalize_path(path_f)
@@ -46,8 +46,8 @@ func _load_textures() -> void:
 			var tex_f = ImageTexture.create_from_image(img_f)
 			var mat_f = StandardMaterial3D.new()
 			mat_f.albedo_texture = tex_f
-			mat_f.metallic = 0.5
-			mat_f.roughness = 0.45
+			mat_f.metallic = 0.3
+			mat_f.roughness = 0.6
 			mat_f.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 			door_frame.set_surface_override_material(0, mat_f)
 	
@@ -65,13 +65,15 @@ func _apply_door_state(closed: bool, immediate: bool) -> void:
 	if collision_shape:
 		collision_shape.set_deferred("disabled", not closed)
 	
-	var target_left_x = -0.78 if closed else -2.25
-	var target_right_x = 0.78 if closed else 2.25
+	# Closed: left and right leaves overlap securely in center (0 gap!)
+	# Open: leaves retract into wall pockets (clear opening)
+	var target_left_x = -1.18 if closed else -2.90
+	var target_right_x = 1.18 if closed else 2.90
 	var color = Color(1.0, 0.25, 0.15) if closed else Color(0.2, 1.0, 0.45)
 	
 	if status_light:
 		status_light.light_color = color
-		status_light.light_energy = 1.2 if closed else 1.8
+		status_light.light_energy = 0.9 if closed else 1.5
 	
 	if beacon_mat:
 		beacon_mat.albedo_color = color
