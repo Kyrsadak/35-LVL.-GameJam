@@ -83,10 +83,14 @@ func _on_hack_completed(success: bool) -> void:
 		
 		_update_screen_texture(true)
 
+		var gate = null
 		if not target_gate_path.is_empty():
-			var gate = get_node_or_null(target_gate_path)
-			if gate and gate.has_method("open"):
-				gate.open()
+			gate = get_node_or_null(target_gate_path)
+		if not gate:
+			gate = get_tree().get_first_node_in_group("laser_gate")
+		
+		if gate and gate.has_method("open"):
+			gate.open()
 
 		if RobotManager:
-			RobotManager.show_message("🔓 Взлом успешен! Защитный барьер отключен.")
+			RobotManager.show_message("🔓 Взлом успешен! Защитные гермодвери открыты.")

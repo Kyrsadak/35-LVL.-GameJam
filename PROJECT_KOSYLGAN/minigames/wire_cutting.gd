@@ -12,14 +12,14 @@ var terminal_ref: Node = null
 var current_cut_step: int = 0
 var cut_wires: Array[int] = []
 
-# Wire palette matching the pixel-art reference
+# Wire palette matching the clue guidelines 100%
 var wire_palette = [
+	{"name": "КРАСНЫЙ", "color": Color(0.92, 0.22, 0.22), "highlight": Color(1.0, 0.60, 0.60), "dark": Color(0.55, 0.10, 0.10), "symbol": "✖"},
 	{"name": "СИНИЙ", "color": Color(0.18, 0.52, 0.95), "highlight": Color(0.55, 0.78, 1.0), "dark": Color(0.08, 0.28, 0.60), "symbol": "■"},
 	{"name": "ЗЕЛЁНЫЙ", "color": Color(0.20, 0.82, 0.40), "highlight": Color(0.60, 0.96, 0.70), "dark": Color(0.08, 0.48, 0.20), "symbol": "●"},
-	{"name": "КРАСНЫЙ", "color": Color(0.92, 0.22, 0.22), "highlight": Color(1.0, 0.60, 0.60), "dark": Color(0.55, 0.10, 0.10), "symbol": "✖"},
 	{"name": "ЖЁЛТЫЙ", "color": Color(0.96, 0.82, 0.15), "highlight": Color(1.0, 0.95, 0.60), "dark": Color(0.60, 0.50, 0.08), "symbol": "▲"},
 	{"name": "ОРАНЖЕВЫЙ", "color": Color(0.96, 0.55, 0.15), "highlight": Color(1.0, 0.78, 0.50), "dark": Color(0.60, 0.30, 0.08), "symbol": "★"},
-	{"name": "ФИОЛЕТОВЫЙ", "color": Color(0.75, 0.25, 0.95), "highlight": Color(0.90, 0.65, 1.0), "dark": Color(0.45, 0.12, 0.60), "symbol": "◆"}
+	{"name": "БЕЛЫЙ", "color": Color(0.92, 0.94, 0.96), "highlight": Color(1.0, 1.0, 1.0), "dark": Color(0.50, 0.52, 0.56), "symbol": "◆"}
 ]
 
 # Spark particle struct for visual juice
