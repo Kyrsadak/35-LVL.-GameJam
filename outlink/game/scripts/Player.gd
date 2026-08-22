@@ -13,9 +13,9 @@ enum State { TETHERED, INDEPENDENT }
 @export_range(100.0, 800.0, 10.0, "suffix:px/s") var independent_speed: float = 360.0
 
 @export_group("Механика Троса (Tether & Slingshot)")
-@export_range(100.0, 800.0, 10.0, "suffix:px") var max_tether_length: float = 260.0
-@export_range(200.0, 1500.0, 20.0, "suffix:px/s") var slingshot_power_min: float = 380.0
-@export_range(200.0, 2000.0, 20.0, "suffix:px/s") var slingshot_power_max: float = 820.0
+@export_range(100.0, 800.0, 10.0, "suffix:px") var max_tether_length: float = 280.0
+@export_range(200.0, 1500.0, 20.0, "suffix:px/s") var slingshot_power_min: float = 450.0
+@export_range(200.0, 2000.0, 20.0, "suffix:px/s") var slingshot_power_max: float = 950.0
 @export_range(0.0, 1.0, 0.05) var release_threshold: float = 0.35 ## Минимальное натяжение для рывка
 
 @export_group("Батарея и Автономность")
@@ -128,6 +128,8 @@ func _physics_independent(delta: float, input_vector: Vector2) -> void:
 func break_tether() -> void:
 	current_state = State.INDEPENDENT
 	current_battery = max_battery
+	tension = 0.0
+	EventBus.tension_changed.emit(0.0)
 
 	# Базовое направление рывка — ОТ якоря к игроку
 	var away_from_socket := (global_position - current_socket_pos).normalized()

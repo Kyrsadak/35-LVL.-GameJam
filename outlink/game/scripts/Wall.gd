@@ -38,8 +38,11 @@ func _apply_size() -> void:
 	if e:
 		var hs2 := size * 0.5 - Vector2(2, 2)
 		e.polygon = PackedVector2Array([Vector2(-hs2.x, -hs2.y), Vector2(hs2.x, -hs2.y), Vector2(hs2.x, hs2.y), Vector2(-hs2.x, hs2.y)])
-	if sh and sh.shape is RectangleShape2D:
-		(sh.shape as RectangleShape2D).size = size
+	if sh:
+		# Создаем УНИКАЛЬНЫЙ шейп для каждой стены, чтобы они не делили один ресурс и не блокировали проходы!
+		var rect := RectangleShape2D.new()
+		rect.size = size
+		sh.shape = rect
 
 func _apply_color() -> void:
 	var b := get_node_or_null("Body") as Polygon2D

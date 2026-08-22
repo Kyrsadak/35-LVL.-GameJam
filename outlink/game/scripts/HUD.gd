@@ -49,16 +49,23 @@ func _on_battery_changed(current: float, max_val: float) -> void:
 
 func _on_tension_changed(t: float) -> void:
 	tension_bar.value = t * 100.0
-	tension_label.text = "НАТЯЖЕНИЕ: %d%%" % int(t * 100.0)
-	if t >= 0.9:
-		tension_bar.modulate = Color(1.0, 0.3, 0.3)
-	elif t >= 0.6:
+	if t >= 0.85:
+		tension_label.text = "НАТЯЖЕНИЕ: %d%% — [ЖМИ ПРОБЕЛ!]" % int(t * 100.0)
+		tension_bar.modulate = Color(1.0, 0.25, 0.25)
+		_set_status("⚠️ ПРЕДЕЛ ТРОСА! НАЖМИ [ SPACE ] ДЛЯ РЫВКА ВПЕРЕД", Color(1.0, 0.85, 0.2))
+	elif t >= 0.5:
+		tension_label.text = "НАТЯЖЕНИЕ: %d%%" % int(t * 100.0)
 		tension_bar.modulate = Color(1.0, 0.8, 0.3)
+		_set_status("РЕЖИМ: НА ПРИВЯЗИ (ТРОС НАТЯГИВАЕТСЯ)", Color(0.35, 0.85, 1.0))
 	else:
+		tension_label.text = "НАТЯЖЕНИЕ: %d%%" % int(t * 100.0)
 		tension_bar.modulate = Color(0.4, 0.9, 1.0)
+		_set_status("РЕЖИМ: НА ПРИВЯЗИ (БЕЗОПАСНОСТЬ)", Color(0.35, 0.85, 1.0))
 
 func _on_tether_broken(_impulse: Vector2, _tension: float) -> void:
-	_set_status("АВТОНОМНОСТЬ! БАТАРЕЯ ТАЕТ!", Color(1.0, 0.3, 0.3))
+	_set_status("🚀 АВТОНОМНОСТЬ! ЛЕТИ К СЛЕДУЮЩЕМУ ОАЗИСУ!", Color(1.0, 0.3, 0.3))
+	tension_label.text = "НАТЯЖЕНИЕ: ТРОС ОТОДРАН"
+	tension_bar.value = 0.0
 
 func _on_socket_reached(_pos: Vector2, _progress_value: int) -> void:
 	_set_status("ПОДЗАРЯДКА / ПРИВЯЗЬ ВОССТАНОВЛЕНА", Color(0.4, 1.0, 0.55))

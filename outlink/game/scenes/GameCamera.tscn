@@ -3,6 +3,5 @@
 [ext_resource type="Script" path="res://game/scripts/GameCamera.gd" id="1_cam"]
 
 [node name="GameCamera" type="Camera2D"]
-anchor_mode = 0
 zoom = Vector2(1, 1)
 script = ExtResource("1_cam")
