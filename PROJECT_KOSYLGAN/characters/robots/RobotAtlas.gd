@@ -49,9 +49,9 @@ func interact() -> void:
 		_pick_up_object(current_interactable)
 		return
 
-	# 6. Check generic interactable (like RoboCatGirl)
+	# 6. Check generic interactable (like RoboCatGirl or ChargingStation)
 	if current_interactable and current_interactable.has_method("interact"):
-		current_interactable.interact()
+		current_interactable.interact(self)
 		return
 
 func _pick_up_object(obj: Node3D) -> void:
