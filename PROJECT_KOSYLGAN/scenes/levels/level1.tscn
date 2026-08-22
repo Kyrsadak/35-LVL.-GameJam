@@ -263,7 +263,7 @@ transform = Transform3D(0.819152, 0, -0.573576, 0, 1, 0, 0.573576, 0, 0.819152, 
 
 
 [node name="PosterMonsterWhite1" parent="Furniture" instance=ExtResource("48_poster_monster")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 2.0, -6.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 2.05, -6.45)
 
 [node name="TrashBin1" parent="Furniture" instance=ExtResource("46_trash_bin")]
 transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -6.8, 0, -5.6)
