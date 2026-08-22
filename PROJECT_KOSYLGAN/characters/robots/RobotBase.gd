@@ -78,9 +78,15 @@ func _physics_process(delta: float) -> void:
 	# Dynamic Battery Drain & Charge Logic
 	if is_on_charging_station:
 		# Strictly charge only: zero drain while docked
+		velocity = Vector3.ZERO
 		if battery < max_battery:
 			battery = min(max_battery, battery + charge_rate * delta)
 			battery_changed.emit(battery, max_battery)
+		if is_active:
+			_handle_input()
+		if skin:
+			skin.update_move_animation(0.0, delta)
+		return # Prevent physics engine from ever pushing robot upwards onto roof
 	elif is_active:
 		var current_drain = discharge_rate
 		# Increase drain when moving

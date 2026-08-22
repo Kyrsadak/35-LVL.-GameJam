@@ -183,6 +183,12 @@ func _process(delta: float) -> void:
 			plasma_ring_2.rotation.y -= delta * 1.5
 		if laser_ring:
 			laser_ring.position.y = -0.12 + sin(scan_time * 2.0) * 0.06
+			
+		# Hold docked robot firmly on the floor dock pad inside capsule
+		if docked_robot:
+			docked_robot.global_position = global_position + Vector3(0, 0.23, 0)
+			if docked_robot is CharacterBody3D:
+				docked_robot.velocity = Vector3.ZERO
 	else:
 		if light_omni:
 			light_omni.light_energy = 1.3 + sin(scan_time * 0.8) * 0.2
@@ -223,10 +229,17 @@ func dock_robot(robot: Node3D) -> void:
 	if "is_on_charging_station" in robot:
 		robot.is_on_charging_station = true
 	
-	# Smoothly glide robot inside to the center of the docking pad
-	var target_dock_pos = global_position + Vector3(0, 0.24, 0)
-	var glide_tween = create_tween().set_parallel(true)
-	glide_tween.tween_property(robot, "global_position", target_dock_pos, 0.30).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	# Disable solid station collider so physics engine NEVER pops robot up onto roof
+	if station_collider:
+		var col = station_collider.get_node_or_null("CollisionShape3D")
+		if col:
+			col.set_deferred("disabled", true)
+	
+	# Instantly and firmly place robot on floor dock pad inside capsule
+	var target_dock_pos = global_position + Vector3(0, 0.23, 0)
+	robot.global_position = target_dock_pos
+	if robot is CharacterBody3D:
+		robot.velocity = Vector3.ZERO
 	
 	# Play high-tech docking animation
 	_play_dock_animation(true)
@@ -246,19 +259,28 @@ func undock_robot(robot: Node3D) -> void:
 	if "is_on_charging_station" in robot:
 		robot.is_on_charging_station = false
 		
+	var r = docked_robot
 	docked_robot = null
 	is_docked = false
 	
 	# Smoothly step robot OUT in front of the capsule
 	var exit_pos = global_position + Vector3(0, 0.05, 1.45)
+	if r is CharacterBody3D:
+		r.velocity = Vector3.ZERO
 	var exit_tween = create_tween()
-	exit_tween.tween_property(robot, "global_position", exit_pos, 0.30).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	exit_tween.tween_property(r, "global_position", exit_pos, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	exit_tween.tween_callback(func():
+		if station_collider:
+			var col = station_collider.get_node_or_null("CollisionShape3D")
+			if col:
+				col.set_deferred("disabled", false)
+	)
 	
 	_play_dock_animation(false)
 	if SoundManager and SoundManager.has_method("play_drop"):
 		SoundManager.play_drop()
 		
-	robot_undocked.emit(robot)
+	robot_undocked.emit(r)
 
 func _play_dock_animation(dock: bool) -> void:
 	if anim_tween and anim_tween.is_valid():
