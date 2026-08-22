@@ -37,13 +37,13 @@ alignment = 1
 
 [node name="AtlasBatteryDisplay" type="Control" parent="TopMargin/HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(250, 48)
+custom_minimum_size = Vector2(330, 74)
 layout_mode = 2
 size_flags_horizontal = 2
 script = ExtResource("2_bat")
 robot_name = "ATLAS"
 robot_role = "HEAVY LOADER // SHIELD"
-theme_color = Color(0.2, 0.65, 0.95, 1)
+theme_color = Color(0.0, 0.9, 1.0, 1)
 
 [node name="LevelInfo" type="VBoxContainer" parent="TopMargin/HBox"]
 layout_mode = 2
@@ -59,13 +59,13 @@ horizontal_alignment = 1
 
 [node name="CipherBatteryDisplay" type="Control" parent="TopMargin/HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(250, 48)
+custom_minimum_size = Vector2(330, 74)
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("2_bat")
 robot_name = "CIPHER"
 robot_role = "INFILTRATOR // HACKER"
-theme_color = Color(0.98, 0.56, 0.16, 1)
+theme_color = Color(1.0, 0.6, 0.05, 1)
 
 [node name="CluePanel" type="PanelContainer" parent="."]
 unique_name_in_owner = true
