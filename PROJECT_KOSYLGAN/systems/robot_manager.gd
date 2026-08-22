@@ -35,6 +35,7 @@ func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station
 	if atlas:
 		if "discharge_rate" in atlas:
 			atlas.discharge_rate = rate
+			atlas.charge_rate = rate * 1.5
 		if atlas.has_signal("discharged") and not atlas.discharged.is_connected(_on_robot_discharged):
 			atlas.discharged.connect(_on_robot_discharged.bind(atlas))
 		if atlas.has_signal("guide_read") and not atlas.guide_read.is_connected(_on_guide_read):
@@ -45,6 +46,7 @@ func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station
 	if cipher:
 		if "discharge_rate" in cipher:
 			cipher.discharge_rate = rate
+			cipher.charge_rate = rate * 1.5
 		if cipher.has_signal("discharged") and not cipher.discharged.is_connected(_on_robot_discharged):
 			cipher.discharged.connect(_on_robot_discharged.bind(cipher))
 		if "battery" in cipher and "max_battery" in cipher:

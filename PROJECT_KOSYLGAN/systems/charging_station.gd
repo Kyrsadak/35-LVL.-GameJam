@@ -2,9 +2,9 @@ class_name ChargingStation
 extends Area3D
 
 ## High-Tech Sci-Fi Cryo-Charging Capsule based on user reference concept art.
-## Features stepped docking pedestal, heavy hydraulic clamps, transparent glass chamber
-## with "20" stencil decal, top generator roof cap, volumetric energy lighting,
-## single-robot capacity limit, and [E] key docking/undocking mechanic.
+## Features stepped docking pedestal, 3D glowing energy conduits, dynamic stencil digit display,
+## clean titanium base plate (no yellow hazard stripes), full solid physical perimeter collision,
+## and [E] key only docking and undocking.
 
 signal robot_docked(robot: Node3D)
 signal robot_undocked(robot: Node3D)
@@ -20,19 +20,24 @@ signal robot_undocked(robot: Node3D)
 @onready var plasma_ring_2: MeshInstance3D = $EnergyField/PlasmaRing2
 @onready var floor_dock_pad: MeshInstance3D = $BasePlatform/FloorDockPad
 @onready var outer_hazard_mesh: MeshInstance3D = $BasePlatform/OuterHazardMesh
+@onready var station_collider: StaticBody3D = $StationCollider
 @onready var clamp_leds: Array[MeshInstance3D] = []
+@onready var conduit_meshes: Array[MeshInstance3D] = []
 
 var docked_robot: Node3D = null
 var nearby_robots: Array[Node3D] = []
 var is_docked: bool = false
 var anim_tween: Tween = null
 var scan_time: float = 0.0
+var _current_displayed_pct: int = -999
 
 var glass_material: StandardMaterial3D
 var plasma_material: StandardMaterial3D
 var led_material: StandardMaterial3D
 var yellow_trim_material: StandardMaterial3D
 var dark_metal_material: StandardMaterial3D
+var conduit_material: StandardMaterial3D
+var decal_material: StandardMaterial3D
 
 func _ready() -> void:
 	add_to_group("charging_station")
@@ -51,7 +56,7 @@ func _setup_materials_and_textures() -> void:
 	dark_metal_material.metallic = 0.85
 	dark_metal_material.roughness = 0.32
 	
-	# 2. Hazard Yellow Trim
+	# 2. Yellow Trim (Caps & Clamps)
 	yellow_trim_material = StandardMaterial3D.new()
 	yellow_trim_material.albedo_color = Color(1.0, 0.78, 0.08)
 	yellow_trim_material.metallic = 0.5
@@ -63,7 +68,7 @@ func _setup_materials_and_textures() -> void:
 	# 3. Transparent Cryo Glass
 	glass_material = StandardMaterial3D.new()
 	glass_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	glass_material.albedo_color = Color(0.65, 0.90, 1.0, 0.22)
+	glass_material.albedo_color = Color(0.65, 0.90, 1.0, 0.20)
 	glass_material.metallic = 0.15
 	glass_material.roughness = 0.05
 	glass_material.rim_enabled = true
@@ -73,28 +78,44 @@ func _setup_materials_and_textures() -> void:
 	if glass_mesh:
 		glass_mesh.set_surface_override_material(0, glass_material)
 	
-	# 4. Glass Decal "20" Texture
-	var decal_tex = _generate_decal_texture()
-	var decal_mat = StandardMaterial3D.new()
-	decal_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	decal_mat.albedo_texture = decal_tex
-	decal_mat.emission_enabled = true
-	decal_mat.emission_texture = decal_tex
-	decal_mat.emission_energy_multiplier = 0.8
-	decal_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	# 4. Glass Decal Dynamic Number Display Texture
+	decal_material = StandardMaterial3D.new()
+	decal_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	decal_material.emission_enabled = true
+	decal_material.emission_energy_multiplier = 1.2
+	decal_material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+	decal_material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	_update_decal_texture("00")
 	if glass_decal_mesh:
-		glass_decal_mesh.set_surface_override_material(0, decal_mat)
+		glass_decal_mesh.set_surface_override_material(0, decal_material)
 	
-	# 5. Outer Base Hazard Stripes Texture
-	var hazard_tex = _generate_hazard_stripes_texture()
-	var hazard_mat = StandardMaterial3D.new()
-	hazard_mat.albedo_texture = hazard_tex
-	hazard_mat.metallic = 0.6
-	hazard_mat.roughness = 0.45
+	# 5. Outer Base Sleek Titanium Plate Texture (No yellow stripes)
+	var base_tex = _generate_sleek_base_texture()
+	var base_mat = StandardMaterial3D.new()
+	base_mat.albedo_texture = base_tex
+	base_mat.metallic = 0.75
+	base_mat.roughness = 0.35
+	base_mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	if outer_hazard_mesh:
-		outer_hazard_mesh.set_surface_override_material(0, hazard_mat)
+		outer_hazard_mesh.set_surface_override_material(0, base_mat)
 	
-	# 6. Plasma Energy Rings Material
+	# 6. 3D Energy Conduits / Cables Material
+	conduit_material = StandardMaterial3D.new()
+	conduit_material.albedo_color = Color(0.0, 0.85, 1.0)
+	conduit_material.metallic = 0.4
+	conduit_material.roughness = 0.3
+	conduit_material.emission_enabled = true
+	conduit_material.emission = Color(0.0, 0.85, 1.0)
+	conduit_material.emission_energy_multiplier = 1.6
+	
+	var conduits_root = get_node_or_null("BasePlatform/BaseConduits")
+	if conduits_root:
+		for conduit in conduits_root.get_children():
+			if conduit is MeshInstance3D:
+				conduit_meshes.append(conduit)
+				conduit.set_surface_override_material(0, conduit_material)
+	
+	# 7. Plasma Energy Rings Material
 	plasma_material = StandardMaterial3D.new()
 	plasma_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	plasma_material.albedo_color = Color(0.0, 0.9, 1.0, 0.75)
@@ -104,14 +125,13 @@ func _setup_materials_and_textures() -> void:
 	if plasma_ring_1: plasma_ring_1.set_surface_override_material(0, plasma_material)
 	if plasma_ring_2: plasma_ring_2.set_surface_override_material(0, plasma_material)
 	
-	# 7. Clamp Status LEDs
+	# 8. Clamp Status LEDs
 	led_material = StandardMaterial3D.new()
 	led_material.albedo_color = Color(0.0, 0.95, 1.0)
 	led_material.emission_enabled = true
 	led_material.emission = Color(0.0, 0.95, 1.0)
 	led_material.emission_energy_multiplier = 2.5
 	
-	# Collect clamp LED mesh nodes
 	var clamps_root = get_node_or_null("BasePlatform/HydraulicClamps")
 	if clamps_root:
 		for clamp in clamps_root.get_children():
@@ -123,43 +143,64 @@ func _setup_materials_and_textures() -> void:
 func _process(delta: float) -> void:
 	scan_time += delta * 3.5
 	
+	# Live animated glow on 3D energy conduit cables
+	if conduit_material:
+		var energy_flow = 1.3 + 0.7 * sin(scan_time * 2.8)
+		conduit_material.emission_energy_multiplier = energy_flow
+		if is_docked:
+			conduit_material.emission = Color(0.15, 1.0, 0.50)
+			conduit_material.albedo_color = Color(0.15, 1.0, 0.50)
+		else:
+			conduit_material.emission = Color(0.0, 0.85, 1.0)
+			conduit_material.albedo_color = Color(0.0, 0.85, 1.0)
+	
+	# Synchronize glass stencil number with docked robot battery in real time
+	if docked_robot and "battery" in docked_robot and "max_battery" in docked_robot:
+		var pct = int(round((docked_robot.battery / docked_robot.max_battery) * 100.0))
+		if pct != _current_displayed_pct:
+			_current_displayed_pct = pct
+			_update_decal_texture(str(pct))
+	else:
+		if _current_displayed_pct != 0:
+			_current_displayed_pct = 0
+			_update_decal_texture("00")
+	
 	if is_docked:
 		# Pulsing volumetric energy light
 		if light_omni:
-			light_omni.light_energy = 3.2 + sin(scan_time * 2.5) * 0.7
+			light_omni.light_energy = 3.0 + sin(scan_time * 2.5) * 0.6
 		if light_spot:
-			light_spot.light_energy = 4.0 + sin(scan_time * 2.5) * 0.8
+			light_spot.light_energy = 3.8 + sin(scan_time * 2.5) * 0.7
 		if plasma_material:
 			plasma_material.emission_energy_multiplier = 2.5 + sin(scan_time * 4.0) * 1.0
 		
 		# Vertical floating plasma rings
 		if plasma_ring_1:
-			plasma_ring_1.position.y = 0.8 + sin(scan_time * 1.8) * 0.5
+			plasma_ring_1.position.y = 0.70 + sin(scan_time * 1.8) * 0.4
 			plasma_ring_1.rotation.y += delta * 1.2
 		if plasma_ring_2:
-			plasma_ring_2.position.y = 1.6 - sin(scan_time * 1.8) * 0.5
+			plasma_ring_2.position.y = 1.45 - sin(scan_time * 1.8) * 0.4
 			plasma_ring_2.rotation.y -= delta * 1.5
 		if laser_ring:
-			laser_ring.position.y = -0.15 + sin(scan_time * 2.0) * 0.08
-		
-		# Check if docked robot tries to walk away -> auto undock
-		if docked_robot and "velocity" in docked_robot:
-			var vel = (docked_robot as CharacterBody3D).velocity
-			var horiz_speed = Vector2(vel.x, vel.z).length()
-			if horiz_speed > 1.2:
-				undock_robot(docked_robot)
+			laser_ring.position.y = -0.12 + sin(scan_time * 2.0) * 0.06
+			
+		# Hold docked robot firmly on the floor dock pad inside capsule
+		if docked_robot:
+			docked_robot.global_position = global_position + Vector3(0, 0.23, 0)
+			if docked_robot is CharacterBody3D:
+				docked_robot.velocity = Vector3.ZERO
 	else:
 		if light_omni:
-			light_omni.light_energy = 1.4 + sin(scan_time * 0.8) * 0.2
+			light_omni.light_energy = 1.3 + sin(scan_time * 0.8) * 0.2
 		if light_spot:
-			light_spot.light_energy = 1.8 + sin(scan_time * 0.8) * 0.3
+			light_spot.light_energy = 1.6 + sin(scan_time * 0.8) * 0.3
 		if plasma_material:
 			plasma_material.emission_energy_multiplier = 0.9 + sin(scan_time * 1.2) * 0.3
 		if plasma_ring_1:
-			plasma_ring_1.position.y = 1.2 + sin(scan_time * 0.8) * 0.15
+			plasma_ring_1.position.y = 1.05 + sin(scan_time * 0.8) * 0.12
 			plasma_ring_1.rotation.y += delta * 0.4
 		if plasma_ring_2:
-			plasma_ring_2.position.y = 1.8 - sin(scan_time * 0.8) * 0.15
+			plasma_ring_2.position.y = 1.55 - sin(scan_time * 0.8) * 0.12
 			plasma_ring_2.rotation.y -= delta * 0.5
 
 ## Called when robot presses interaction key [E]
@@ -188,11 +229,17 @@ func dock_robot(robot: Node3D) -> void:
 	if "is_on_charging_station" in robot:
 		robot.is_on_charging_station = true
 	
-	# Smoothly align robot to the center of the charging pad
-	var target_dock_pos = global_position + Vector3(0, 0.26, 0)
-	var glide_tween = create_tween().set_parallel(true)
-	glide_tween.tween_property(robot, "global_position:x", target_dock_pos.x, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	glide_tween.tween_property(robot, "global_position:z", target_dock_pos.z, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	# Disable solid station collider so physics engine NEVER pops robot up onto roof
+	if station_collider:
+		var col = station_collider.get_node_or_null("CollisionShape3D")
+		if col:
+			col.set_deferred("disabled", true)
+	
+	# Instantly and firmly place robot on floor dock pad inside capsule
+	var target_dock_pos = global_position + Vector3(0, 0.23, 0)
+	robot.global_position = target_dock_pos
+	if robot is CharacterBody3D:
+		robot.velocity = Vector3.ZERO
 	
 	# Play high-tech docking animation
 	_play_dock_animation(true)
@@ -212,14 +259,28 @@ func undock_robot(robot: Node3D) -> void:
 	if "is_on_charging_station" in robot:
 		robot.is_on_charging_station = false
 		
+	var r = docked_robot
 	docked_robot = null
 	is_docked = false
+	
+	# Smoothly step robot OUT in front of the capsule
+	var exit_pos = global_position + Vector3(0, 0.05, 1.45)
+	if r is CharacterBody3D:
+		r.velocity = Vector3.ZERO
+	var exit_tween = create_tween()
+	exit_tween.tween_property(r, "global_position", exit_pos, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	exit_tween.tween_callback(func():
+		if station_collider:
+			var col = station_collider.get_node_or_null("CollisionShape3D")
+			if col:
+				col.set_deferred("disabled", false)
+	)
 	
 	_play_dock_animation(false)
 	if SoundManager and SoundManager.has_method("play_drop"):
 		SoundManager.play_drop()
 		
-	robot_undocked.emit(robot)
+	robot_undocked.emit(r)
 
 func _play_dock_animation(dock: bool) -> void:
 	if anim_tween and anim_tween.is_valid():
@@ -230,7 +291,7 @@ func _play_dock_animation(dock: bool) -> void:
 	if dock:
 		# Lower overhead charging contact arm down into capsule
 		if charger_arm:
-			anim_tween.tween_property(charger_arm, "position:y", 1.95, 0.45)
+			anim_tween.tween_property(charger_arm, "position:y", 1.80, 0.45)
 		# Radiant Emerald Plasma Power Light
 		if light_omni:
 			anim_tween.tween_property(light_omni, "light_color", Color(0.15, 1.0, 0.50), 0.3)
@@ -247,7 +308,7 @@ func _play_dock_animation(dock: bool) -> void:
 	else:
 		# Retract overhead charging arm up into top generator cap
 		if charger_arm:
-			anim_tween.tween_property(charger_arm, "position:y", 2.65, 0.40).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+			anim_tween.tween_property(charger_arm, "position:y", 2.45, 0.40).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		# Standby Calm Neon Cyan Light
 		if light_omni:
 			anim_tween.tween_property(light_omni, "light_color", Color(0.0, 0.85, 1.0), 0.3)
@@ -264,13 +325,13 @@ func _play_dock_animation(dock: bool) -> void:
 
 func _update_visuals(dock: bool) -> void:
 	if charger_arm:
-		charger_arm.position.y = 1.95 if dock else 2.65
+		charger_arm.position.y = 1.80 if dock else 2.45
 	if light_omni:
 		light_omni.light_color = Color(0.15, 1.0, 0.50) if dock else Color(0.0, 0.85, 1.0)
-		light_omni.light_energy = 3.2 if dock else 1.4
+		light_omni.light_energy = 3.0 if dock else 1.3
 	if light_spot:
 		light_spot.light_color = Color(0.20, 1.0, 0.55) if dock else Color(0.0, 0.90, 1.0)
-		light_spot.light_energy = 4.0 if dock else 1.8
+		light_spot.light_energy = 3.8 if dock else 1.6
 	if laser_ring:
 		laser_ring.visible = dock
 
@@ -305,67 +366,108 @@ func _get_closest_nearby_robot() -> Node3D:
 			closest = r
 	return closest
 
-## Procedurally generates the "20" stencil decal texture for the glass capsule
-func _generate_decal_texture() -> ImageTexture:
-	var w = 256
-	var h = 320
+## Updates the decal texture with dynamic digital text
+func _update_decal_texture(text_val: String) -> void:
+	var w = 512
+	var h = 512
 	var img = Image.create(w, h, false, Image.FORMAT_RGBA8)
-	img.fill(Color(0, 0, 0, 0)) # Fully transparent base
+	img.fill(Color(0, 0, 0, 0)) # Transparent base
 	
-	# Draw stencil Number "2"
-	var col_white = Color(1.0, 1.0, 1.0, 0.92)
-	var col_yellow = Color(1.0, 0.80, 0.08, 0.95)
+	var col_white = Color(1.0, 1.0, 1.0, 0.96)
+	var col_yellow = Color(1.0, 0.78, 0.08, 0.96)
+	var col_yellow_fill = Color(1.0, 0.78, 0.08, 0.40)
 	
-	# Number "2"
-	_draw_img_rect(img, 40, 40, 70, 16, col_white)  # top bar
-	_draw_img_rect(img, 94, 56, 16, 50, col_white)  # top-right
-	_draw_img_rect(img, 40, 106, 70, 16, col_white) # middle bar
-	_draw_img_rect(img, 40, 122, 16, 50, col_white) # bot-left
-	_draw_img_rect(img, 40, 172, 70, 16, col_white) # bot bar
+	# Draw dynamic stencil digits
+	if text_val.length() == 3: # E.g. "100"
+		_draw_stencil_digit(img, text_val[0], 50, 70, 100, 280, 24, col_white)
+		_draw_stencil_digit(img, text_val[1], 175, 70, 130, 280, 26, col_white)
+		_draw_stencil_digit(img, text_val[2], 330, 70, 130, 280, 26, col_white)
+	elif text_val.length() == 2: # E.g. "85"
+		_draw_stencil_digit(img, text_val[0], 70, 70, 160, 280, 30, col_white)
+		_draw_stencil_digit(img, text_val[1], 280, 70, 160, 280, 30, col_white)
+	else:
+		_draw_stencil_digit(img, "0", 70, 70, 160, 280, 30, col_white)
+		_draw_stencil_digit(img, text_val[0], 280, 70, 160, 280, 30, col_white)
 	
-	# Number "0"
-	_draw_img_rect(img, 130, 40, 70, 16, col_white)  # top bar
-	_draw_img_rect(img, 130, 56, 16, 116, col_white) # left bar
-	_draw_img_rect(img, 184, 56, 16, 116, col_white) # right bar
-	_draw_img_rect(img, 130, 172, 70, 16, col_white) # bot bar
+	# --- Lower Hazard Frame Bracket [ % ] ---
+	_draw_img_rect(img, 50, 390, 410, 14, col_yellow)   # bracket bottom rail
+	_draw_img_rect(img, 50, 340, 14, 50, col_yellow)    # left corner hook
+	_draw_img_rect(img, 446, 340, 14, 50, col_yellow)   # right corner hook
+	_draw_img_rect(img, 90, 420, 330, 44, col_yellow_fill) # lower caution fill plate
+	_draw_img_rect(img, 90, 420, 330, 8, col_yellow)    # plate accent line
 	
-	# Lower Yellow Hazard Stencil Bracket [ 20 ]
-	_draw_img_rect(img, 30, 210, 180, 8, col_yellow)   # bracket bottom
-	_draw_img_rect(img, 30, 180, 8, 30, col_yellow)    # left hook
-	_draw_img_rect(img, 202, 180, 8, 30, col_yellow)   # right hook
-	_draw_img_rect(img, 50, 226, 140, 32, Color(1.0, 0.80, 0.08, 0.45)) # filled accent
-	
-	return ImageTexture.create_from_image(img)
+	img.generate_mipmaps()
+	var tex = ImageTexture.create_from_image(img)
+	if decal_material:
+		decal_material.albedo_texture = tex
+		decal_material.emission_texture = tex
 
-## Procedurally generates the outer circular hazard stripes texture
-func _generate_hazard_stripes_texture() -> ImageTexture:
-	var size = 256
-	var img = Image.create(size, size, false, Image.FORMAT_RGBA8)
-	var col_dark = Color(0.14, 0.16, 0.22, 1.0)
-	var col_steel = Color(0.24, 0.28, 0.36, 1.0)
-	var col_yellow = Color(1.0, 0.80, 0.08, 1.0)
-	var col_black = Color(0.08, 0.09, 0.12, 1.0)
+func _draw_stencil_digit(img: Image, digit: String, x: int, y: int, w: int, h: int, thick: int, col: Color) -> void:
+	var top = digit in ["0", "2", "3", "5", "6", "7", "8", "9"]
+	var top_left = digit in ["0", "4", "5", "6", "8", "9"]
+	var top_right = digit in ["0", "1", "2", "3", "4", "7", "8", "9"]
+	var mid = digit in ["2", "3", "4", "5", "6", "8", "9"]
+	var bot_left = digit in ["0", "2", "6", "8"]
+	var bot_right = digit in ["0", "1", "3", "4", "5", "6", "7", "8", "9"]
+	var bot = digit in ["0", "2", "3", "5", "6", "8", "9"]
+	
+	var half_h = int(h * 0.5)
+	
+	if top: _draw_img_rect(img, x, y, w, thick, col)
+	if top_left: _draw_img_rect(img, x, y, thick, half_h, col)
+	if top_right: _draw_img_rect(img, x + w - thick, y, thick, half_h, col)
+	if mid: _draw_img_rect(img, x, y + half_h - int(thick * 0.5), w, thick, col)
+	if bot_left: _draw_img_rect(img, x, y + half_h, thick, half_h, col)
+	if bot_right: _draw_img_rect(img, x + w - thick, y + half_h, thick, half_h, col)
+	if bot: _draw_img_rect(img, x, y + h - thick, w, thick, col)
+
+## Procedurally generates sleek clean titanium base plate texture (No yellow stripes)
+func _generate_sleek_base_texture() -> ImageTexture:
+	var size = 512
+	var img = Image.create(size, size, true, Image.FORMAT_RGBA8)
+	var col_dark_outer = Color(0.12, 0.14, 0.19, 1.0)
+	var col_steel_plate = Color(0.20, 0.24, 0.32, 1.0)
+	var col_panel_groove = Color(0.08, 0.09, 0.12, 1.0)
+	var col_cyan_glow = Color(0.0, 0.85, 1.0, 0.9)
+	var col_bolt = Color(0.35, 0.40, 0.50, 1.0)
 	
 	var center = Vector2(size * 0.5, size * 0.5)
 	var radius_max = float(size) * 0.48
-	var radius_inner = float(size) * 0.34
+	var radius_groove_out = float(size) * 0.45
+	var radius_plate = float(size) * 0.33
+	var radius_pedestal = float(size) * 0.27
 	
 	for y in range(size):
 		for x in range(size):
 			var pos = Vector2(x, y)
 			var dist = pos.distance_to(center)
-			if dist <= radius_max and dist >= radius_inner:
-				# Diagonal stripes angle
-				var angle = (x + y) % 24
-				if angle < 12:
-					img.set_pixel(x, y, col_yellow)
+			
+			if dist <= radius_max and dist > radius_groove_out:
+				img.set_pixel(x, y, col_dark_outer)
+			elif dist <= radius_groove_out and dist > radius_groove_out - 4.0:
+				# Outer neon cyan telemetry ring
+				img.set_pixel(x, y, col_cyan_glow)
+			elif dist <= radius_groove_out - 4.0 and dist >= radius_plate:
+				# Clean dark titanium panel plate
+				var angle = atan2(pos.y - center.y, pos.x - center.x)
+				# 8 radial panel seams
+				var seam_phase = fmod(abs(angle) / (PI / 4.0), 1.0)
+				if seam_phase < 0.04 or seam_phase > 0.96:
+					img.set_pixel(x, y, col_panel_groove)
 				else:
-					img.set_pixel(x, y, col_black)
-			elif dist < radius_inner:
-				img.set_pixel(x, y, col_steel)
+					img.set_pixel(x, y, col_steel_plate)
+			elif dist < radius_plate and dist >= radius_pedestal:
+				# Inner plate step
+				if dist <= radius_plate and dist > radius_plate - 3.0:
+					img.set_pixel(x, y, col_panel_groove)
+				else:
+					img.set_pixel(x, y, col_dark_outer)
+			elif dist < radius_pedestal:
+				img.set_pixel(x, y, col_dark_outer)
 			else:
-				img.set_pixel(x, y, col_dark)
+				img.set_pixel(x, y, Color(0, 0, 0, 0))
 				
+	img.generate_mipmaps()
 	return ImageTexture.create_from_image(img)
 
 func _draw_img_rect(img: Image, x: int, y: int, w: int, h: int, col: Color) -> void:

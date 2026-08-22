@@ -16,8 +16,8 @@ signal interact_target_changed(target: Node)
 @export var gravity: float = 25.0
 
 @export var max_battery: float = 100.0
-@export var discharge_rate: float = 2.5 # ~40 sec default
-@export var charge_rate: float = 22.0    # ~4.5 sec to 100%
+@export var discharge_rate: float = 2.8 # ~35 sec
+@export var charge_rate: float = 4.2    # 1.5x discharge rate (balanced charging)
 
 var battery: float = 100.0
 var is_active: bool = false
@@ -34,9 +34,11 @@ var current_interactable: Node = null
 @onready var carry_pivot: Marker3D = $CarryPivot
 
 var carried_object: Node3D = null
+var _step_timer: float = 0.0
 
 func _ready() -> void:
 	battery = max_battery
+	charge_rate = discharge_rate * 1.5
 	if interaction_area:
 		interaction_area.area_entered.connect(_on_interaction_area_entered)
 		interaction_area.area_exited.connect(_on_interaction_area_exited)
@@ -46,7 +48,8 @@ func _ready() -> void:
 func set_active(active: bool) -> void:
 	is_active = active
 	if not is_active:
-		velocity = Vector3.ZERO
+		velocity.x = 0
+		velocity.z = 0
 		if skin:
 			skin.update_move_animation(0.0, 0.0)
 
@@ -72,11 +75,18 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
-	# Dynamic Battery Drain Logic
+	# Dynamic Battery Drain & Charge Logic
 	if is_on_charging_station:
+		# Strictly charge only: zero drain while docked
+		velocity = Vector3.ZERO
 		if battery < max_battery:
 			battery = min(max_battery, battery + charge_rate * delta)
 			battery_changed.emit(battery, max_battery)
+		if is_active:
+			_handle_input()
+		if skin:
+			skin.update_move_animation(0.0, delta)
+		return # Prevent physics engine from ever pushing robot upwards onto roof
 	elif is_active:
 		var current_drain = discharge_rate
 		# Increase drain when moving
@@ -108,22 +118,32 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-var _step_timer: float = 0.0
-
 func _handle_movement(delta: float) -> void:
-	var input_vec = Input.get_vector("p1_move_left", "p1_move_right", "p1_move_up", "p1_move_down")
-	var move_dir: Vector3 = Vector3.ZERO
+	var input_vec = Vector2.ZERO
+	if Input.is_action_pressed("p1_move_left"):
+		input_vec.x -= 1.0
+	if Input.is_action_pressed("p1_move_right"):
+		input_vec.x += 1.0
+	if Input.is_action_pressed("p1_move_up"):
+		input_vec.y -= 1.0
+	if Input.is_action_pressed("p1_move_down"):
+		input_vec.y += 1.0
 
+	var move_dir = Vector3.ZERO
 	if input_vec.length_squared() > 0.01:
+		input_vec = input_vec.normalized()
+		
+		# Get active camera horizontal basis
 		var cam = get_viewport().get_camera_3d()
 		if cam:
-			var cam_forward = -cam.global_transform.basis.z
-			cam_forward.y = 0.0
-			cam_forward = cam_forward.normalized()
-			var cam_right = cam.global_transform.basis.x
-			cam_right.y = 0.0
-			cam_right = cam_right.normalized()
-			move_dir = (cam_right * input_vec.x + cam_forward * -input_vec.y).normalized()
+			var cam_basis = cam.global_transform.basis
+			var forward = -cam_basis.z
+			var right = cam_basis.x
+			forward.y = 0.0
+			right.y = 0.0
+			forward = forward.normalized()
+			right = right.normalized()
+			move_dir = (right * input_vec.x + forward * -input_vec.y).normalized()
 		else:
 			move_dir = Vector3(input_vec.x, 0, input_vec.y).normalized()
 
@@ -173,7 +193,7 @@ func restore_battery() -> void:
 	battery_changed.emit(battery, max_battery)
 
 func _on_interaction_area_entered(area: Area3D) -> void:
-	if area.is_in_group("interactable"):
+	if area.is_in_group("interactable") or area.is_in_group("charging_station"):
 		current_interactable = area
 		interact_target_changed.emit(area)
 
@@ -183,7 +203,7 @@ func _on_interaction_area_exited(area: Area3D) -> void:
 		interact_target_changed.emit(null)
 
 func _on_interaction_body_entered(body: Node3D) -> void:
-	if body.is_in_group("interactable"):
+	if body.is_in_group("interactable") or body.is_in_group("charging_station"):
 		current_interactable = body
 		interact_target_changed.emit(body)
 

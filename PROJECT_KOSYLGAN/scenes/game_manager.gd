@@ -1,11 +1,9 @@
 extends Node
 
 var current_level_index: int = 1
-var total_levels: int = 3
+var total_levels: int = 1
 var level_scenes = [
-	"res://scenes/levels/level1.tscn",
-	"res://scenes/levels/level2.tscn",
-	"res://scenes/levels/level3.tscn"
+	"res://scenes/levels/level1.tscn"
 ]
 
 var total_game_time: float = 0.0
