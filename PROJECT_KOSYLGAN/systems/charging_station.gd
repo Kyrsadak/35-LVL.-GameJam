@@ -10,6 +10,22 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 
+	if platform_mesh:
+		var path = "res://assets/textures/tex_charging_station.png"
+		var global_p = ProjectSettings.globalize_path(path)
+		var img = Image.load_from_file(global_p)
+		if img:
+			var tex = ImageTexture.create_from_image(img)
+			var mat = StandardMaterial3D.new()
+			mat.albedo_texture = tex
+			mat.emission_enabled = true
+			mat.emission_texture = tex
+			mat.emission_energy_multiplier = 0.5
+			mat.metallic = 0.5
+			mat.roughness = 0.4
+			mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			platform_mesh.set_surface_override_material(0, mat)
+
 func _on_body_entered(body: Node3D) -> void:
 	if "is_on_charging_station" in body:
 		if not robots_on_station.has(body):

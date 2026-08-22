@@ -18,6 +18,22 @@ func _ready() -> void:
 	add_to_group("key_module")
 	add_to_group("interactable")
 
+	if mesh_core:
+		var path = "res://assets/textures/tex_key_module.png"
+		var global_p = ProjectSettings.globalize_path(path)
+		var img = Image.load_from_file(global_p)
+		if img:
+			var tex = ImageTexture.create_from_image(img)
+			var mat = StandardMaterial3D.new()
+			mat.albedo_texture = tex
+			mat.emission_enabled = true
+			mat.emission_texture = tex
+			mat.emission_energy_multiplier = 0.9
+			mat.metallic = 0.6
+			mat.roughness = 0.3
+			mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			mesh_core.set_surface_override_material(0, mat)
+
 func _process(delta: float) -> void:
 	if not is_carried:
 		time_passed += delta
