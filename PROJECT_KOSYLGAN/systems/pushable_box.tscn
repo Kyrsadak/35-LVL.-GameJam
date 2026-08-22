@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://systems/pushable_box.gd" id="1_box"]
 
@@ -8,18 +8,18 @@ size = Vector3(1.2, 1.2, 1.2)
 [sub_resource type="BoxMesh" id="BoxMesh_body"]
 size = Vector3(1.2, 1.2, 1.2)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crate"]
-albedo_color = Color(0.76, 0.42, 0.26, 1)
-metallic = 0.05
-roughness = 0.8
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crate_base"]
+albedo_color = Color(0.85, 0.48, 0.22, 1)
+metallic = 0.3
+roughness = 0.5
 
-[sub_resource type="BoxMesh" id="BoxMesh_hazard_band"]
-size = Vector3(1.22, 0.25, 1.22)
+[sub_resource type="BoxMesh" id="BoxMesh_corner"]
+size = Vector3(1.24, 0.1, 1.24)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_band"]
-albedo_color = Color(0.92, 0.89, 0.84, 1)
-metallic = 0.05
-roughness = 0.75
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_metal_corners"]
+albedo_color = Color(0.24, 0.27, 0.34, 1)
+metallic = 0.85
+roughness = 0.3
 
 [node name="PushableBox" type="CharacterBody3D" groups=["boxes", "pushable_box"]]
 collision_layer = 4
@@ -33,9 +33,14 @@ shape = SubResource("BoxShape3D_crate")
 [node name="BoxBody" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 mesh = SubResource("BoxMesh_body")
-surface_material_override/0 = SubResource("StandardMaterial3D_crate")
+surface_material_override/0 = SubResource("StandardMaterial3D_crate_base")
 
-[node name="HazardBand" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_hazard_band")
-surface_material_override/0 = SubResource("StandardMaterial3D_band")
+[node name="CornerCapsTop" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+mesh = SubResource("BoxMesh_corner")
+surface_material_override/0 = SubResource("StandardMaterial3D_metal_corners")
+
+[node name="CornerCapsBottom" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BoxMesh_corner")
+surface_material_override/0 = SubResource("StandardMaterial3D_metal_corners")

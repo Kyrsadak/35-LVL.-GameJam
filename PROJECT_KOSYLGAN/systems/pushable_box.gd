@@ -12,6 +12,20 @@ func _ready() -> void:
 	add_to_group("interactable")
 	add_to_group("boxes")
 
+	var box_mesh = find_child("BoxBody", true, false) as MeshInstance3D
+	if box_mesh:
+		var path = "res://assets/textures/tex_scifi_crate.png"
+		var global_p = ProjectSettings.globalize_path(path)
+		var img = Image.load_from_file(global_p)
+		if img:
+			var tex = ImageTexture.create_from_image(img)
+			var mat = StandardMaterial3D.new()
+			mat.albedo_texture = tex
+			mat.metallic = 0.4
+			mat.roughness = 0.5
+			mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			box_mesh.set_surface_override_material(0, mat)
+
 func pick_up(carrier: Marker3D) -> void:
 	is_carried = true
 	if collision_shape:
