@@ -142,5 +142,6 @@ func orient_model_to_direction(direction: Vector3, delta: float) -> void:
 	if direction.length() > 0.15:
 		_last_strong_direction = direction
 
-	var target_angle = atan2(-_last_strong_direction.x, -_last_strong_direction.z)
+	# Model face is oriented along +Z, so atan2(x, z) points the face toward move direction
+	var target_angle = atan2(_last_strong_direction.x, _last_strong_direction.z)
 	global_rotation.y = lerp_angle(global_rotation.y, target_angle, delta * rotation_speed)
