@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scenes/props/prop_wall_fan.gd" id="1_fan"]
 
@@ -20,31 +20,14 @@ albedo_color = Color(0.05, 0.06, 0.08, 1)
 metallic = 0.3
 roughness = 0.9
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_hub"]
-top_radius = 0.09
-bottom_radius = 0.09
-height = 0.06
+[sub_resource type="SphereMesh" id="SphereMesh_hub"]
+radius = 0.10
+height = 0.08
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hub"]
 albedo_color = Color(0.95, 0.55, 0.10, 1)
 metallic = 0.7
 roughness = 0.3
-
-[sub_resource type="BoxMesh" id="BoxMesh_blade_main"]
-size = Vector3(0.24, 0.085, 0.015)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blade_chrome"]
-albedo_color = Color(0.85, 0.88, 0.92, 1)
-metallic = 0.95
-roughness = 0.2
-
-[sub_resource type="BoxMesh" id="BoxMesh_blade_tip"]
-size = Vector3(0.08, 0.088, 0.018)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hazard_tip"]
-albedo_color = Color(1.0, 0.75, 0.05, 1)
-metallic = 0.2
-roughness = 0.35
 
 [sub_resource type="TorusMesh" id="TorusMesh_grille_ring"]
 inner_radius = 0.38
@@ -56,8 +39,8 @@ metallic = 0.9
 roughness = 0.3
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_grille_wire"]
-top_radius = 0.006
-bottom_radius = 0.006
+top_radius = 0.005
+bottom_radius = 0.005
 height = 0.78
 
 [node name="PropWallFan" type="Node3D"]
@@ -76,62 +59,12 @@ surface_material_override/0 = SubResource("StandardMaterial3D_cavity")
 [node name="Turbine" type="Node3D" parent="VentFrame"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.025)
 
+[node name="FanBladeMesh" type="MeshInstance3D" parent="VentFrame/Turbine"]
+
 [node name="CenterHub" type="MeshInstance3D" parent="VentFrame/Turbine"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-mesh = SubResource("CylinderMesh_hub")
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.02)
+mesh = SubResource("SphereMesh_hub")
 surface_material_override/0 = SubResource("StandardMaterial3D_hub")
-
-[node name="BladeGroup1" type="Node3D" parent="VentFrame/Turbine"]
-transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0, 0, 0)
-
-[node name="Blade1" type="MeshInstance3D" parent="VentFrame/Turbine/BladeGroup1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 0, 0)
-mesh = SubResource("BoxMesh_blade_main")
-surface_material_override/0 = SubResource("StandardMaterial3D_blade_chrome")
-
-[node name="BladeTip1" type="MeshInstance3D" parent="VentFrame/Turbine/BladeGroup1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.32, 0, 0)
-mesh = SubResource("BoxMesh_blade_tip")
-surface_material_override/0 = SubResource("StandardMaterial3D_hazard_tip")
-
-[node name="BladeGroup2" type="Node3D" parent="VentFrame/Turbine"]
-transform = Transform3D(-0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 0, 0, 0)
-
-[node name="Blade2" type="MeshInstance3D" parent="VentFrame/Turbine/BladeGroup2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
-mesh = SubResource("BoxMesh_blade_main")
-surface_material_override/0 = SubResource("StandardMaterial3D_blade_chrome")
-
-[node name="BladeTip2" type="MeshInstance3D" parent="VentFrame/Turbine/BladeGroup2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, 0)
-mesh = SubResource("BoxMesh_blade_tip")
-surface_material_override/0 = SubResource("StandardMaterial3D_hazard_tip")
-
-[node name="BladeGroup3" type="Node3D" parent="VentFrame/Turbine"]
-transform = Transform3D(-0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, -0.965926, 0, 0, 0)
-
-[node name="Blade3" type="MeshInstance3D" parent="VentFrame/Turbine/BladeGroup3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 0, 0)
-mesh = SubResource("BoxMesh_blade_main")
-surface_material_override/0 = SubResource("StandardMaterial3D_blade_chrome")
-
-[node name="BladeTip3" type="MeshInstance3D" parent="VentFrame/Turbine/BladeGroup3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.32, 0, 0)
-mesh = SubResource("BoxMesh_blade_tip")
-surface_material_override/0 = SubResource("StandardMaterial3D_hazard_tip")
-
-[node name="BladeGroup4" type="Node3D" parent="VentFrame/Turbine"]
-transform = Transform3D(0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, 0.258819, 0, 0, 0)
-
-[node name="Blade4" type="MeshInstance3D" parent="VentFrame/Turbine/BladeGroup4"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.22, 0)
-mesh = SubResource("BoxMesh_blade_main")
-surface_material_override/0 = SubResource("StandardMaterial3D_blade_chrome")
-
-[node name="BladeTip4" type="MeshInstance3D" parent="VentFrame/Turbine/BladeGroup4"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.32, 0)
-mesh = SubResource("BoxMesh_blade_tip")
-surface_material_override/0 = SubResource("StandardMaterial3D_hazard_tip")
 
 [node name="GrilleRing" type="MeshInstance3D" parent="VentFrame"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.05)
