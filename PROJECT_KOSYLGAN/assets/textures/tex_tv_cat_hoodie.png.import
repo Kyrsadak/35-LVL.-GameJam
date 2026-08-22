@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drcd5ybkliv17"
-path="res://.godot/imported/laser-gun-design1_prototypebits_texture - Copy.png-c82eb7efb0152ed3f83df143335b3bec.ctex"
+uid="uid://dptf4u0e3rxde"
+path="res://.godot/imported/tex_tv_cat_hoodie.png-ccaa011d9d112d8679a684a19f0f210e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://objects/laser-gun-design1_prototypebits_texture - Copy.png"
-dest_files=["res://.godot/imported/laser-gun-design1_prototypebits_texture - Copy.png-c82eb7efb0152ed3f83df143335b3bec.ctex"]
+source_file="res://assets/textures/tex_tv_cat_hoodie.png"
+dest_files=["res://.godot/imported/tex_tv_cat_hoodie.png-ccaa011d9d112d8679a684a19f0f210e.ctex"]
 
 [params]
 

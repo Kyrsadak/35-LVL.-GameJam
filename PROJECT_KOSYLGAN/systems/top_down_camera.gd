@@ -3,15 +3,16 @@ extends Node3D
 
 ## High-performance, intuitive 360° orbit and smooth zoom camera system.
 ## Automatically binds to and follows RobotManager.active_robot with smooth damping.
+## Features smart obstacle / wall collision avoidance so characters are NEVER hidden.
 
 @export_group("Tracking")
-@export var follow_speed: float = 7.5
-@export var target_height_offset: float = 0.6
+@export var follow_speed: float = 8.0
+@export var target_height_offset: float = 0.85
 
 @export_group("Zoom / Scaling")
-@export var min_zoom: float = 5.0
-@export var max_zoom: float = 13.5
-@export var default_zoom: float = 9.5
+@export var min_zoom: float = 4.5
+@export var max_zoom: float = 13.0
+@export var default_zoom: float = 9.0
 @export var zoom_step: float = 0.85
 @export var zoom_speed: float = 9.0
 
@@ -24,6 +25,10 @@ extends Node3D
 @export var default_yaw_deg: float = 12.0
 @export var rotation_smoothing: float = 14.0
 
+@export_group("Collision Avoidance")
+@export var enable_wall_clipping_avoidance: bool = true
+@export var wall_collision_mask: int = 2 # Layer 2: World / Walls
+
 @onready var camera_3d: Camera3D = $Camera3D
 
 var current_yaw: float = deg_to_rad(12.0)
@@ -32,8 +37,8 @@ var target_yaw: float = deg_to_rad(12.0)
 var current_pitch: float = deg_to_rad(-45.0)
 var target_pitch: float = deg_to_rad(-45.0)
 
-var current_zoom: float = 9.5
-var target_zoom: float = 9.5
+var current_zoom: float = 9.0
+var target_zoom: float = 9.0
 
 var pan_offset: Vector3 = Vector3.ZERO
 var target_pan_offset: Vector3 = Vector3.ZERO
@@ -51,7 +56,7 @@ func _ready() -> void:
 	current_zoom = target_zoom
 
 	if camera_3d:
-		camera_3d.fov = 46.0
+		camera_3d.fov = 44.0
 		_update_camera_transform()
 
 	# Snap directly to active robot on startup
@@ -93,7 +98,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif is_panning:
 			var rot_basis = Basis(Vector3.UP, current_yaw)
 			var pan_delta = rot_basis * Vector3(-mm.relative.x * 0.025, 0, -mm.relative.y * 0.025)
-			target_pan_offset = (target_pan_offset + pan_delta).limit_length(8.0)
+			target_pan_offset = (target_pan_offset + pan_delta).limit_length(7.0)
 
 	# Keyboard shortcuts for quick reset and zoom
 	elif event is InputEventKey and event.pressed and not event.echo:
@@ -120,7 +125,6 @@ func _process(delta: float) -> void:
 	# Smooth angle & distance interpolation
 	current_yaw = lerp_angle(current_yaw, target_yaw, rotation_smoothing * delta)
 	current_pitch = lerp(current_pitch, target_pitch, rotation_smoothing * delta)
-	current_zoom = lerp(current_zoom, target_zoom, zoom_speed * delta)
 	pan_offset = pan_offset.lerp(target_pan_offset, 10.0 * delta)
 
 	# Track target robot
@@ -133,16 +137,46 @@ func _process(delta: float) -> void:
 		if target != _last_target_node:
 			_last_target_node = target
 			# Fast glide transition when switching robots
-			global_position = global_position.lerp(target_pos, follow_speed * 1.5 * delta)
+			global_position = global_position.lerp(target_pos, follow_speed * 1.6 * delta)
 		else:
 			global_position = global_position.lerp(target_pos, follow_speed * delta)
+
+	# Smart Wall Collision Avoidance (Spring-Arm raycast)
+	var desired_zoom = target_zoom
+	if enable_wall_clipping_avoidance and is_inside_tree():
+		var space_state = get_world_3d().direct_space_state
+		if space_state:
+			var rot_basis = Basis(Vector3.UP, current_yaw) * Basis(Vector3.RIGHT, current_pitch)
+			var cam_target_pos = global_position + rot_basis * Vector3(0, 0, target_zoom)
+			
+			var query = PhysicsRayQueryParameters3D.create(global_position, cam_target_pos, wall_collision_mask)
+			if target and target is CollisionObject3D:
+				query.exclude = [(target as CollisionObject3D).get_rid()]
+			
+			var hit = space_state.intersect_ray(query)
+			if not hit.is_empty():
+				var hit_dist = global_position.distance_to(hit.position)
+				desired_zoom = max(2.5, hit_dist - 0.45)
+
+	# Smoothly pull camera in quickly when a wall occludes, ease out smoothly when clear
+	if desired_zoom < current_zoom:
+		current_zoom = lerp(current_zoom, desired_zoom, 24.0 * delta)
+	else:
+		current_zoom = lerp(current_zoom, desired_zoom, zoom_speed * delta)
 
 	_update_camera_transform()
 
 func _update_camera_transform() -> void:
 	if not camera_3d:
 		return
-	var rot_basis = Basis(Vector3.UP, current_yaw) * Basis(Vector3.RIGHT, current_pitch)
+
+	# When close to a wall, slightly increase pitch to look down cleanly over the obstacle
+	var effective_pitch = current_pitch
+	if current_zoom < 5.0:
+		var t = clamp((5.0 - current_zoom) / 2.5, 0.0, 1.0)
+		effective_pitch = lerp(current_pitch, deg_to_rad(-65.0), t * 0.7)
+
+	var rot_basis = Basis(Vector3.UP, current_yaw) * Basis(Vector3.RIGHT, effective_pitch)
 	camera_3d.transform.basis = rot_basis
 	camera_3d.transform.origin = rot_basis * Vector3(0, 0, current_zoom)
 
