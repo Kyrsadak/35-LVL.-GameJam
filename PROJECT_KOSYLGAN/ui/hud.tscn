@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://ui/hud.gd" id="1_hud"]
 [ext_resource type="Script" path="res://ui/battery_display.gd" id="2_bat"]
+[ext_resource type="Shader" path="res://assets/shaders/sh_smooth_text_wipe.gdshader" id="3_wipe_shader"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clue"]
 bg_color = Color(0.95, 0.92, 0.86, 0.95)
@@ -36,6 +37,11 @@ content_margin_left = 24.0
 content_margin_top = 10.0
 content_margin_right = 24.0
 content_margin_bottom = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wipe"]
+shader = ExtResource("3_wipe_shader")
+shader_parameter/progress = 0.0
+shader_parameter/softness = 0.15
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -136,6 +142,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
 
 [node name="MessageBanner" type="Label" parent="DialogueContainer"]
 unique_name_in_owner = true
+material = SubResource("ShaderMaterial_wipe")
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(1, 0.96, 0.88, 1)
