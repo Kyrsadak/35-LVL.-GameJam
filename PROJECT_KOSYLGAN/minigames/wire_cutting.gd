@@ -72,7 +72,7 @@ func _build_ui() -> void:
 
 	# Display hint if discovered
 	if RobotManager and RobotManager.discovered_clues.has(clue_id):
-		hint_label.text = "📋 СХЕМА: " + RobotManager.discovered_clues[clue_id]
+		hint_label.text = RobotManager.discovered_clues[clue_id]
 		hint_label.modulate = Color(0.3, 0.95, 0.5)
 	else:
 		hint_label.text = "⚠️ НЕТ СХЕМЫ! (Найдите планшет роботом ATLAS)"

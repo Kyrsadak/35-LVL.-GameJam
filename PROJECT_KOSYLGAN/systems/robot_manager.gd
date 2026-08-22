@@ -101,7 +101,7 @@ func _on_robot_discharged(robot: Node) -> void:
 func _on_guide_read(guide_id: String, clue_text: String) -> void:
 	discovered_clues[guide_id] = clue_text
 	clue_revealed.emit(clue_text)
-	show_message("📋 Схема получена: " + clue_text, 3.5)
+	show_message(clue_text, 3.5)
 	if SoundManager:
 		SoundManager.play_tablet_read()
 

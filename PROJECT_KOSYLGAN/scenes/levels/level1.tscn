@@ -292,7 +292,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.5)
 [node name="GuideTablet" parent="." instance=ExtResource("7_tablet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 0, -3.0)
 guide_id = "guide_1"
-clue_text = "СХЕМА №1: ПЕРЕРЕЖЬТЕ КРАСНЫЙ ПРОВОД (№1)"
+clue_text = "СХЕМА №1: ПЕРЕРЕЖЬТЕ КРАСНЫЙ ПРОВОД"
 
 [node name="Terminal" parent="." instance=ExtResource("8_term")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -4.5)

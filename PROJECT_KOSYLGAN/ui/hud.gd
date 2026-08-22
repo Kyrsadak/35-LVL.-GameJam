@@ -115,8 +115,8 @@ func show_banner_message(text: String, duration: float = 3.2) -> void:
 		dialogue_container.visible = false
 	)
 
-func _on_clue_revealed(text: String) -> void:
-	show_banner_message("📋 Схема получена: " + text, 4.5)
+func _on_clue_revealed(_text: String) -> void:
+	pass
 
 func _on_interact_target_changed(target: Node) -> void:
 	if target:
