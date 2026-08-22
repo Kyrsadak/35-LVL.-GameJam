@@ -3,22 +3,6 @@
 [ext_resource type="Script" path="res://ui/hud.gd" id="1_hud"]
 [ext_resource type="Script" path="res://ui/battery_display.gd" id="2_bat"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clue"]
-bg_color = Color(0.95, 0.92, 0.86, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.60, 0.52, 0.42, 0.8)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-content_margin_left = 16.0
-content_margin_top = 12.0
-content_margin_right = 16.0
-content_margin_bottom = 12.0
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
 bg_color = Color(0.07, 0.09, 0.14, 0.92)
 border_width_left = 2
@@ -84,39 +68,6 @@ script = ExtResource("2_bat")
 robot_name = "CIPHER"
 robot_role = "INFILTRATOR // HACKER"
 theme_color = Color(1.0, 0.6, 0.05, 1)
-
-[node name="CluePanel" type="PanelContainer" parent="."]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(340, 0)
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -370.0
-offset_top = -60.0
-offset_right = -30.0
-offset_bottom = 60.0
-grow_horizontal = 0
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_clue")
-
-[node name="VBox" type="VBoxContainer" parent="CluePanel"]
-layout_mode = 2
-
-[node name="Title" type="Label" parent="CluePanel/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.55, 0.35, 0.15, 1)
-theme_override_font_sizes/font_size = 15
-text = "📋 НАЙДЕННАЯ СХЕМА:"
-
-[node name="ClueText" type="Label" parent="CluePanel/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.20, 0.18, 0.15, 1)
-theme_override_font_sizes/font_size = 15
-text = "..."
-autowrap_mode = 2
 
 [node name="DialogueContainer" type="PanelContainer" parent="."]
 unique_name_in_owner = true

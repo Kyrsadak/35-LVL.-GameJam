@@ -7,8 +7,6 @@ extends CanvasLayer
 @onready var level_title: Label = %LevelTitle
 @onready var dialogue_container: PanelContainer = %DialogueContainer
 @onready var message_banner: Label = %MessageBanner
-@onready var clue_panel: PanelContainer = %CluePanel
-@onready var clue_text: Label = %ClueText
 @onready var interact_prompt: Label = %InteractPrompt
 
 var active_typing_tween: Tween = null
@@ -34,7 +32,6 @@ func _ready() -> void:
 		if RobotManager.cipher and RobotManager.cipher.has_signal("interact_target_changed"):
 			RobotManager.cipher.interact_target_changed.connect(_on_interact_target_changed)
 
-	clue_panel.visible = false
 	interact_prompt.visible = false
 	if dialogue_container:
 		dialogue_container.visible = false
@@ -70,7 +67,7 @@ func _on_robot_switched(active_robot: Node) -> void:
 	if cipher_battery_display:
 		cipher_battery_display.set_active(r_id == "cipher")
 
-func show_banner_message(text: String, duration: float = 2.8) -> void:
+func show_banner_message(text: String, duration: float = 3.2) -> void:
 	if not dialogue_container or not message_banner:
 		return
 		
@@ -119,8 +116,7 @@ func show_banner_message(text: String, duration: float = 2.8) -> void:
 	)
 
 func _on_clue_revealed(text: String) -> void:
-	clue_text.text = text
-	clue_panel.visible = true
+	show_banner_message("📋 Схема получена: " + text, 4.5)
 
 func _on_interact_target_changed(target: Node) -> void:
 	if target:
