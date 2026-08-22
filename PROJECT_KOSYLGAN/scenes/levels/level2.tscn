@@ -32,6 +32,7 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_blue_barrel.tscn" id="30_blue_barrel"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_plastic_drum.tscn" id="31_plastic_drum"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_banana_peel.tscn" id="32_banana"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_newspaper.tscn" id="33_newspaper"]
 
 [node name="Level2" type="Node3D"]
 script = ExtResource("1_lvl2")
@@ -209,6 +210,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.8, 0, -12.5)
 
 [node name="BananaPeel1" parent="Furniture" instance=ExtResource("32_banana")]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 4.5, 0, 2.0)
+
+[node name="BananaPeel2" parent="Furniture" instance=ExtResource("32_banana")]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -3.5, 0, -6.5)
+
+[node name="Newspaper1" parent="Furniture" instance=ExtResource("33_newspaper")]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 2.2, 0, -4.5)
+
+[node name="Newspaper2" parent="Furniture" instance=ExtResource("33_newspaper")]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -5.5, 0, -14.2)
 
 [node name="ChargingStation" parent="." instance=ExtResource("4_station")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.5)
