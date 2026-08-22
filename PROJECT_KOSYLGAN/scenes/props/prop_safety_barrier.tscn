@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scenes/props/prop_safety_barrier.gd" id="1_script"]
 
@@ -7,9 +7,6 @@ size = Vector3(1.10, 0.95, 0.45)
 
 [sub_resource type="BoxMesh" id="BoxMesh_main_board"]
 size = Vector3(1.05, 0.38, 0.16)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_orange"]
-albedo_color = Color(0.97, 0.44, 0.09, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_leg"]
 size = Vector3(0.10, 0.58, 0.08)
@@ -42,40 +39,30 @@ script = ExtResource("1_script")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.475, 0)
 shape = SubResource("BoxShape3D_barrier_col")
 
-# 1. Main Horizontal Hazard Board
 [node name="MainBoard" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
 mesh = SubResource("BoxMesh_main_board")
-surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
-# 2. A-Frame Legs (Front Pair & Back Pair)
 [node name="LegLeftFront" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.961262, -0.275637, 0, 0.275637, 0.961262, -0.40, 0.28, 0.09)
 mesh = SubResource("BoxMesh_leg")
-surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
 [node name="LegLeftBack" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.961262, 0.275637, 0, -0.275637, 0.961262, -0.40, 0.28, -0.09)
 mesh = SubResource("BoxMesh_leg")
-surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
 [node name="LegRightFront" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.961262, -0.275637, 0, 0.275637, 0.961262, 0.40, 0.28, 0.09)
 mesh = SubResource("BoxMesh_leg")
-surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
 [node name="LegRightBack" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.961262, 0.275637, 0, -0.275637, 0.961262, 0.40, 0.28, -0.09)
 mesh = SubResource("BoxMesh_leg")
-surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
-# 3. Lower Stretcher Beam
 [node name="LowerBeam" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
 mesh = SubResource("BoxMesh_lower_beam")
-surface_material_override/0 = SubResource("StandardMaterial3D_orange")
 
-# 4. Top Yellow Warning Lights with Dark Collars
 [node name="CollarLeft" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.32, 0.73, 0)
 mesh = SubResource("CylinderMesh_collar")
