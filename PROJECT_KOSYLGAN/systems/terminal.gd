@@ -70,8 +70,8 @@ func start_hack(robot: Node) -> void:
 		return
 
 	var minigame = minigame_scene.instantiate()
-	get_tree().root.add_child(minigame)
 	minigame.setup(self, wires_count, solution_wires, clue_id, require_exact_order)
+	get_tree().root.add_child(minigame)
 	minigame.completed.connect(_on_hack_completed)
 
 func _on_hack_completed(success: bool) -> void:

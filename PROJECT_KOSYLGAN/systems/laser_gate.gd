@@ -77,31 +77,35 @@ func _apply_door_state(closed: bool, immediate: bool) -> void:
 	if collision_shape:
 		collision_shape.set_deferred("disabled", not closed)
 
-	# Closed: left and right leaves meet seamlessly with overlap in center
-	var target_left_x = -1.18 if closed else -2.90
-	var target_right_x = 1.18 if closed else 2.90
+	# Closed: left and right leaves meet seamlessly with overlap in center (±1.18)
+	# Open: leaves fully retract into the side pillars and walls (±3.75)
+	var target_left_x = -1.18 if closed else -3.75
+	var target_right_x = 1.18 if closed else 3.75
 	var color = Color(1.0, 0.25, 0.15) if closed else Color(0.2, 1.0, 0.45)
 
 	if status_light:
 		status_light.light_color = color
-		status_light.light_energy = 0.9 if closed else 1.5
+		status_light.light_energy = 0.9 if closed else 1.8
 
 	if beacon_mat:
 		beacon_mat.albedo_color = color
 		beacon_mat.emission = color
-		beacon_mat.emission_energy_multiplier = 2.0
+		beacon_mat.emission_energy_multiplier = 2.5
 
 	if immediate:
 		if door_left: door_left.position.x = target_left_x
 		if door_right: door_right.position.x = target_right_x
 	else:
+		if SoundManager and not closed:
+			SoundManager.play_door_open()
+			
 		if door_tween and door_tween.is_valid():
 			door_tween.kill()
 		door_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		if door_left:
-			door_tween.tween_property(door_left, "position:x", target_left_x, 0.65)
+			door_tween.tween_property(door_left, "position:x", target_left_x, 0.85)
 		if door_right:
-			door_tween.tween_property(door_right, "position:x", target_right_x, 0.65)
+			door_tween.tween_property(door_right, "position:x", target_right_x, 0.85)
 
 func open() -> void:
 	set_active(false)

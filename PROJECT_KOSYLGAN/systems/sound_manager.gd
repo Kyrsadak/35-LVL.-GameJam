@@ -254,3 +254,23 @@ func play_ui_click() -> void:
 	player.volume_db = -8.0
 	player.play()
 
+# 12. Door Open (heavy hydraulic pneumatic whoosh & motorized slide)
+func play_door_open() -> void:
+	var duration = 0.70
+	var num_samples = int(sample_rate * duration)
+	var bytes = PackedByteArray()
+	bytes.resize(num_samples * 2)
+	for i in range(num_samples):
+		var t = float(i) / sample_rate
+		var env = sin((float(i) / num_samples) * PI)
+		var noise = (randf() * 2.0 - 1.0) * exp(-t * 3.0)
+		var rumble = sin(t * 65.0 * TAU) * 0.4 + sin(t * 130.0 * TAU) * 0.3
+		var s = noise * 0.35 + rumble * 0.65
+		var val = int(clamp(s * env * 26000.0, -32767, 32767))
+		bytes.encode_s16(i * 2, val)
+	var player = _get_free_player()
+	player.stream = _create_wav(bytes)
+	player.volume_db = -3.0
+	player.pitch_scale = 1.0
+	player.play()
+
