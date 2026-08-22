@@ -6,25 +6,42 @@ extends CharacterBody3D
 var collision_shape: CollisionShape3D = null
 var is_carried: bool = false
 
+@onready var inner_body: MeshInstance3D = $InnerBody
+@onready var top_lid: MeshInstance3D = $TopLid
+
 func _ready() -> void:
 	collision_shape = find_child("CollisionShape3D", true, false) as CollisionShape3D
 	add_to_group("pushable_box")
 	add_to_group("interactable")
 	add_to_group("boxes")
 
-	var box_mesh = find_child("BoxBody", true, false) as MeshInstance3D
-	if box_mesh:
-		var path = "res://assets/textures/tex_scifi_crate.png"
-		var global_p = ProjectSettings.globalize_path(path)
-		var img = Image.load_from_file(global_p)
-		if img:
-			var tex = ImageTexture.create_from_image(img)
-			var mat = StandardMaterial3D.new()
-			mat.albedo_texture = tex
-			mat.metallic = 0.4
-			mat.roughness = 0.5
-			mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
-			box_mesh.set_surface_override_material(0, mat)
+	# 1. Apply Side Panel Texture
+	if inner_body:
+		var path_s = "res://assets/textures/tex_crate_side.png"
+		var global_s = ProjectSettings.globalize_path(path_s)
+		var img_s = Image.load_from_file(global_s)
+		if img_s:
+			var tex_s = ImageTexture.create_from_image(img_s)
+			var mat_s = StandardMaterial3D.new()
+			mat_s.albedo_texture = tex_s
+			mat_s.metallic = 0.45
+			mat_s.roughness = 0.4
+			mat_s.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			inner_body.set_surface_override_material(0, mat_s)
+
+	# 2. Apply Dedicated Top Lid Texture
+	if top_lid:
+		var path_t = "res://assets/textures/tex_crate_top.png"
+		var global_t = ProjectSettings.globalize_path(path_t)
+		var img_t = Image.load_from_file(global_t)
+		if img_t:
+			var tex_t = ImageTexture.create_from_image(img_t)
+			var mat_t = StandardMaterial3D.new()
+			mat_t.albedo_texture = tex_t
+			mat_t.metallic = 0.5
+			mat_t.roughness = 0.35
+			mat_t.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			top_lid.set_surface_override_material(0, mat_t)
 
 func pick_up(carrier: Marker3D) -> void:
 	is_carried = true
