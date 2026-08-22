@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/props/PropNewsStepped.gd" id="1_stp"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_sheet"]
+size = Vector2(0.62, 0.46)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p"]
+albedo_color = Color(0.92, 0.89, 0.82, 1)
+roughness = 0.85
+
+[node name="PropNewsStepped" type="Node3D"]
+script = ExtResource("1_stp")
+
+[node name="SteppedSheet" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.007, 0)
+mesh = SubResource("QuadMesh_sheet")
+surface_material_override/0 = SubResource("StandardMaterial3D_p")

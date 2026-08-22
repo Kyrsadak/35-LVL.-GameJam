@@ -32,7 +32,14 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_blue_barrel.tscn" id="30_blue_barrel"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_plastic_drum.tscn" id="31_plastic_drum"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_banana_peel.tscn" id="32_banana"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_newspaper.tscn" id="33_newspaper"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_open.tscn" id="33_news_open"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_folded.tscn" id="34_news_folded"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_quarter.tscn" id="35_news_quarter"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_rolled.tscn" id="36_news_rolled"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_crumpled.tscn" id="37_news_crumpled"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_torn.tscn" id="38_news_torn"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_scattered.tscn" id="39_news_scattered"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_stepped.tscn" id="40_news_stepped"]
 
 [node name="Level3" type="Node3D"]
 script = ExtResource("1_lvl3")
@@ -223,14 +230,32 @@ transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 
 [node name="BananaPeel2" parent="Furniture" instance=ExtResource("32_banana")]
 transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -4.5, 0, -18.5)
 
-[node name="Newspaper1" parent="Furniture" instance=ExtResource("33_newspaper")]
+[node name="BananaPeel3" parent="Furniture" instance=ExtResource("32_banana")]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 7.5, 0, -28.0)
+
+[node name="NewsOpen1" parent="Furniture" instance=ExtResource("33_news_open")]
 transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 3.2, 0, -8.5)
 
-[node name="Newspaper2" parent="Furniture" instance=ExtResource("33_newspaper")]
+[node name="NewsFolded1" parent="Furniture" instance=ExtResource("34_news_folded")]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -6.2, 0, -26.2)
 
-[node name="Newspaper3" parent="Furniture" instance=ExtResource("33_newspaper")]
+[node name="NewsQuarter1" parent="Furniture" instance=ExtResource("35_news_quarter")]
 transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 6.8, 0, -22.5)
+
+[node name="NewsRolled1" parent="Furniture" instance=ExtResource("36_news_rolled")]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, -7.5, 0, -12.5)
+
+[node name="NewsCrumpled1" parent="Furniture" instance=ExtResource("37_news_crumpled")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, -18.2)
+
+[node name="NewsTorn1" parent="Furniture" instance=ExtResource("38_news_torn")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -3.2, 0, -6.5)
+
+[node name="NewsScattered1" parent="Furniture" instance=ExtResource("39_news_scattered")]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -5.5, 0, 1.5)
+
+[node name="NewsStepped1" parent="Furniture" instance=ExtResource("40_news_stepped")]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 2.0, 0, -3.0)
 
 [node name="RearBarrels" parent="Furniture" instance=ExtResource("22_barrel")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.0, 0, -22.0)
