@@ -1,0 +1,174 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://scenes/props/prop_robocat_girl.gd" id="1_script"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_col"]
+height = 1.0
+radius = 0.45
+
+[sub_resource type="BoxMesh" id="BoxMesh_folded_leg"]
+size = Vector3(0.14, 0.16, 0.42)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stocking"]
+albedo_color = Color(0.96, 0.96, 0.98, 1)
+roughness = 0.35
+
+[sub_resource type="SphereMesh" id="SphereMesh_shoe"]
+radius = 0.06
+height = 0.09
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_shoe"]
+albedo_color = Color(0.18, 0.22, 0.30, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_skirt"]
+top_radius = 0.18
+bottom_radius = 0.28
+height = 0.20
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_navy"]
+albedo_color = Color(0.11, 0.14, 0.23, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_torso"]
+size = Vector3(0.30, 0.28, 0.18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_arm"]
+size = Vector3(0.08, 0.22, 0.08)
+
+[sub_resource type="SphereMesh" id="SphereMesh_hand"]
+radius = 0.05
+height = 0.08
+
+[sub_resource type="BoxMesh" id="BoxMesh_head"]
+size = Vector3(0.28, 0.28, 0.26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_face"]
+size = Vector2(0.27, 0.27)
+
+[sub_resource type="PrismMesh" id="PrismMesh_ear"]
+size = Vector3(0.10, 0.14, 0.08)
+
+[sub_resource type="PrismMesh" id="PrismMesh_inner_ear"]
+size = Vector3(0.06, 0.09, 0.02)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tail_seg"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.14
+
+[sub_resource type="SphereMesh" id="SphereMesh_tail_tip"]
+radius = 0.05
+height = 0.08
+
+[node name="PropRoboCatGirl" type="Area3D"]
+collision_layer = 2
+collision_mask = 7
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_col")
+
+[node name="LegLeftSkin" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11, 0.08, -0.05)
+mesh = SubResource("BoxMesh_folded_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_stocking")
+
+[node name="LegRightSkin" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11, 0.08, -0.05)
+mesh = SubResource("BoxMesh_folded_leg")
+surface_material_override/0 = SubResource("StandardMaterial3D_stocking")
+
+[node name="ShoeLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11, 0.06, -0.26)
+mesh = SubResource("SphereMesh_shoe")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_shoe")
+
+[node name="ShoeRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11, 0.06, -0.26)
+mesh = SubResource("SphereMesh_shoe")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_shoe")
+
+[node name="SkirtMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0.02)
+mesh = SubResource("CylinderMesh_skirt")
+surface_material_override/0 = SubResource("StandardMaterial3D_navy")
+
+[node name="TorsoMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, 0.02)
+mesh = SubResource("BoxMesh_torso")
+surface_material_override/0 = SubResource("StandardMaterial3D_navy")
+
+[node name="ArmLeftSkin" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0.12941, 0.866025, -0.482963, -0.224144, 0.5, 0.836516, -0.20, 0.35, 0.06)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_stocking")
+
+[node name="HandLeftSkin" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11, 0.18, 0.14)
+mesh = SubResource("SphereMesh_hand")
+surface_material_override/0 = SubResource("StandardMaterial3D_stocking")
+
+[node name="ArmRightSkin" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, -0.258819, -0.12941, 0.866025, -0.482963, 0.224144, 0.5, 0.836516, 0.20, 0.35, 0.06)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_stocking")
+
+[node name="HandRightSkin" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11, 0.18, 0.14)
+mesh = SubResource("SphereMesh_hand")
+surface_material_override/0 = SubResource("StandardMaterial3D_stocking")
+
+[node name="HeadNode" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68, 0.04)
+
+[node name="HeadMesh" type="MeshInstance3D" parent="HeadNode"]
+mesh = SubResource("BoxMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_navy")
+
+[node name="FaceMesh" type="MeshInstance3D" parent="HeadNode"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.132)
+mesh = SubResource("QuadMesh_face")
+
+[node name="EarLeft" type="Node3D" parent="HeadNode"]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, -0.10, 0.19, 0.02)
+
+[node name="EarMesh" type="MeshInstance3D" parent="HeadNode/EarLeft"]
+mesh = SubResource("PrismMesh_ear")
+surface_material_override/0 = SubResource("StandardMaterial3D_navy")
+
+[node name="InnerLED" type="MeshInstance3D" parent="HeadNode/EarLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.041)
+mesh = SubResource("PrismMesh_inner_ear")
+
+[node name="EarRight" type="Node3D" parent="HeadNode"]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, 0.10, 0.19, 0.02)
+
+[node name="EarMesh" type="MeshInstance3D" parent="HeadNode/EarRight"]
+mesh = SubResource("PrismMesh_ear")
+surface_material_override/0 = SubResource("StandardMaterial3D_navy")
+
+[node name="InnerLED" type="MeshInstance3D" parent="HeadNode/EarRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.041)
+mesh = SubResource("PrismMesh_inner_ear")
+
+[node name="TailRoot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0.20, -0.15)
+
+[node name="Seg1" type="MeshInstance3D" parent="TailRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0.06, -0.05)
+mesh = SubResource("CylinderMesh_tail_seg")
+surface_material_override/0 = SubResource("StandardMaterial3D_navy")
+
+[node name="Seg2" type="MeshInstance3D" parent="TailRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0, 0.18, -0.08)
+mesh = SubResource("CylinderMesh_tail_seg")
+surface_material_override/0 = SubResource("StandardMaterial3D_navy")
+
+[node name="Seg3" type="MeshInstance3D" parent="TailRoot"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0.30, -0.05)
+mesh = SubResource("CylinderMesh_tail_seg")
+surface_material_override/0 = SubResource("StandardMaterial3D_navy")
+
+[node name="TailTipLED" type="MeshInstance3D" parent="TailRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.39, 0.02)
+mesh = SubResource("SphereMesh_tail_tip")

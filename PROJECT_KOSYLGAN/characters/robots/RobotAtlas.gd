@@ -49,15 +49,10 @@ func interact() -> void:
 		_pick_up_object(current_interactable)
 		return
 
-	# 5. Also check push_ray oriented to facing direction if standing right in front of a box
-	if push_ray:
-		push_ray.global_rotation.y = skin.global_rotation.y if skin else global_rotation.y
-		push_ray.force_raycast_update()
-		if push_ray.is_colliding():
-			var col = push_ray.get_collider()
-			if col and (col.is_in_group("pushable_box") or col.is_in_group("boxes")):
-				_pick_up_object(col)
-				return
+	# 6. Check generic interactable (like RoboCatGirl)
+	if current_interactable and current_interactable.has_method("interact"):
+		current_interactable.interact()
+		return
 
 func _pick_up_object(obj: Node3D) -> void:
 	if obj and obj.has_method("pick_up"):
