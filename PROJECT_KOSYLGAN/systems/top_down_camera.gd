@@ -9,18 +9,18 @@ extends Node3D
 @export var target_height_offset: float = 0.6
 
 @export_group("Zoom / Scaling")
-@export var min_zoom: float = 4.5
-@export var max_zoom: float = 24.0
-@export var default_zoom: float = 11.5
-@export var zoom_step: float = 1.3
+@export var min_zoom: float = 5.0
+@export var max_zoom: float = 13.5
+@export var default_zoom: float = 9.5
+@export var zoom_step: float = 0.85
 @export var zoom_speed: float = 9.0
 
 @export_group("Orbit / Rotation")
-@export var orbit_sensitivity: float = 0.005
+@export var orbit_sensitivity: float = 0.0045
 @export var key_orbit_speed: float = 2.4
-@export var min_pitch_deg: float = -78.0
-@export var max_pitch_deg: float = -20.0
-@export var default_pitch_deg: float = -48.0
+@export var min_pitch_deg: float = -65.0
+@export var max_pitch_deg: float = -28.0
+@export var default_pitch_deg: float = -45.0
 @export var default_yaw_deg: float = 12.0
 @export var rotation_smoothing: float = 14.0
 
@@ -29,11 +29,11 @@ extends Node3D
 var current_yaw: float = deg_to_rad(12.0)
 var target_yaw: float = deg_to_rad(12.0)
 
-var current_pitch: float = deg_to_rad(-48.0)
-var target_pitch: float = deg_to_rad(-48.0)
+var current_pitch: float = deg_to_rad(-45.0)
+var target_pitch: float = deg_to_rad(-45.0)
 
-var current_zoom: float = 11.5
-var target_zoom: float = 11.5
+var current_zoom: float = 9.5
+var target_zoom: float = 9.5
 
 var pan_offset: Vector3 = Vector3.ZERO
 var target_pan_offset: Vector3 = Vector3.ZERO
