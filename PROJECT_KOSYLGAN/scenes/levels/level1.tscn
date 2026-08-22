@@ -99,12 +99,6 @@ material = ExtResource("14_wall")
 
 [node name="Furniture" type="Node3D" parent="."]
 
-[node name="PillarLeft" parent="Furniture" instance=ExtResource("17_pillar")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0, -6.5)
-
-[node name="PillarRight" parent="Furniture" instance=ExtResource("17_pillar")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, -6.5)
-
 [node name="PalletLarge1" parent="Furniture" instance=ExtResource("16_pallet_lg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 5.5)
 
