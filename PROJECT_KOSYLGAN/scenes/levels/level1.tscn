@@ -21,6 +21,9 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_workbench.tscn" id="19_workbench"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_server.tscn" id="20_server"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_barrel.tscn" id="21_barrel"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_security_camera.tscn" id="22_cam_prop"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_wall_fan.tscn" id="23_fan"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_pipes.tscn" id="24_pipes"]
 
 [node name="Level1" type="Node3D"]
 script = ExtResource("1_lvl1")
@@ -128,6 +131,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, -15.8)
 
 [node name="RearWorkbench" parent="Furniture" instance=ExtResource("19_workbench")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0, 0, -15.8)
+
+[node name="SecurityCam1" parent="Furniture" instance=ExtResource("22_cam_prop")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.4, 2.4, 4.0)
+
+[node name="SecurityCam2" parent="Furniture" instance=ExtResource("22_cam_prop")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 7.4, 2.4, -6.0)
+
+[node name="SecurityCam3" parent="Furniture" instance=ExtResource("22_cam_prop")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 2.4, -16.4)
+
+[node name="WallFan1" parent="Furniture" instance=ExtResource("23_fan")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.4, 2.1, -4.0)
+
+[node name="WallFan2" parent="Furniture" instance=ExtResource("23_fan")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 7.4, 2.1, -12.0)
+
+[node name="Pipes1" parent="Furniture" instance=ExtResource("24_pipes")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7.45, 1.8, 0.0)
+
+[node name="Pipes2" parent="Furniture" instance=ExtResource("24_pipes")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 7.45, 1.8, -8.0)
 
 [node name="ChargingStation" parent="." instance=ExtResource("4_station")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.5)

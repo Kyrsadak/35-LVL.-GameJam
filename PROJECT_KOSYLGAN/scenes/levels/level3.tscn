@@ -22,6 +22,9 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_workbench.tscn" id="20_workbench"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_server.tscn" id="21_server"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_barrel.tscn" id="22_barrel"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_security_camera.tscn" id="23_cam_prop"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_wall_fan.tscn" id="24_fan"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_pipes.tscn" id="25_pipes"]
 
 [node name="Level3" type="Node3D"]
 script = ExtResource("1_lvl3")
@@ -156,7 +159,37 @@ transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.0, 0, -14.0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0, -26.5)
 
 [node name="RearWorkbenchRight" parent="Furniture" instance=ExtResource("20_workbench")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.0, 0, -26.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 0, -28.5)
+
+[node name="SecurityCam1" parent="Furniture" instance=ExtResource("23_cam_prop")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9.4, 2.4, 4.0)
+
+[node name="SecurityCam2" parent="Furniture" instance=ExtResource("23_cam_prop")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 9.4, 2.4, -6.0)
+
+[node name="SecurityCam3" parent="Furniture" instance=ExtResource("23_cam_prop")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9.4, 2.4, -18.0)
+
+[node name="SecurityCam4" parent="Furniture" instance=ExtResource("23_cam_prop")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 2.4, -29.4)
+
+[node name="WallFan1" parent="Furniture" instance=ExtResource("24_fan")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9.4, 2.1, -1.0)
+
+[node name="WallFan2" parent="Furniture" instance=ExtResource("24_fan")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 9.4, 2.1, -13.0)
+
+[node name="WallFan3" parent="Furniture" instance=ExtResource("24_fan")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9.4, 2.1, -22.0)
+
+[node name="Pipes1" parent="Furniture" instance=ExtResource("25_pipes")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9.45, 1.8, 1.0)
+
+[node name="Pipes2" parent="Furniture" instance=ExtResource("25_pipes")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 9.45, 1.8, -15.0)
+
+[node name="Pipes3" parent="Furniture" instance=ExtResource("25_pipes")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9.45, 1.8, -25.0)
 
 [node name="RearBarrels" parent="Furniture" instance=ExtResource("22_barrel")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.0, 0, -22.0)
