@@ -1,0 +1,123 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://systems/charging_station.gd" id="1_station"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_area"]
+height = 2.4
+radius = 0.95
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_base"]
+top_radius = 0.95
+bottom_radius = 1.05
+height = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_metal"]
+albedo_color = Color(0.22, 0.25, 0.32, 1)
+metallic = 0.8
+roughness = 0.35
+
+[sub_resource type="QuadMesh" id="QuadMesh_floor"]
+size = Vector2(1.5, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall"]
+size = Vector3(1.6, 2.2, 0.12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
+size = Vector3(0.18, 2.3, 0.25)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tube"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 1.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_canopy"]
+size = Vector3(1.85, 0.20, 1.45)
+
+[sub_resource type="QuadMesh" id="QuadMesh_screen"]
+size = Vector2(1.2, 0.45)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_arm_clamp"]
+top_radius = 0.18
+bottom_radius = 0.25
+height = 0.20
+
+[sub_resource type="TorusMesh" id="TorusMesh_laser"]
+inner_radius = 0.32
+outer_radius = 0.38
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_laser_mat"]
+transparency = 1
+albedo_color = Color(0.2, 1.0, 0.45, 0.9)
+emission_enabled = true
+emission = Color(0.2, 1.0, 0.45, 1)
+emission_energy_multiplier = 2.5
+
+[node name="ChargingStation" type="Area3D" groups=["charging_station"]]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_station")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("CylinderShape3D_area")
+
+[node name="BasePlatform" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
+mesh = SubResource("CylinderMesh_base")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="FloorPad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.125, 0)
+mesh = SubResource("QuadMesh_floor")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="BackWall" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, -0.65)
+mesh = SubResource("BoxMesh_wall")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="PillarLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.939693, 0, 0.34202, 0, 1, 0, -0.34202, 0, 0.939693, -0.80, 1.18, -0.15)
+mesh = SubResource("BoxMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="EnergyTube" type="MeshInstance3D" parent="PillarLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.14)
+mesh = SubResource("CylinderMesh_tube")
+
+[node name="PillarRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.939693, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939693, 0.80, 1.18, -0.15)
+mesh = SubResource("BoxMesh_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="EnergyTube" type="MeshInstance3D" parent="PillarRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.14)
+mesh = SubResource("CylinderMesh_tube")
+
+[node name="TopCanopy" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.30, -0.15)
+mesh = SubResource("BoxMesh_canopy")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="HoloScreen" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.95, -0.58)
+mesh = SubResource("QuadMesh_screen")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="ChargerArm" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15, -0.05)
+
+[node name="ClampHead" type="MeshInstance3D" parent="ChargerArm"]
+mesh = SubResource("CylinderMesh_arm_clamp")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="LaserRing" type="MeshInstance3D" parent="ChargerArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+mesh = SubResource("TorusMesh_laser")
+surface_material_override/0 = SubResource("StandardMaterial3D_laser_mat")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0.0)
+light_color = Color(0.0, 0.85, 1.0, 1)
+light_energy = 1.2
+omni_range = 3.2

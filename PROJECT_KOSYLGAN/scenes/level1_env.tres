@@ -1,0 +1,29 @@
+[gd_resource type="Environment" load_steps=3 format=3 uid="uid://dtrxire26wyng"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cream"]
+sky_top_color = Color(0.68, 0.70, 0.76, 1)
+sky_horizon_color = Color(0.58, 0.60, 0.65, 1)
+ground_bottom_color = Color(0.45, 0.46, 0.50, 1)
+ground_horizon_color = Color(0.54, 0.56, 0.60, 1)
+
+[sub_resource type="Sky" id="Sky_cream"]
+sky_material = SubResource("ProceduralSkyMaterial_cream")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_cream")
+ambient_light_source = 2
+ambient_light_color = Color(0.70, 0.72, 0.76, 1)
+ambient_light_energy = 0.42
+reflected_light_source = 2
+tonemap_mode = 3
+tonemap_exposure = 0.98
+ssao_enabled = true
+ssao_radius = 1.8
+ssao_intensity = 2.4
+glow_enabled = true
+glow_intensity = 0.30
+glow_bloom = 0.10
+adjustment_enabled = true
+adjustment_contrast = 1.06
+adjustment_saturation = 1.03
