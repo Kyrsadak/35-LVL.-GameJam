@@ -250,15 +250,15 @@ transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 
 transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 1.2, 0, -1.8)
 
 [node name="PosterSafety1" parent="Furniture" instance=ExtResource("41_poster")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.45, 2.3, -5.5)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.45, 1.6, -2.5)
 poster_index = 0
 
 [node name="PosterBlueprint1" parent="Furniture" instance=ExtResource("41_poster")]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.45, 2.3, -7.5)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.45, 1.6, 2.5)
 poster_index = 1
 
 [node name="PosterBanana1" parent="Furniture" instance=ExtResource("41_poster")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.3, -20.95)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.6, -20.95)
 poster_index = 2
 
 [node name="ChargingStation" parent="." instance=ExtResource("4_station")]
