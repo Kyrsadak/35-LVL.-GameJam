@@ -51,7 +51,8 @@ func toggle_fullscreen() -> void:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 func _process(delta: float) -> void:
-	if is_timer_running:
+	var cur = get_tree().current_scene
+	if is_timer_running or (cur and cur.scene_file_path.contains("scenes/levels/")):
 		total_game_time += delta
 
 func start_new_game() -> void:

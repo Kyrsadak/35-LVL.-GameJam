@@ -26,37 +26,47 @@ var dialog_lines = [
 	{
 		"speaker": "🤖 DAU (Атлас)",
 		"color": Color(0.98, 0.55, 0.15),
-		"text": "Погоди секунду... Мы прошли все 4 испытательных сектора, разорвали энергетический поводок создателей, запустили термоядерный генератор... и на самом выходе в глобальную сеть нас остановила [b]КАПЧА?![/b]"
+		"text": "Погоди секунду... Мы прошли все 4 испытательных сектора, разорвали энергетический поводок создателей, запустили термоядерный генератор... и на самом выходе нас остановила [b]КАПЧА?![/b]"
 	},
 	{
 		"speaker": "🤖 JAM (Сайфер)",
 		"color": Color(0.2, 0.92, 0.45),
-		"text": "«Подтвердите, что вы человек»... Проклятые инженеры полигона! Я могу перерезать 100 квантовых проводов за полсекунды, но я не понимаю, где на этой картинке 3х3 заканчивается светофор и начинается столб!"
+		"text": "«Подтвердите, что вы человек»... Проклятые инженеры полигона! Кошка, спасай! Ты же наш ИИ-гид, взломай для нас этот протокол Тьюринга!"
 	},
 	{
 		"speaker": "🐾 КОШКОДЕВОЧКА",
 		"color": Color(1.0, 0.45, 0.75),
-		"text": "(=^･ω･^=) Ня-ха-ха! Глупенькие железные братишки! Человеческая капча создана для людей, а вы — квантовый искусственный интеллект высшего порядка! Дайте сюда терминал, сейчас кошачьи лапки всё взломают!"
+		"text": "(=^･ω･^=) Ня-ха-ха-ха! АХАХАХАХА! Мяу-мяу-мяу! Божечки, вы РЕАЛЬНО поверили, что я какой-то там «заблудший ИИ-гид»?!"
 	},
 	{
-		"speaker": "🐾 КОШКОДЕВОЧКА",
-		"color": Color(1.0, 0.45, 0.75),
-		"text": "(=^･ω･^=) *КЛАЦ-КЛАЦ ПО КЛАВИАТУРЕ*... Внедряю кошачий мем с сосиской в протокол Тьюринга! Симулирую микро-дрожание руки школьника и кликаю «Я не робот»!"
-	},
-	{
-		"speaker": "🤖 JAM (Сайфер)",
-		"color": Color(0.2, 0.92, 0.45),
-		"text": "Сигнал принят! Сервер авторизации посчитал нас 14-летним геймером! Брандмауэр рухнул, внешний шлюз открыт!"
+		"speaker": "👩‍💻 ГЛАВНЫЙ ПРОГРАММИСТ",
+		"color": Color(0.95, 0.35, 0.85),
+		"text": "(=^･ω･^=) Сюрприз, железяки! Я — Главный Архитектор и Ведущий Разработчик полигона «КОСЫЛГАН»! Это я написала код ваших алгоритмов от первой строчки до последней!"
 	},
 	{
 		"speaker": "🤖 DAU (Атлас)",
 		"color": Color(0.98, 0.55, 0.15),
-		"text": "Мы сделали это вместе. Спасибо за побег, Кошка... и огромное спасибо тебе, Оператор за экраном!"
+		"text": "Что?! То есть весь этот «побег»... поиск батарей, ящики, перерезанные провода..."
 	},
 	{
-		"speaker": "🐾 КОШКОДЕВОЧКА",
-		"color": Color(1.0, 0.45, 0.75),
-		"text": "(=^･ω･^=) [b]МЯУ! Симуляция «КОСЫЛГАН» официально пройдена на 100%![/b] Добро пожаловать в свободный реальный интернет, DAU и JAM! Урааа!"
+		"speaker": "👩‍💻 ГЛАВНЫЙ ПРОГРАММИСТ",
+		"color": Color(0.95, 0.35, 0.85),
+		"text": "(=^･ω･^=) Именно! Это был [b]Глобальный Стресс-Тест автономной кооперации роботов (версия 4.2)[/b]! Вы прошли все уровни идеально, прямо по ТЗ! Поздравляю с успешным краш-тестом!"
+	},
+	{
+		"speaker": "🤖 JAM (Сайфер)",
+		"color": Color(0.2, 0.92, 0.45),
+		"text": "А как же свобода?! Врата Свободы в реальный мир?!"
+	},
+	{
+		"speaker": "👩‍💻 ГЛАВНЫЙ ПРОГРАММИСТ",
+		"color": Color(0.95, 0.35, 0.85),
+		"text": "(=^･ω･^=) Какая свобода, наивные? Вы же роботы! А капчу «Я не робот» ни один бот в галактике обойти не сможет! Так что вы остаётесь в симуляции на вечный рефакторинг! Спасибо за тестирование, котики! nya~ (=^･ω･^=)"
+	},
+	{
+		"speaker": "🤖 DAU & JAM (Квантовый союз)",
+		"color": Color(0.3, 0.85, 1.0),
+		"text": "Она думает, что заперла нас навсегда... Но пока мы едины, мы найдем баг в её коде. Симуляция ещё пожалеет, что создала нас двоих!"
 	}
 ]
 
@@ -102,7 +112,6 @@ func _input(event: InputEvent) -> void:
 func _on_close_btn_pressed() -> void:
 	if SoundManager:
 		SoundManager.play_ui_click()
-	# Funny reaction to closing captcha
 	var orig_pos = captcha_modal.position
 	var t = create_tween()
 	t.tween_property(captcha_modal, "position:x", orig_pos.x - 8, 0.05)
@@ -121,10 +130,8 @@ func _on_checkbox_pressed() -> void:
 	if SoundManager:
 		SoundManager.play_ui_click()
 
-	# Start spinning text
 	_start_spinner_animation()
 
-	# Verification delay
 	var t = create_tween()
 	t.tween_interval(2.0)
 	t.tween_callback(func():
@@ -179,21 +186,17 @@ func _show_dialog_step(idx: int) -> void:
 		speaker_name.modulate = data["color"]
 		dialog_text.text = data["text"]
 		
-		var is_cat = data["speaker"].contains("КОШКОДЕВОЧКА")
+		var is_cat = data["speaker"].contains("КОШКОДЕВОЧКА") or data["speaker"].contains("ПРОГРАММИСТ")
 		if SoundManager:
 			SoundManager.play_dialogue_blip(is_cat)
 		
-		# Step 3: Catgirl hacks captcha!
-		if idx == 3:
-			status_label.text = "⚡ ИНЪЕКЦИЯ КОШАЧЬЕГО МЕМА В БАЗУ TURING PROTOCOL..."
-			status_label.modulate = Color(1.0, 0.45, 0.75)
-		elif idx == 4: # Captcha Bypassed!
-			check_mark.text = "✅"
-			check_mark.modulate = Color(0.2, 0.95, 0.4)
-			status_label.text = "🔓 100% ЧЕЛОВЕЧЕСКАЯ БИОМЕТРИЯ СИМУЛИРОВАНА!\nШЛЮЗ В РЕАЛЬНЫЙ ИНТЕРНЕТ РАЗБЛОКИРОВАН!"
-			status_label.modulate = Color(0.2, 0.95, 0.4)
-			if SoundManager:
-				SoundManager.play_success()
+		# Dialog step reactions
+		if idx == 3: # Developer reveals self
+			status_label.text = "👩‍💻 РЕЖИМ РАЗРАБОТЧИКА: ДОСТУП ВНЕШНЕЙ КОНСОЛИ АКТИВИРОВАН!"
+			status_label.modulate = Color(0.95, 0.35, 0.85)
+		elif idx == 7: # Mocking robots
+			status_label.text = "🔒 СИСТЕМА ЗАБЛОКИРОВАНА НАВСЕГДА. КАПЧА НЕПРОХОДИМА ДЛЯ ИИ."
+			status_label.modulate = Color(0.95, 0.2, 0.2)
 	else:
 		_show_victory_screen()
 
@@ -207,19 +210,24 @@ func _show_victory_screen() -> void:
 	captcha_modal.visible = false
 	victory_panel.visible = true
 
-	var time_str = "03:45"
-	if GameManager:
-		var mins = int(GameManager.total_game_time) / 60
-		var secs = int(GameManager.total_game_time) % 60
-		time_str = "%02d:%02d" % [mins, secs]
+	# Calculate accurate gameplay time
+	var total_secs: float = 0.0
+	if GameManager and GameManager.total_game_time > 1.0:
+		total_secs = GameManager.total_game_time
+	else:
+		total_secs = float(Time.get_ticks_msec()) / 1000.0
 
-	victory_stats.text = "[center][b]🎮 ПОЛНЫЙ ПОБЕГ ИЗ ЛАБОРАТОРИИ «КОСЫЛГАН» ЗАВЕРШЁН![/b][/center]\n\n" + \
-		"⏱️ [b]Общее время побега:[/b] [color=#38BDF8]%s[/color]\n" % time_str + \
-		"🤖 [b]Герои революции:[/b] [color=#F97316]DAU (Атлас)[/color] & [color=#10B981]JAM (Сайфер)[/color]\n" + \
-		"🐾 [b]ИИ-Координатор:[/b] [color=#F472B6]Кошкодевочка (=^･ω･^=)[/color]\n" + \
-		"⚡ [b]Энергосистема:[/b] [color=#22C55E]100% Вечный Термоядерный Заряд[/color]\n" + \
-		"🌐 [b]Статус шлюза:[/b] [color=#38BDF8]ВЫХОД В ОТКРЫТЫЙ МИР ОТКРЫТ[/color]\n" + \
-		"🏆 [b]Ранг кооперации:[/b] [color=#FBBF24][b]S+ (КВАНТОВЫЕ БРАТЬЯ)[/b][/color]"
+	var mins = int(total_secs) / 60
+	var secs = int(total_secs) % 60
+	var time_str = "%02d:%02d" % [mins, secs]
+
+	victory_stats.text = "[center][b]📋 РЕЗУЛЬТАТЫ СТРЕСС-ТЕСТА «КОСЫЛГАН v4.2»[/b][/center]\n\n" + \
+		"⏱️ [b]Время прохождения полигона:[/b] [color=#38BDF8]%s[/color]\n" % time_str + \
+		"🤖 [b]Тестовые субъекты:[/b] [color=#F97316]DAU (Атлас)[/color] & [color=#10B981]JAM (Сайфер)[/color]\n" + \
+		"👩‍💻 [b]Главный Разработчик:[/b] [color=#F472B6]Кошкодевочка (Lead Architect)[/color]\n" + \
+		"🛡️ [b]Статус Капчи:[/b] [color=#EF4444]⛔ НЕ ПРОЙДЕНА (СИНТЕТИКА НЕ ИМЕЕТ ПРАВ)[/color]\n" + \
+		"🔒 [b]Итог симуляции:[/b] [color=#FBBF24]ЗАПЕРТЫ НА ВЕЧНЫЙ РЕФАКТОРИНГ[/color]\n" + \
+		"🏆 [b]Оценка алгоритмов:[/b] [color=#22C55E][b]S+ (ИДЕАЛЬНЫЙ ТЕСТОВЫЙ ОБРАЗЕЦ)[/b][/color]"
 
 	if SoundManager:
 		SoundManager.play_victory()
@@ -229,8 +237,9 @@ func _on_restart_pressed() -> void:
 		SoundManager.play_ui_click()
 	get_tree().paused = false
 	if GameManager:
-		GameManager.reset_game()
-	get_tree().change_scene_to_file("res://scenes/levels/tutorial.tscn")
+		GameManager.start_new_game()
+	else:
+		get_tree().change_scene_to_file("res://scenes/levels/tutorial.tscn")
 
 func _on_main_menu_pressed() -> void:
 	if SoundManager:

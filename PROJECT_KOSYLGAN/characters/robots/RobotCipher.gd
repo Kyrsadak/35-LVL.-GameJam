@@ -87,13 +87,21 @@ func play_hack_animation() -> void:
 
 func _pick_up_object(obj: Node3D) -> void:
 	if obj and obj.has_method("pick_up"):
+		if skin and skin.has_method("play_lift"):
+			skin.play_lift()
+		elif skin and skin.has_method("set_holding"):
+			skin.set_holding(true)
 		if SoundManager and SoundManager.has_method("play_pickup"):
 			SoundManager.play_pickup()
 		obj.pick_up(carry_pivot)
 		carried_object = obj
+		if obj.is_in_group("key_module"):
+			key_module_picked.emit(obj)
 
 func _drop_carried_object() -> void:
 	if carried_object and carried_object.has_method("drop"):
+		if skin and skin.has_method("set_holding"):
+			skin.set_holding(false)
 		if SoundManager and SoundManager.has_method("play_drop"):
 			SoundManager.play_drop()
 		var forward = get_facing_direction()

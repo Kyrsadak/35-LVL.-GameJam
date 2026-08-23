@@ -26,6 +26,7 @@ func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station
 	current_level_index = level_idx
 	if GameManager:
 		GameManager.current_level_index = level_idx
+		GameManager.is_timer_running = true
 	atlas = atlas_node
 	cipher = cipher_node
 	charging_station = station
