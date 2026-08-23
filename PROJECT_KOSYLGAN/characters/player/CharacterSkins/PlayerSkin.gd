@@ -13,17 +13,15 @@ var is_lifting: bool = false
 var screen_face: MeshInstance3D = null
 var mat_screen_normal: StandardMaterial3D = null
 var mat_screen_blink: StandardMaterial3D = null
+var mat_screen_off: StandardMaterial3D = null
 var blink_timer: float = 0.0
 
 var is_sleeping: bool = false
 var sleep_zzz_node: Node3D = null
-var head_node: Node3D = null
-var sleep_tween: Tween = null
 
 func _ready() -> void:
 	anim_player = find_child("AnimationPlayer", true, false)
 	screen_face = find_child("ScreenFace", true, false) as MeshInstance3D
-	head_node = find_child("HeadNode", true, false) as Node3D
 	
 	_setup_screen_materials()
 	_setup_tshirt_material()
@@ -49,38 +47,32 @@ func set_sleeping(sleeping: bool) -> void:
 		return
 	is_sleeping = sleeping
 	
-	if sleep_tween and sleep_tween.is_valid():
-		sleep_tween.kill()
-	sleep_tween = create_tween().set_parallel(true)
-	
 	if is_sleeping:
-		# 1. Enter sleep mode: Droop head down & tilt softly
+		# 1. Enter sleep mode: Screen powers off completely and Sleep animation plays
 		if sleep_zzz_node and sleep_zzz_node.has_method("set_active"):
 			sleep_zzz_node.set_active(true)
 			
-		if head_node:
-			sleep_tween.tween_property(head_node, "rotation", Vector3(deg_to_rad(24.0), 0.0, deg_to_rad(7.0)), 0.65).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-			
-		if screen_face and mat_screen_blink:
-			screen_face.set_surface_override_material(0, mat_screen_blink)
+		if screen_face and mat_screen_off:
+			screen_face.set_surface_override_material(0, mat_screen_off)
 			
 		if anim_player:
-			anim_player.speed_scale = 0.35 # Calm slow sleep breathing
+			if anim_player.has_animation("Sleep"):
+				anim_player.play("Sleep", 0.35)
+				current_anim = "Sleep"
+			else:
+				anim_player.speed_scale = 0.2
 	else:
-		# 2. Wake up mode: Raise head back up & open eyes
+		# 2. Wake up mode: Screen lights back on and Idle animation raises head up
 		if sleep_zzz_node and sleep_zzz_node.has_method("set_active"):
 			sleep_zzz_node.set_active(false)
-			
-		if head_node:
-			sleep_tween.tween_property(head_node, "rotation", Vector3.ZERO, 0.40).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 			
 		if screen_face and mat_screen_normal:
 			screen_face.set_surface_override_material(0, mat_screen_normal)
 			
 		if anim_player:
 			anim_player.speed_scale = 1.0
-			if current_anim != "Idle":
-				anim_player.play("Idle", 0.15)
+			if anim_player.has_animation("Idle"):
+				anim_player.play("Idle", 0.25)
 				current_anim = "Idle"
 
 func _setup_tshirt_material() -> void:
@@ -125,13 +117,20 @@ func _setup_screen_materials() -> void:
 		mat_screen_blink.roughness = 0.25
 		mat_screen_blink.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 
+	# Powered-off screen (dark glass with no light emission)
+	mat_screen_off = StandardMaterial3D.new()
+	mat_screen_off.albedo_color = Color(0.08, 0.10, 0.12, 1.0)
+	mat_screen_off.metallic = 0.10
+	mat_screen_off.roughness = 0.35
+	mat_screen_off.emission_enabled = false
+
 	if screen_face and mat_screen_normal:
 		screen_face.set_surface_override_material(0, mat_screen_normal)
 
 func _process(delta: float) -> void:
 	if is_sleeping:
-		if screen_face and mat_screen_blink:
-			screen_face.set_surface_override_material(0, mat_screen_blink)
+		if screen_face and mat_screen_off:
+			screen_face.set_surface_override_material(0, mat_screen_off)
 		return
 		
 	if not screen_face or not mat_screen_normal or not mat_screen_blink:
@@ -150,7 +149,7 @@ func set_skin_material(_mat: Material) -> void:
 	pass
 
 func play_lift() -> void:
-	if not anim_player:
+	if not anim_player or is_sleeping:
 		return
 	is_lifting = true
 	is_holding = true
@@ -165,13 +164,13 @@ func play_lift() -> void:
 
 func set_holding(holding: bool) -> void:
 	is_holding = holding
-	if not is_holding and current_anim in ["Lift", "Idle_Hold", "Run_Hold"]:
+	if not is_sleeping and not is_holding and current_anim in ["Lift", "Idle_Hold", "Run_Hold"]:
 		if anim_player and anim_player.has_animation("Idle"):
 			anim_player.play("Idle", 0.15)
 			current_anim = "Idle"
 
 func update_move_animation(velocity_ratio: float, _delta: float) -> void:
-	if not anim_player or is_lifting:
+	if not anim_player or is_lifting or is_sleeping:
 		return
 
 	if is_holding:
