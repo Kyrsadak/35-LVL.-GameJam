@@ -66,12 +66,23 @@ theme_color = Color(0.91, 0.44, 0.36, 1)
 [node name="LevelInfo" type="VBoxContainer" parent="TopMargin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 6
+alignment = 1
+
+[node name="CatAvatarButton" type="Button" parent="TopMargin/HBox/LevelInfo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "🐾 Спросить Гида [H]"
+flat = false
 
 [node name="LevelTitle" type="Label" parent="TopMargin/HBox/LevelInfo"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.25, 0.22, 0.18, 1)
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 15
 text = "УРОВЕНЬ 1: ЭНЕРГОБЛОК"
 horizontal_alignment = 1
 
