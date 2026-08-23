@@ -121,7 +121,7 @@ func try_switch_robot() -> void:
 		return
 	
 	var target_robot = cipher if active_robot == atlas else atlas
-	var target_name = target_robot.robot_display_name if "robot_display_name" in target_robot else "РОБОТ"
+	var _target_name = target_robot.robot_display_name if "robot_display_name" in target_robot else "РОБОТ"
 
 	# Stop motion of current robot so it stands still where it is
 	if active_robot is CharacterBody3D:

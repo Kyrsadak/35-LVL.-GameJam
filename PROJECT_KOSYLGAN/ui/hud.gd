@@ -190,11 +190,11 @@ func _display_dialogue_item(item: Variant) -> void:
 
 	# 2. Strict Left-to-Right Typewriter Reveal (visible_characters)
 	active_typing_tween = create_tween()
-	var last_blip_idx = -1
+	var blip_state = [-1]
 	active_typing_tween.tween_method(func(val: int):
 		message_banner.visible_characters = val
-		if val > 0 and val <= current_total_chars and val != last_blip_idx:
-			last_blip_idx = val
+		if val > 0 and val <= current_total_chars and val != blip_state[0]:
+			blip_state[0] = val
 			if val % 2 == 0: # Play speech blip every 2 characters
 				var ch = text[val - 1]
 				if ch != " " and SoundManager and SoundManager.has_method("play_dialogue_blip"):

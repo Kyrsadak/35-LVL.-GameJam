@@ -182,7 +182,7 @@ func _generate_continuous_tail_mesh(t: float) -> void:
 	var normals = PackedVector3Array()
 	var indices = PackedInt32Array()
 
-	var prev_pts = []
+	var _prev_pts = []
 	for i in range(num_segments + 1):
 		var u = float(i) / float(num_segments)
 		# Cubic Bezier evaluation: B(u) = (1-u)^3*p0 + 3(1-u)^2*u*p1 + 3(1-u)*u^2*p2 + u^3*p3

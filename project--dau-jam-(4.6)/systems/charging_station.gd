@@ -134,8 +134,8 @@ func _setup_materials_and_textures() -> void:
 	
 	var clamps_root = get_node_or_null("BasePlatform/HydraulicClamps")
 	if clamps_root:
-		for clamp in clamps_root.get_children():
-			var led = clamp.get_node_or_null("ClampLED")
+		for clamp_node in clamps_root.get_children():
+			var led = clamp_node.get_node_or_null("ClampLED")
 			if led and led is MeshInstance3D:
 				clamp_leds.append(led)
 				led.set_surface_override_material(0, led_material)
@@ -430,7 +430,7 @@ func _generate_sleek_base_texture() -> ImageTexture:
 	var col_steel_plate = Color(0.20, 0.24, 0.32, 1.0)
 	var col_panel_groove = Color(0.08, 0.09, 0.12, 1.0)
 	var col_cyan_glow = Color(0.0, 0.85, 1.0, 0.9)
-	var col_bolt = Color(0.35, 0.40, 0.50, 1.0)
+	var _col_bolt = Color(0.35, 0.40, 0.50, 1.0)
 	
 	var center = Vector2(size * 0.5, size * 0.5)
 	var radius_max = float(size) * 0.48

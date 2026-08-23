@@ -93,7 +93,7 @@ func _update_screen_texture(solved: bool) -> void:
 			mat_s.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 			screen_mesh.set_surface_override_material(0, mat_s)
 
-func start_hack(robot: Node) -> void:
+func start_hack(_robot: Node) -> void:
 	if requires_power and not is_powered:
 		if RobotManager:
 			RobotManager.show_message("⚠️ ТЕРМИНАЛ ОБЕСТОЧЕН! Поставьте тяжелый ящик на нажимную энерго-плиту, чтобы подать питание.", 4.0)
