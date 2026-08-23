@@ -15,18 +15,73 @@ var mat_screen_normal: StandardMaterial3D = null
 var mat_screen_blink: StandardMaterial3D = null
 var blink_timer: float = 0.0
 
+var is_sleeping: bool = false
+var sleep_zzz_node: Node3D = null
+var head_node: Node3D = null
+var sleep_tween: Tween = null
+
 func _ready() -> void:
 	anim_player = find_child("AnimationPlayer", true, false)
 	screen_face = find_child("ScreenFace", true, false) as MeshInstance3D
+	head_node = find_child("HeadNode", true, false) as Node3D
 	
 	_setup_screen_materials()
 	_setup_tshirt_material()
+	_setup_sleep_zzz()
 	
 	if anim_player and anim_player.has_animation("Idle"):
 		anim_player.play("Idle")
 		current_anim = "Idle"
 	
 	blink_timer = randf_range(2.0, 4.5)
+
+func _setup_sleep_zzz() -> void:
+	var zzz_script = load("res://characters/player/CharacterSkins/SleepZzzEffect.gd")
+	if zzz_script:
+		sleep_zzz_node = Node3D.new()
+		sleep_zzz_node.set_script(zzz_script)
+		sleep_zzz_node.theme_color = Color(0.91, 0.44, 0.36) if character_id == "atlas" else Color(0.24, 0.72, 0.47)
+		sleep_zzz_node.position = Vector3(0.20, 1.80, 0.0)
+		add_child(sleep_zzz_node)
+
+func set_sleeping(sleeping: bool) -> void:
+	if is_sleeping == sleeping:
+		return
+	is_sleeping = sleeping
+	
+	if sleep_tween and sleep_tween.is_valid():
+		sleep_tween.kill()
+	sleep_tween = create_tween().set_parallel(true)
+	
+	if is_sleeping:
+		# 1. Enter sleep mode: Droop head down & tilt softly
+		if sleep_zzz_node and sleep_zzz_node.has_method("set_active"):
+			sleep_zzz_node.set_active(true)
+			
+		if head_node:
+			sleep_tween.tween_property(head_node, "rotation", Vector3(deg_to_rad(24.0), 0.0, deg_to_rad(7.0)), 0.65).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			
+		if screen_face and mat_screen_blink:
+			screen_face.set_surface_override_material(0, mat_screen_blink)
+			
+		if anim_player:
+			anim_player.speed_scale = 0.35 # Calm slow sleep breathing
+	else:
+		# 2. Wake up mode: Raise head back up & open eyes
+		if sleep_zzz_node and sleep_zzz_node.has_method("set_active"):
+			sleep_zzz_node.set_active(false)
+			
+		if head_node:
+			sleep_tween.tween_property(head_node, "rotation", Vector3.ZERO, 0.40).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+			
+		if screen_face and mat_screen_normal:
+			screen_face.set_surface_override_material(0, mat_screen_normal)
+			
+		if anim_player:
+			anim_player.speed_scale = 1.0
+			if current_anim != "Idle":
+				anim_player.play("Idle", 0.15)
+				current_anim = "Idle"
 
 func _setup_tshirt_material() -> void:
 	var tshirt_mesh = find_child("TshirtChestFront", true, false) as MeshInstance3D
@@ -74,6 +129,11 @@ func _setup_screen_materials() -> void:
 		screen_face.set_surface_override_material(0, mat_screen_normal)
 
 func _process(delta: float) -> void:
+	if is_sleeping:
+		if screen_face and mat_screen_blink:
+			screen_face.set_surface_override_material(0, mat_screen_blink)
+		return
+		
 	if not screen_face or not mat_screen_normal or not mat_screen_blink:
 		return
 		
@@ -82,7 +142,7 @@ func _process(delta: float) -> void:
 		blink_timer = randf_range(2.8, 5.5)
 		screen_face.set_surface_override_material(0, mat_screen_blink)
 		get_tree().create_timer(0.16).timeout.connect(func():
-			if is_instance_valid(screen_face) and mat_screen_normal:
+			if is_instance_valid(screen_face) and mat_screen_normal and not is_sleeping:
 				screen_face.set_surface_override_material(0, mat_screen_normal)
 		)
 

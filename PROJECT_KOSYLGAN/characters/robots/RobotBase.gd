@@ -52,6 +52,12 @@ func set_active(active: bool) -> void:
 		velocity.z = 0
 		if skin:
 			skin.update_move_animation(0.0, 0.0)
+			if skin.has_method("set_sleeping"):
+				skin.set_sleeping(true)
+	else:
+		if skin:
+			if skin.has_method("set_sleeping"):
+				skin.set_sleeping(false)
 
 func get_facing_direction() -> Vector3:
 	if skin:
