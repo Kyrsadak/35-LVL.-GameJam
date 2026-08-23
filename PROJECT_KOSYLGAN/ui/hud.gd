@@ -5,7 +5,9 @@ extends CanvasLayer
 @onready var cipher_battery_display = %CipherBatteryDisplay
 
 @onready var level_title: Label = %LevelTitle
-@onready var cat_avatar_button: Button = %CatAvatarButton
+@onready var controls_hints: Label = %ControlsHints
+@onready var corner_hints_panel: PanelContainer = %CornerHintsPanel
+@onready var cat_avatar_button: Button = get_node_or_null("%CatAvatarButton")
 @onready var dialogue_container: Control = %DialogueContainer
 @onready var dialogue_portrait: Control = %DialoguePortrait
 @onready var message_banner: Label = %MessageBanner
@@ -97,8 +99,15 @@ func _process(_delta: float) -> void:
 		if "is_on_charging_station" in RobotManager.cipher:
 			cipher_battery_display.set_charging(RobotManager.cipher.is_on_charging_station)
 
-func set_level_info(level_num: int, title: String, mode_desc: String) -> void:
-	level_title.text = "УРОВЕНЬ " + str(level_num) + ": " + title.to_upper() + "\n" + mode_desc
+	if RobotManager.active_robot and RobotManager.active_robot.has_method("get_best_interactable"):
+		var target = RobotManager.active_robot.get_best_interactable()
+		_on_interact_target_changed(target)
+
+func set_level_info(level_num: int, title: String, mode_desc: String = "") -> void:
+	if level_title:
+		level_title.text = "📍 УРОВЕНЬ " + str(level_num) + ": " + title.to_upper()
+	if controls_hints and not mode_desc.is_empty():
+		controls_hints.text = mode_desc
 
 func _on_robot_switched(active_robot: Node) -> void:
 	if not active_robot:
@@ -121,6 +130,8 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 
 	is_dialogue_open = true
 	is_typing_active = true
+	if RobotManager:
+		RobotManager.set_dialogue_active(true)
 	dialogue_container.visible = true
 	message_banner.text = text
 	message_banner.visible_characters = 0
@@ -138,10 +149,9 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 		speaker = "atlas"
 	elif text.begins_with("[CIPHER]") or text.begins_with("CIPHER:"):
 		speaker = "cipher"
-	elif "atlas" in text.to_lower() and not "cipher" in text.to_lower():
-		speaker = "atlas"
-	elif "cipher" in text.to_lower() and not "atlas" in text.to_lower():
-		speaker = "cipher"
+	elif RobotManager and RobotManager.active_robot:
+		var r_id = RobotManager.active_robot.robot_id if "robot_id" in RobotManager.active_robot else "atlas"
+		speaker = r_id
 		
 	if dialogue_portrait:
 		dialogue_portrait.set_speaker(speaker)
@@ -196,6 +206,8 @@ func _dismiss_dialogue() -> void:
 		return
 	is_dialogue_open = false
 	is_typing_active = false
+	if RobotManager:
+		RobotManager.set_dialogue_active(false)
 	if dialogue_portrait:
 		dialogue_portrait.set_talking(false)
 	

@@ -2,7 +2,7 @@ class_name GuideTablet
 extends Area3D
 
 @export var guide_id: String = "guide_1"
-@export_multiline var clue_text: String = "СХЕМА: ПЕРЕРЕЖЬТЕ КРАСНЫЙ ПРОВОД"
+@export_multiline var clue_text: String = "ПЕРЕРЕЖЬТЕ КРАСНЫЙ ПРОВОД"
 
 @onready var hologram: Node3D = $Hologram
 @onready var tablet_screen: MeshInstance3D = $Hologram/TabletScreen

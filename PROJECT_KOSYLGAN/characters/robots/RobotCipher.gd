@@ -30,42 +30,47 @@ func interact() -> void:
 			_drop_carried_object()
 			return
 
-	var target = current_interactable
-	if not target and push_ray and push_ray.is_colliding():
-		target = push_ray.get_collider()
+	var target = get_best_interactable()
 	
-	if target and not target.is_in_group("socket_terminal") and not target.is_in_group("terminal") and not target.is_in_group("dual_generator") and not target.is_in_group("key_module"):
-		if target.get_parent() and (target.get_parent().is_in_group("socket_terminal") or target.get_parent().is_in_group("terminal") or target.get_parent().is_in_group("dual_generator") or target.get_parent().is_in_group("key_module")):
-			target = target.get_parent()
+	# Find ancestor if collider or docked item is a child of interactable system
+	var node = target
+	while node and node != get_tree().root:
+		if node.is_in_group("socket_terminal") or node.is_in_group("terminal") or node.is_in_group("dual_generator") or node.is_in_group("guide_tablet"):
+			target = node
+			break
+		node = node.get_parent()
 
-	# 1. Pick up Cipher Quantum Key Module (Green)
-	if target and target.is_in_group("key_module"):
+	# 1. Activate Socket Terminal / Power Receiver Dock with battery
+	if target and target.is_in_group("socket_terminal"):
+		if target.has_method("activate_generator"):
+			target.activate_generator(self)
+			return
+		elif target.has_method("interact"):
+			target.interact(self)
+			return
+
+	# 2. Pick up Cipher Quantum Key Module (Green)
+	elif target and target.is_in_group("key_module"):
 		var req = target.required_robot_id if "required_robot_id" in target else ""
 		if req == "cipher":
 			_pick_up_object(target)
 			return
 		else:
 			if RobotManager:
-				RobotManager.show_message("[CIPHER]: Это тяжелое титановое ядро! Его может поднять только ATLAS.", 3.0)
+				RobotManager.show_message("Это тяжелое титановое ядро! Его может поднять только ATLAS.", 3.0)
 			return
 
-	# 2. Hack standard door terminal
+	# 3. Hack standard door terminal
 	elif target and target.is_in_group("terminal"):
 		if target.has_method("start_hack"):
 			target.start_hack(self)
 			hack_started.emit(target)
 			return
 
-	# 3. Activate Socket Terminal / Power Receiver Dock with battery
-	elif target and target.is_in_group("socket_terminal"):
-		if target.has_method("activate_generator"):
-			target.activate_generator(self)
-			return
-
 	# 4. Guide tablet (Atlas only)
 	elif target and target.is_in_group("guide_tablet"):
 		if RobotManager:
-			RobotManager.show_message("[CIPHER]: Этот чертёж слишком сложен для меня. Нужен ATLAS!")
+			RobotManager.show_message("Этот чертёж слишком сложен для меня. Нужен ATLAS!")
 
 	# 5. Generic interactable
 	elif target and target.has_method("interact"):

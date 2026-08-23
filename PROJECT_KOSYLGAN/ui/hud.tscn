@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://ui/hud.gd" id="1_hud"]
 [ext_resource type="Script" path="res://ui/battery_display.gd" id="2_bat"]
@@ -37,6 +37,25 @@ corner_radius_bottom_left = 8
 shadow_color = Color(0.25, 0.20, 0.15, 0.12)
 shadow_size = 4
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_corner_hints"]
+bg_color = Color(0.97, 0.95, 0.92, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.88, 0.82, 0.76, 0.90)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.25, 0.20, 0.15, 0.10)
+shadow_size = 8
+shadow_offset = Vector2(0, 2)
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
 
@@ -63,28 +82,9 @@ robot_name = "ATLAS"
 robot_role = "HEAVY LOADER // FORKLIFT MECHA"
 theme_color = Color(0.91, 0.44, 0.36, 1)
 
-[node name="LevelInfo" type="VBoxContainer" parent="TopMargin/HBox"]
+[node name="CenterSpacer" type="Control" parent="TopMargin/HBox"]
 layout_mode = 2
-size_flags_horizontal = 6
-alignment = 1
-
-[node name="CatAvatarButton" type="Button" parent="TopMargin/HBox/LevelInfo"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 44)
-layout_mode = 2
-size_flags_horizontal = 4
-focus_mode = 0
-mouse_default_cursor_shape = 2
-text = "🐾 Спросить Гида [H]"
-flat = false
-
-[node name="LevelTitle" type="Label" parent="TopMargin/HBox/LevelInfo"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.25, 0.22, 0.18, 1)
-theme_override_font_sizes/font_size = 15
-text = "УРОВЕНЬ 1: ЭНЕРГОБЛОК"
-horizontal_alignment = 1
+size_flags_horizontal = 3
 
 [node name="CipherBatteryDisplay" type="Control" parent="TopMargin/HBox"]
 unique_name_in_owner = true
@@ -188,15 +188,33 @@ theme_override_font_sizes/font_size = 20
 text = "[E] ВЗАИМОДЕЙСТВИЕ"
 horizontal_alignment = 1
 
-[node name="ControlsReminder" type="Label" parent="."]
+[node name="CornerHintsPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = -40.0
-offset_right = 600.0
-offset_bottom = -15.0
+offset_left = 24.0
+offset_top = -88.0
+offset_right = 470.0
+offset_bottom = -16.0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.45, 0.40, 0.35, 0.85)
-theme_override_font_sizes/font_size = 14
-text = "WASD: Движение | TAB: Смена робота | E: Действие | R: Рестарт уровня"
+theme_override_styles/panel = SubResource("StyleBoxFlat_corner_hints")
+
+[node name="VBox" type="VBoxContainer" parent="CornerHintsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="LevelTitle" type="Label" parent="CornerHintsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.32, 0.26, 0.22, 1)
+theme_override_font_sizes/font_size = 13
+text = "📍 УРОВЕНЬ 1: ОБУЧЕНИЕ (ТРЕНИРОВОЧНЫЙ БЛОК)"
+
+[node name="ControlsHints" type="Label" parent="CornerHintsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.42, 0.36, 0.95)
+theme_override_font_sizes/font_size = 12
+text = "WASD: Движение  •  TAB: Смена  •  E: Действие  •  R: Рестарт
+ПКМ: Обзор 360°  •  Колесо: Зум  •  F: Сброс камеры"

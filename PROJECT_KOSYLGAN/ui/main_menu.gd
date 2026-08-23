@@ -43,6 +43,11 @@ func _ready() -> void:
 		close_rules_btn.pressed.connect(_hide_rules)
 		close_rules_btn.mouse_entered.connect(_play_hover)
 
+	# Play ambient background music safely via SoundManager
+	if SoundManager:
+		_apply_music_volume()
+		SoundManager.play_bgm()
+
 	# Connect Level Select Buttons
 	if btn_lvl0:
 		btn_lvl0.pressed.connect(func(): _play_click(); _launch_game(1))
@@ -60,18 +65,6 @@ func _ready() -> void:
 		btn_lvl4.pressed.connect(func(): _play_click(); _launch_game(5))
 		btn_lvl4.mouse_entered.connect(_play_hover)
 
-	# Play ambient background music safely
-	if audio_player:
-		var music_path = "res://audio/loading_screen.mp3"
-		if not ResourceLoader.exists(music_path):
-			music_path = "res://audio/bgm.mp3"
-		if ResourceLoader.exists(music_path):
-			var music_res = ResourceLoader.load(music_path)
-			if music_res is AudioStream:
-				audio_player.stream = music_res
-				_apply_music_volume()
-				audio_player.play()
-
 func _process(delta: float) -> void:
 	anim_time += delta
 	
@@ -87,9 +80,12 @@ func _process(delta: float) -> void:
 		contraption_root.rotation.x = cos(anim_time * 1.2) * 0.012
 		contraption_root.position.y = sin(anim_time * 2.0) * 0.035
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_0:
+		if event.keycode == KEY_SPACE or event.keycode == KEY_ENTER:
+			_play_click()
+			_launch_game(1)
+		elif event.keycode == KEY_0:
 			_play_click()
 			_launch_game(1)
 		elif event.keycode == KEY_1:
@@ -208,11 +204,11 @@ func _update_slider_positions() -> void:
 		slider_cube_sound.position.x = lerp(SLIDER_LOCAL_MIN, SLIDER_LOCAL_MAX, sound_vol_ratio)
 
 func _apply_music_volume() -> void:
+	var vol_db = -80.0 if music_vol_ratio <= 0.01 else linear_to_db(music_vol_ratio)
+	if SoundManager and SoundManager.has_method("set_bgm_volume"):
+		SoundManager.set_bgm_volume(vol_db)
 	if audio_player:
-		if music_vol_ratio <= 0.01:
-			audio_player.volume_db = -80.0
-		else:
-			audio_player.volume_db = linear_to_db(music_vol_ratio)
+		audio_player.volume_db = vol_db
 
 func _apply_sound_volume() -> void:
 	var bus_idx = AudioServer.get_bus_index("Master")
@@ -230,15 +226,24 @@ func _animate_click_feedback(node: Node) -> void:
 	t.tween_property(node, "position:z", orig_pos.z - 0.06, 0.08).set_trans(Tween.TRANS_QUAD)
 	t.tween_property(node, "position:z", orig_pos.z, 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-func _launch_game(level_idx: int) -> void:
-	var t = create_tween().set_parallel(true)
-	t.tween_property(camera, "fov", 28.0, 0.45).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	t.tween_property(contraption_root, "position:z", -1.5, 0.45).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	t.tween_property(self, "modulate:a", 0.0, 0.45)
-	t.chain().tween_callback(func():
+func _launch_game(level_idx: int = 1) -> void:
+	if camera and contraption_root:
+		var t = create_tween().set_parallel(true)
+		t.tween_property(camera, "fov", 28.0, 0.35).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		t.tween_property(contraption_root, "position:z", -1.5, 0.35).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		if ui_canvas:
+			t.tween_property(ui_canvas, "modulate:a", 0.0, 0.35)
+		t.chain().tween_callback(func():
+			if GameManager:
+				GameManager.load_level(level_idx)
+			else:
+				get_tree().change_scene_to_file("res://scenes/levels/tutorial.tscn")
+		)
+	else:
 		if GameManager:
 			GameManager.load_level(level_idx)
-	)
+		else:
+			get_tree().change_scene_to_file("res://scenes/levels/tutorial.tscn")
 
 func _show_rules() -> void:
 	if rules_modal:
