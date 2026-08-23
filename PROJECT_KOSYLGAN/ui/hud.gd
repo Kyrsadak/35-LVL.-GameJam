@@ -128,16 +128,20 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 	current_total_chars = text.length()
 	var char_speed = 0.046 # Left-to-right steady typing cadence
 	var type_duration = max(0.60, current_total_chars * char_speed)
-	var is_catgirl = "Weo" in text or "(=^" in text or "CRT-CAT" in text or "кошко" in text.to_lower()
+	var is_catgirl = "Weo" in text or "(=^" in text or "CRT-CAT" in text or "кошк" in text.to_lower()
 
 	# Set speaker portrait
 	var speaker = "catgirl"
-	if "ATLAS" in text:
-		speaker = "atlas"
-	elif "CIPHER" in text:
-		speaker = "cipher"
-	elif is_catgirl:
+	if is_catgirl:
 		speaker = "catgirl"
+	elif text.begins_with("[ATLAS]") or text.begins_with("ATLAS:"):
+		speaker = "atlas"
+	elif text.begins_with("[CIPHER]") or text.begins_with("CIPHER:"):
+		speaker = "cipher"
+	elif "atlas" in text.to_lower() and not "cipher" in text.to_lower():
+		speaker = "atlas"
+	elif "cipher" in text.to_lower() and not "atlas" in text.to_lower():
+		speaker = "cipher"
 		
 	if dialogue_portrait:
 		dialogue_portrait.set_speaker(speaker)
@@ -146,14 +150,14 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 	# 1. Silky Smooth Panel Fade & Slide Up Entrance
 	dialogue_container.modulate.a = 0.0
 	dialogue_container.offset_top = default_dialogue_offset_top + 14.0
-	dialogue_container.offset_bottom = default_dialogue_offset_top + 14.0 + 88.0
+	dialogue_container.offset_bottom = default_dialogue_offset_top + 14.0 + 108.0
 	if enter_badge:
 		enter_badge.modulate.a = 0.0
 	
 	var slide_tween = create_tween().set_parallel(true)
 	slide_tween.tween_property(dialogue_container, "modulate:a", 1.0, 0.28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	slide_tween.tween_property(dialogue_container, "offset_top", default_dialogue_offset_top, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	slide_tween.tween_property(dialogue_container, "offset_bottom", default_dialogue_offset_top + 88.0, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	slide_tween.tween_property(dialogue_container, "offset_bottom", default_dialogue_offset_top + 108.0, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 	# 2. Strict Left-to-Right Typewriter Reveal (visible_characters)
 	active_typing_tween = create_tween()
@@ -226,6 +230,19 @@ func _on_interact_target_changed(target: Node) -> void:
 			interact_prompt.text = "[E] ИЗУЧИТЬ СХЕМУ"
 		elif target.is_in_group("terminal"):
 			interact_prompt.text = "[E] ВЗЛОМАТЬ ТЕРМИНАЛ"
+		elif target.is_in_group("socket_terminal"):
+			if "current_state" in target and target.current_state == 1: # BATTERY_INSERTED
+				if RobotManager and RobotManager.active_robot == RobotManager.cipher:
+					interact_prompt.text = "[E] ЗАПУСТИТЬ ГЕНЕРАТОР"
+				else:
+					interact_prompt.text = "🔒 НУЖЕН CIPHER (ЗЕЛЁНЫЙ)"
+			elif "current_state" in target and target.current_state == 2: # ACTIVATED
+				interact_prompt.text = "⚡ ГЕНЕРАТОР РАБОТАЕТ"
+			else:
+				if RobotManager and RobotManager.active_robot == RobotManager.atlas and RobotManager.atlas.carried_object != null:
+					interact_prompt.text = "[E] ВСТАВИТЬ БАТАРЕЮ"
+				else:
+					interact_prompt.text = "🔒 ПРИЁМНИК (Нужна батарея)"
 		elif target.is_in_group("key_module") or target.is_in_group("pushable_box") or target.is_in_group("boxes"):
 			interact_prompt.text = "[E] ПОДНЯТЬ ПРЕДМЕТ"
 		else:

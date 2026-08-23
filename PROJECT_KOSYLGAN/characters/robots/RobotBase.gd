@@ -30,8 +30,9 @@ var is_discharged: bool = false
 var current_interactable: Node = null
 
 @onready var skin = $Skin
-@onready var interaction_area: Area3D = $InteractionArea
-@onready var carry_pivot: Marker3D = $CarryPivot
+@onready var interaction_area: Area3D = find_child("InteractionArea", true, false) as Area3D
+@onready var carry_pivot: Marker3D = find_child("CarryPivot", true, false) as Marker3D
+@onready var push_ray: RayCast3D = find_child("PushRay", true, false) as RayCast3D
 
 var carried_object: Node3D = null
 var _step_timer: float = 0.0
@@ -70,9 +71,9 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.y = 0.0
 
-	# Keep carry pivot aligned with the direction the robot is facing (in front of loader scoops)
+	# Keep carry pivot aligned with the direction the robot is facing (resting cleanly on top of forklift tines)
 	if skin and carry_pivot:
-		carry_pivot.global_position = global_position + Vector3(0, 1.05, 0) + get_facing_direction() * 0.85
+		carry_pivot.global_position = global_position + Vector3(0, 0.40, 0) + get_facing_direction() * 1.05
 		carry_pivot.global_rotation.y = skin.global_rotation.y
 
 	if is_discharged:
@@ -160,19 +161,22 @@ func _handle_movement(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, move_dir.x * current_move_speed, acceleration * (1.3 if is_sprinting else 1.0) * delta)
 		velocity.z = move_toward(velocity.z, move_dir.z * current_move_speed, acceleration * (1.3 if is_sprinting else 1.0) * delta)
 		
-		# Footstep sound cadence
-		_step_timer += delta
-		var step_interval = 0.20 if is_sprinting else 0.32
-		if _step_timer >= step_interval:
-			_step_timer = 0.0
-			if SoundManager:
-				SoundManager.play_footstep(-16.0)
-
 		if skin:
 			skin.orient_model_to_direction(move_dir, delta)
 			skin.update_move_animation(velocity.length() / move_speed, delta)
+
+		var current_speed_scale = 0.75 * (1.65 if is_sprinting else 1.0)
+		if skin and "anim_player" in skin and skin.anim_player:
+			current_speed_scale = skin.anim_player.speed_scale * (1.65 if is_sprinting else 1.0)
+		var step_interval = 0.38 / max(0.1, current_speed_scale)
+
+		_step_timer += delta
+		if _step_timer >= step_interval:
+			_step_timer = 0.0
+			if SoundManager:
+				SoundManager.play_footstep(-8.0)
 	else:
-		_step_timer = 0.24
+		_step_timer = 0.20
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
 		velocity.z = move_toward(velocity.z, 0, friction * delta)
 		if skin:

@@ -98,7 +98,15 @@ func start_hack(robot: Node) -> void:
 
 	if is_hacked:
 		if RobotManager:
-			RobotManager.show_message("✅ Терминал уже взломан! Лазеры отключены.")
+			RobotManager.show_message("✅ Терминал уже взломан! Гермодвери открыты.")
+		return
+
+	# Strictly enforce cooperative workflow: Atlas MUST read the tablet clue first!
+	if not clue_id.is_empty() and RobotManager and not RobotManager.discovered_clues.has(clue_id):
+		if RobotManager:
+			RobotManager.show_message("[CIPHER]: Я не знаю, какой провод резать! Схема зашифрована. Сначала ATLAS должен найти и просканировать планшет-инструкцию!", 4.5)
+		if SoundManager and SoundManager.has_method("play_spark_error"):
+			SoundManager.play_spark_error()
 		return
 
 	var minigame = null
@@ -126,9 +134,15 @@ func _on_hack_completed(success: bool) -> void:
 			gate = get_node_or_null(target_gate_path)
 		if not gate:
 			gate = get_tree().get_first_node_in_group("laser_gate")
+		if not gate:
+			gate = get_parent().find_child("LaserGate", true, false)
 		
 		if gate and gate.has_method("open"):
 			gate.open()
+		elif gate and "is_active" in gate:
+			gate.is_active = false
+			if gate.has_method("_apply_door_state"):
+				gate._apply_door_state(false, false)
 
 		if RobotManager:
 			RobotManager.show_message("🔓 Взлом успешен! Защитные гермодвери открыты.")
