@@ -112,7 +112,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if is_game_paused or is_dialogue_active:
 		return
 
-	if event.is_action_pressed("switch_robot"):
+	if event.is_action_pressed("switch_robot") or (event is InputEventKey and event.pressed and not event.echo and (event.keycode == KEY_TAB or event.keycode == KEY_Q)):
 		try_switch_robot()
 	elif event.is_action_pressed("restart_level"):
 		restart_level()

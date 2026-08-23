@@ -17,6 +17,19 @@ var anim_timer: float = 0.0
 
 func _ready() -> void:
 	custom_minimum_size = Vector2(430, 96)
+	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if RobotManager:
+			if robot_name == "DAU" or robot_name == "ATLAS":
+				if RobotManager.atlas:
+					RobotManager.set_active_robot(RobotManager.atlas)
+			else:
+				if RobotManager.cipher:
+					RobotManager.set_active_robot(RobotManager.cipher)
+			if SoundManager:
+				SoundManager.play_switch()
 
 func _process(delta: float) -> void:
 	anim_timer += delta
