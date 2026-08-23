@@ -107,6 +107,18 @@ func insert_module(battery: Node3D) -> void:
 	tween.tween_property(battery, "position", Vector3(0, -0.05, 0), 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(battery, "rotation", Vector3.ZERO, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
+	# Disable battery interaction once docked so it doesn't block Cipher interacting with the socket
+	battery.remove_from_group("interactable")
+	battery.remove_from_group("key_module")
+	if battery is CollisionObject3D:
+		battery.collision_layer = 0
+		battery.collision_mask = 0
+	for child in battery.find_children("*", "CollisionShape3D", true, false):
+		child.disabled = true
+	for child in battery.find_children("*", "Area3D", true, false):
+		child.monitoring = false
+		child.monitorable = false
+
 	# Clamps lock in
 	if clamp_l and clamp_r:
 		tween.tween_property(clamp_l, "position:x", -0.36, 0.35)
@@ -118,6 +130,15 @@ func insert_module(battery: Node3D) -> void:
 	# Guide the player to switch to Cipher and activate the generator
 	if RobotManager:
 		RobotManager.show_message("[РОБО-КОШКА]: (=^･ω･^=) Мяу! Батарея на месте! Но цепь обесточена — активировать генератор может только инженер CIPHER (Зелёный робот)!", 4.5)
+
+func interact(robot: Node3D) -> void:
+	if current_state == TerminalState.ACTIVATED:
+		return
+	if robot and "robot_id" in robot and robot.robot_id == "cipher":
+		activate_generator(robot)
+	elif current_state == TerminalState.BATTERY_INSERTED:
+		if RobotManager:
+			RobotManager.show_message("Активировать цепь генератора может только инженер CIPHER (клавиша TAB для переключения)!", 3.5)
 
 ## Stage 2: CIPHER approaches the console and activates the circuit
 func activate_generator(cipher_robot: Node3D) -> void:
