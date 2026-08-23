@@ -85,7 +85,10 @@ func _physics_process(delta: float) -> void:
 	# Dynamic Battery Drain & Charge Logic
 	var is_dialogue_open: bool = RobotManager != null and RobotManager.is_dialogue_active
 
-	if is_on_charging_station:
+	if RobotManager and "infinite_energy_active" in RobotManager and RobotManager.infinite_energy_active:
+		battery = max_battery
+		battery_changed.emit(battery, max_battery)
+	elif is_on_charging_station:
 		# Strictly charge only: zero drain while docked
 		velocity = Vector3.ZERO
 		if battery < max_battery:
@@ -141,6 +144,9 @@ func _handle_movement(delta: float) -> void:
 	if Input.is_action_pressed("p1_move_down"):
 		input_vec.y += 1.0
 
+	var is_sprinting = Input.is_action_pressed("p1_sprint") or Input.is_key_pressed(KEY_SHIFT)
+	var current_move_speed = move_speed * 1.65 if is_sprinting else move_speed
+
 	var move_dir = Vector3.ZERO
 	if input_vec.length_squared() > 0.01:
 		input_vec = input_vec.normalized()
@@ -160,24 +166,23 @@ func _handle_movement(delta: float) -> void:
 			move_dir = Vector3(input_vec.x, 0, input_vec.y).normalized()
 
 	if move_dir.length_squared() > 0.01:
-		velocity.x = move_toward(velocity.x, move_dir.x * move_speed, acceleration * delta)
-		velocity.z = move_toward(velocity.z, move_dir.z * move_speed, acceleration * delta)
+		velocity.x = move_toward(velocity.x, move_dir.x * current_move_speed, acceleration * (1.3 if is_sprinting else 1.0) * delta)
+		velocity.z = move_toward(velocity.z, move_dir.z * current_move_speed, acceleration * (1.3 if is_sprinting else 1.0) * delta)
 		
 		if skin:
 			skin.orient_model_to_direction(move_dir, delta)
 			skin.update_move_animation(velocity.length() / move_speed, delta)
 
-		# One heartbeat "lub-dub" per step — calm ~0.55s interval
-		var current_speed_scale = 0.75
+		var current_speed_scale = 0.75 * (1.65 if is_sprinting else 1.0)
 		if skin and "anim_player" in skin and skin.anim_player:
-			current_speed_scale = skin.anim_player.speed_scale
+			current_speed_scale = skin.anim_player.speed_scale * (1.65 if is_sprinting else 1.0)
 		var step_interval = 0.38 / max(0.1, current_speed_scale)
 
 		_step_timer += delta
 		if _step_timer >= step_interval:
 			_step_timer = 0.0
 			if SoundManager:
-				SoundManager.play_footstep(-6.0)
+				SoundManager.play_footstep(-8.0)
 	else:
 		_step_timer = 0.20
 		velocity.x = move_toward(velocity.x, 0, friction * delta)

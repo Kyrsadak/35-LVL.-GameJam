@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://systems/dual_generator.gd" id="1_script"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_base"]
+height = 2.5
+radius = 2.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_base"]
+top_radius = 1.4
+bottom_radius = 1.8
+height = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_reactor"]
+top_radius = 0.6
+bottom_radius = 0.6
+height = 1.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_slot"]
+size = Vector3(0.5, 0.6, 0.4)
+
+[sub_resource type="SphereMesh" id="SphereMesh_core"]
+radius = 0.25
+height = 0.5
+
+[node name="DualGenerator" type="Area3D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+shape = SubResource("CylinderShape3D_base")
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="BasePodium" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_base")
+
+[node name="MainReactorCore" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("CylinderMesh_reactor")
+
+[node name="SlotOrange" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.1, 0)
+mesh = SubResource("BoxMesh_slot")
+
+[node name="OrangeCore" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.5, 0)
+mesh = SubResource("SphereMesh_core")
+
+[node name="SlotGreen" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 1.1, 0)
+mesh = SubResource("BoxMesh_slot")
+
+[node name="GreenCore" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 1.5, 0)
+mesh = SubResource("SphereMesh_core")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+light_color = Color(0.3, 0.8, 1, 1)
+light_energy = 1.5
+omni_range = 8.0
+omni_attenuation = 1.2

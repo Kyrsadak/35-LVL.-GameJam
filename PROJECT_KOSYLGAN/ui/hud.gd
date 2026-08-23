@@ -7,6 +7,7 @@ extends CanvasLayer
 @onready var level_title: Label = %LevelTitle
 @onready var controls_hints: Label = %ControlsHints
 @onready var corner_hints_panel: PanelContainer = %CornerHintsPanel
+@onready var cat_avatar_button: Button = get_node_or_null("%CatAvatarButton")
 @onready var dialogue_container: Control = %DialogueContainer
 @onready var dialogue_portrait: Control = %DialoguePortrait
 @onready var message_banner: Label = %MessageBanner
@@ -32,6 +33,10 @@ func _ready() -> void:
 		cipher_battery_display.theme_color = Color(0.24, 0.72, 0.47) # Calm Mint Sage
 		cipher_battery_display.set_active(false)
 
+	if cat_avatar_button:
+		cat_avatar_button.pressed.connect(_on_cat_avatar_pressed)
+		cat_avatar_button.mouse_entered.connect(_on_cat_avatar_hover)
+
 	if RobotManager:
 		RobotManager.robot_switched.connect(_on_robot_switched)
 		RobotManager.hud_message_requested.connect(show_banner_message)
@@ -50,6 +55,12 @@ func _ready() -> void:
 		enter_badge.modulate.a = 0.0
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_H:
+			_on_cat_avatar_pressed()
+			get_viewport().set_input_as_handled()
+			return
+
 	if not is_dialogue_open or not dialogue_container or not dialogue_container.visible:
 		return
 		
@@ -247,3 +258,28 @@ func _on_interact_target_changed(target: Node) -> void:
 		interact_prompt.visible = true
 	else:
 		interact_prompt.visible = false
+
+func _on_cat_avatar_hover() -> void:
+	if SoundManager and SoundManager.has_method("play_ui_hover"):
+		SoundManager.play_ui_hover()
+
+func _on_cat_avatar_pressed() -> void:
+	if SoundManager and SoundManager.has_method("play_ui_click"):
+		SoundManager.play_ui_click()
+
+	var lvl = RobotManager.current_level_index if RobotManager else 1
+	var hint_text = ""
+	if lvl == 1:
+		hint_text = "🐾 Мяу! В Бухаре взломайте стартовый терминал через JAM [TAB], заберите батарею в восточном крыле роботом DAU и вставьте в сокет эвакуации на севере!"
+	elif lvl == 2:
+		hint_text = "🐾 В Хиве робот DAU должен расчистить проход от ящиков на восточный склад, достать батарею, а затем поставить один тяжелый ящик на нажимную плиту в ангаре, чтобы запитать терминал выхода для JAM! Используйте [Shift] для быстрого спринта!"
+	elif lvl == 3:
+		hint_text = "🐾 В Самарканде нужно дважды активировать нажимные плиты! Сначала поставьте первый ящик на плиту у спавна, чтобы запитать 5-рубильниковый терминал (код 3-1-4-2-5). Затем в западном хранилище расчистите завал, заберите батарею и второй ящик, и поставьте второй ящик на плиту в ангаре эвакуации!"
+	elif lvl == 4:
+		hint_text = "🐾 ФИНАЛ В ТАШКЕНТЕ! Запустите Центральный Генератор двумя ядрами: JAM взламывает западное крыло и забирает Зеленое ядро, а DAU расчищает восточный завал и приносит Оранжевое ядро! После запуска оба робота получат бесконечный заряд!"
+	elif lvl == 0:
+		hint_text = "🐾 Привет! Я ваш бортовой ИИ-гид. Управляйте роботами на WASD, переключайтесь на TAB, а на Shift включайте спринт без потери заряда!"
+	else:
+		hint_text = "🐾 Действуйте сообща! DAU поднимает тяжести и читает чертежи, а JAM взламывает терминалы и переключает реле!"
+
+	show_banner_message(hint_text, 0.0)

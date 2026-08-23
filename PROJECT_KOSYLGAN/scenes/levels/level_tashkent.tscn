@@ -1,0 +1,500 @@
+[gd_scene load_steps=23 format=3]
+
+[ext_resource type="Script" path="res://scenes/levels/level_tashkent.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://characters/robots/RobotAtlas.tscn" id="2_atlas"]
+[ext_resource type="PackedScene" path="res://characters/robots/RobotCipher.tscn" id="3_cipher"]
+[ext_resource type="PackedScene" path="res://systems/charging_station.tscn" id="4_station"]
+[ext_resource type="PackedScene" path="res://systems/laser_gate.tscn" id="5_laser"]
+[ext_resource type="PackedScene" path="res://systems/terminal.tscn" id="6_terminal"]
+[ext_resource type="PackedScene" path="res://systems/pressure_plate.tscn" id="7_plate"]
+[ext_resource type="PackedScene" path="res://systems/pushable_box.tscn" id="8_box"]
+[ext_resource type="PackedScene" path="res://systems/key_module.tscn" id="9_key"]
+[ext_resource type="PackedScene" path="res://systems/guide_tablet.tscn" id="10_tablet"]
+[ext_resource type="PackedScene" path="res://systems/dual_generator.tscn" id="11_dual_gen"]
+[ext_resource type="PackedScene" path="res://systems/freedom_portal.tscn" id="12_portal"]
+[ext_resource type="PackedScene" path="res://ui/hud.tscn" id="13_hud"]
+[ext_resource type="Material" path="res://assets/materials/mat_space_floor.tres" id="14_floor"]
+[ext_resource type="Material" path="res://assets/materials/mat_space_wall.tres" id="15_wall"]
+[ext_resource type="PackedScene" path="res://systems/top_down_camera.tscn" id="16_cam"]
+[ext_resource type="Environment" path="res://scenes/level1_env.tres" id="17_env"]
+[ext_resource type="PackedScene" path="res://scenes/modular_kit/Pallet_Large.tscn" id="18_pallet"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_locker.tscn" id="19_locker"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_workbench.tscn" id="20_workbench"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_server.tscn" id="21_server"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_barrel.tscn" id="22_barrel"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_security_camera.tscn" id="23_cam_prop"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_wall_fan.tscn" id="24_fan"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_pipes.tscn" id="25_pipes"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_traffic_cone.tscn" id="26_cone"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_safety_barrier.tscn" id="27_barrier"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_blue_barrel.tscn" id="28_blue_barrel"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_wall_poster.tscn" id="29_poster"]
+[ext_resource type="PackedScene" path="res://systems/floor_cable.tscn" id="30_cable"]
+
+[node name="LevelTashkent" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("17_env")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.819152, -0.40558, 0.40558, 0, 0.707107, 0.707107, -0.573576, -0.579228, 0.579228, 0, 25, 0)
+light_color = Color(1, 0.95, 0.88, 1)
+light_energy = 1.15
+shadow_enabled = true
+shadow_bias = 0.02
+
+[node name="Geometry" type="Node3D" parent="."]
+
+[node name="Floors" type="Node3D" parent="Geometry"]
+
+[node name="FloorNexusCylinder" type="CSGCylinder3D" parent="Geometry/Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+radius = 6.8
+height = 0.5
+sides = 16
+material = ExtResource("14_floor")
+
+[node name="FloorNexusCross1" type="CSGBox3D" parent="Geometry/Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(15, 0.5, 8)
+material = ExtResource("14_floor")
+
+[node name="FloorNexusCross2" type="CSGBox3D" parent="Geometry/Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(8, 0.5, 15)
+material = ExtResource("14_floor")
+
+[node name="FloorSouthCorridor" type="CSGBox3D" parent="Geometry/Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 9.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(8, 0.5, 8)
+material = ExtResource("14_floor")
+
+[node name="FloorSouthSpawn" type="CSGBox3D" parent="Geometry/Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 16.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(13, 0.5, 9)
+material = ExtResource("14_floor")
+
+[node name="FloorNorthCorridor" type="CSGBox3D" parent="Geometry/Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -9.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(8, 0.5, 8)
+material = ExtResource("14_floor")
+
+[node name="FloorNorthFreedomPortal" type="CSGBox3D" parent="Geometry/Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -16.0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(12, 0.5, 8.5)
+material = ExtResource("14_floor")
+
+[node name="FloorWestHackerLab" type="CSGBox3D" parent="Geometry/Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, -0.25, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(13, 0.5, 12)
+material = ExtResource("14_floor")
+
+[node name="FloorEastCargoVault" type="CSGBox3D" parent="Geometry/Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0, -0.25, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(13, 0.5, 12)
+material = ExtResource("14_floor")
+
+[node name="Walls" type="Node3D" parent="Geometry"]
+
+[node name="WallNexus_SW_Arc" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -4.75, 1.5, 4.75)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 3.8)
+material = ExtResource("15_wall")
+
+[node name="WallNexus_SE_Arc" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 4.75, 1.5, 4.75)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 3.8)
+material = ExtResource("15_wall")
+
+[node name="WallNexus_NW_Arc" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -4.75, 1.5, -4.75)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 3.8)
+material = ExtResource("15_wall")
+
+[node name="WallNexus_NE_Arc" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 4.75, 1.5, -4.75)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 3.8)
+material = ExtResource("15_wall")
+
+[node name="WallCorridorSouth_W" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 1.5, 9.25)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 7.0)
+material = ExtResource("15_wall")
+
+[node name="WallCorridorSouth_E" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 1.5, 9.25)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 7.0)
+material = ExtResource("15_wall")
+
+[node name="WallSpawn_NL" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.75, 1.5, 12.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(3.0, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallSpawn_NR" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.75, 1.5, 12.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(3.0, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallSpawn_W" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, 1.5, 16.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 8.5)
+material = ExtResource("15_wall")
+
+[node name="WallSpawn_E" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 1.5, 16.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 8.5)
+material = ExtResource("15_wall")
+
+[node name="WallSpawn_S" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 20.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(12.5, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallCorridorNorth_W" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 1.5, -9.25)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 7.0)
+material = ExtResource("15_wall")
+
+[node name="WallCorridorNorth_E" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 1.5, -9.25)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 7.0)
+material = ExtResource("15_wall")
+
+[node name="WallFreedom_SL" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1.5, -12.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(2.5, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallFreedom_SR" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 1.5, -12.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(2.5, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallFreedom_W" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 1.5, -16.0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 7.5)
+material = ExtResource("15_wall")
+
+[node name="WallFreedom_E" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 1.5, -16.0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 7.5)
+material = ExtResource("15_wall")
+
+[node name="WallFreedom_N" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -19.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(11.5, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallWest_EL" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, 1.5, -4.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 2.5)
+material = ExtResource("15_wall")
+
+[node name="WallWest_ER" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, 1.5, 4.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 2.5)
+material = ExtResource("15_wall")
+
+[node name="WallWest_N" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 1.5, -5.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(12.5, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallWest_S" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 1.5, 5.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(12.5, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallWest_W" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.0, 1.5, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 11.5)
+material = ExtResource("15_wall")
+
+[node name="WallWest_Partition_N" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 1.5, -3.25)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 4.5)
+material = ExtResource("15_wall")
+
+[node name="WallWest_Partition_S" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 1.5, 3.75)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 3.5)
+material = ExtResource("15_wall")
+
+[node name="WallEast_WL" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 1.5, -4.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 2.5)
+material = ExtResource("15_wall")
+
+[node name="WallEast_WR" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 1.5, 4.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 2.5)
+material = ExtResource("15_wall")
+
+[node name="WallEast_N" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0, 1.5, -5.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(12.5, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallEast_S" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0, 1.5, 5.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(12.5, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallEast_E" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.0, 1.5, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 11.5)
+material = ExtResource("15_wall")
+
+[node name="Furniture" type="Node3D" parent="."]
+
+[node name="ServerRotundaW" parent="Furniture" instance=ExtResource("21_server")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -4.5, 0, 4.0)
+
+[node name="ServerRotundaE" parent="Furniture" instance=ExtResource("21_server")]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 4.5, 0, 4.0)
+
+[node name="WorkbenchWest" parent="Furniture" instance=ExtResource("20_workbench")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -19.0, 0, 2.5)
+
+[node name="PalletEast1" parent="Furniture" instance=ExtResource("18_pallet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5, 0, 3.5)
+
+[node name="PalletEast2" parent="Furniture" instance=ExtResource("18_pallet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5, 0, -3.5)
+
+[node name="LockerEast" parent="Furniture" instance=ExtResource("19_locker")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 19.0, 0, 2.5)
+
+[node name="BarrelSpawn1" parent="Furniture" instance=ExtResource("22_barrel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 19.0)
+
+[node name="BarrelSpawn2" parent="Furniture" instance=ExtResource("28_blue_barrel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 0, 19.5)
+
+[node name="TrafficCone1" parent="Furniture" instance=ExtResource("26_cone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 8.5)
+
+[node name="TrafficCone2" parent="Furniture" instance=ExtResource("26_cone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 8.5)
+
+[node name="SafetyBarrierNorth" parent="Furniture" instance=ExtResource("27_barrier")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 0, -6.5)
+
+[node name="DualGenerator" parent="." instance=ExtResource("11_dual_gen")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+target_gate_path = NodePath("../LaserGateFreedom")
+freedom_portal_path = NodePath("../FreedomPortal")
+
+[node name="ChargingStationSpawn" parent="." instance=ExtResource("4_station")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 18.5)
+
+[node name="ChargingStationNexus" parent="." instance=ExtResource("4_station")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.2)
+
+[node name="LaserGateFreedom" parent="." instance=ExtResource("5_laser")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.5)
+
+[node name="LaserGateWest" parent="." instance=ExtResource("5_laser")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -12.5, 0, 0.5)
+
+[node name="LaserGateEast" parent="." instance=ExtResource("5_laser")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 12.5, 0, 0.5)
+
+[node name="PushableBoxWest" parent="." instance=ExtResource("8_box")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.0, 0.6, 2.5)
+
+[node name="PressurePlateWest" parent="." instance=ExtResource("7_plate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.0, 0.05, -2.5)
+target_node_path = NodePath("../TerminalWest")
+
+[node name="TerminalWest" parent="." instance=ExtResource("6_terminal")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -11.0, 0, -2.5)
+terminal_id = "term_tashkent_west"
+target_gate_path = NodePath("../LaserGateWest")
+minigame_type = "switches"
+switch_sequence = Array[int]([3, 1, 4, 2, 5])
+requires_power = true
+is_powered = false
+clue_id = "guide_tashkent_west"
+
+[node name="CableWestPlateToTerminal" parent="." instance=ExtResource("30_cable")]
+points = Array[Vector3]([Vector3(-8.0, 0.05, -2.5), Vector3(-9.5, 0.05, -2.5), Vector3(-11.0, 0.05, -2.5)])
+source_plate_path = NodePath("../PressurePlateWest")
+target_terminal_path = NodePath("../TerminalWest")
+
+[node name="CableWestTerminalToGate" parent="." instance=ExtResource("30_cable")]
+points = Array[Vector3]([Vector3(-11.0, 0.05, -2.5), Vector3(-11.8, 0.05, -2.5), Vector3(-11.8, 0.05, 0.5), Vector3(-12.5, 0.05, 0.5)])
+is_powered = true
+unpowered_color = Color(0.3, 0.35, 0.4, 1)
+powered_color = Color(0.9, 0.7, 0.2, 1)
+powered_emission_energy = 1.2
+
+[node name="GuideTabletWest" parent="." instance=ExtResource("10_tablet")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -11.0, 0.8, -4.5)
+guide_id = "guide_tashkent_west"
+guide_title = "МАТРИЦА ПЕРЕКЛЮЧАТЕЛЕЙ"
+guide_text = "КОД ПИТАНИЯ СИСТЕМЫ: 3 -> 1 -> 4 -> 2 -> 5. Поставьте ящик на плиту для активации панели!"
+
+[node name="PressurePlateEast" parent="." instance=ExtResource("7_plate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.0, 0, 2.5)
+target_gate_path = NodePath("../LaserGateEast")
+
+[node name="PushableBoxEast1" parent="." instance=ExtResource("8_box")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0, 0.6, 2.5)
+
+[node name="PushableBoxEast2" parent="." instance=ExtResource("8_box")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 0.6, 0.5)
+
+[node name="KeyModuleGreen" parent="." instance=ExtResource("9_key")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5, 0.8, 0.0)
+module_name = "Зеленое Квантовое Ядро (JAM)"
+required_robot_id = "cipher"
+custom_color = Color(0.2, 0.95, 0.4, 1)
+is_custom_colored = true
+
+[node name="KeyModuleOrange" parent="." instance=ExtResource("9_key")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 0.8, -3.5)
+module_name = "Оранжевое Титановое Ядро (DAU)"
+required_robot_id = "atlas"
+custom_color = Color(1, 0.55, 0.1, 1)
+is_custom_colored = true
+
+[node name="GuideTablet" parent="." instance=ExtResource("10_tablet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.8, 14.5)
+guide_id = "guide_tashkent"
+guide_title = "ПЛАН ОПЕРАЦИИ: ТАШКЕНТ"
+guide_text = "ГЕНЕРАЛЬНЫЙ ПЛАН ТАШКЕНТА:\n1. DAU: Расчистите восточное хранилище, поставьте тяжелый ящик на плиту и заберите Оранжевое титановое ядро.\n2. JAM: Поставьте ящик на плиту, чтобы запитать терминал, взломайте матрицу (3-1-4-2-5) и заберите Зеленое квантовое ядро.\n3. Установите оба ядра в Центральный Генератор для запуска вечной энергии и открытия Врат Свободы!"
+
+[node name="FreedomPortal" parent="." instance=ExtResource("12_portal")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16.5)
+
+[node name="Robots" type="Node3D" parent="."]
+
+[node name="RobotAtlas" parent="Robots" instance=ExtResource("2_atlas")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0.1, 14.5)
+
+[node name="RobotCipher" parent="Robots" instance=ExtResource("3_cipher")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0.1, 14.5)
+
+[node name="TopDownCamera" parent="." instance=ExtResource("16_cam")]
+
+[node name="HUD" parent="." instance=ExtResource("13_hud")]

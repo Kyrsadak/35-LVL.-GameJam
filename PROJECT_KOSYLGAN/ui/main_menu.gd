@@ -16,6 +16,12 @@ extends Node3D
 @onready var rules_modal: PanelContainer = %RulesModal
 @onready var close_rules_btn: Button = %CloseRulesBtn
 
+@onready var btn_lvl0: Button = %BtnLvl0
+@onready var btn_lvl1: Button = %BtnLvl1
+@onready var btn_lvl2: Button = %BtnLvl2
+@onready var btn_lvl3: Button = %BtnLvl3
+@onready var btn_lvl4: Button = %BtnLvl4
+
 var anim_time: float = 0.0
 var music_vol_ratio: float = 0.75
 var sound_vol_ratio: float = 0.85
@@ -42,6 +48,36 @@ func _ready() -> void:
 		_apply_music_volume()
 		SoundManager.play_bgm()
 
+	# Connect Level Select Buttons
+	if btn_lvl0:
+		btn_lvl0.pressed.connect(func(): _play_click(); _launch_game(1))
+		btn_lvl0.mouse_entered.connect(_play_hover)
+	if btn_lvl1:
+		btn_lvl1.pressed.connect(func(): _play_click(); _launch_game(2))
+		btn_lvl1.mouse_entered.connect(_play_hover)
+	if btn_lvl2:
+		btn_lvl2.pressed.connect(func(): _play_click(); _launch_game(3))
+		btn_lvl2.mouse_entered.connect(_play_hover)
+	if btn_lvl3:
+		btn_lvl3.pressed.connect(func(): _play_click(); _launch_game(4))
+		btn_lvl3.mouse_entered.connect(_play_hover)
+	if btn_lvl4:
+		btn_lvl4.pressed.connect(func(): _play_click(); _launch_game(5))
+		btn_lvl4.mouse_entered.connect(_play_hover)
+
+	# Play ambient background music safely
+	if audio_player:
+		var music_path = "res://audio/loading_screen.mp3"
+		if not ResourceLoader.exists(music_path):
+			music_path = "res://audio/bgm.mp3"
+		if ResourceLoader.exists(music_path):
+			var music_res = ResourceLoader.load(music_path)
+			if music_res is AudioStream:
+				audio_player.stream = music_res
+				_apply_music_volume()
+				audio_player.play()
+>>>>>>> origin/daulet
+
 func _process(delta: float) -> void:
 	anim_time += delta
 	
@@ -58,6 +94,23 @@ func _process(delta: float) -> void:
 		contraption_root.position.y = sin(anim_time * 2.0) * 0.035
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_0:
+			_play_click()
+			_launch_game(1)
+		elif event.keycode == KEY_1:
+			_play_click()
+			_launch_game(2)
+		elif event.keycode == KEY_2:
+			_play_click()
+			_launch_game(3)
+		elif event.keycode == KEY_3:
+			_play_click()
+			_launch_game(4)
+		elif event.keycode == KEY_4 or event.keycode == KEY_5:
+			_play_click()
+			_launch_game(5)
+
 	if event is InputEventMouseButton:
 		var mb = event as InputEventMouseButton
 		if mb.button_index == MOUSE_BUTTON_LEFT:

@@ -16,6 +16,19 @@ func _ready() -> void:
 func interact() -> void:
 	# 1. If currently carrying an object (box or key module/battery)
 	if carried_object != null:
+		# Check Dual Generator first
+		var gen = current_interactable
+		if gen and not gen.is_in_group("dual_generator") and gen.get_parent() and gen.get_parent().is_in_group("dual_generator"):
+			gen = gen.get_parent()
+		if not gen and push_ray and push_ray.is_colliding():
+			var col = push_ray.get_collider()
+			if col and (col.is_in_group("dual_generator") or (col.get_parent() and col.get_parent().is_in_group("dual_generator"))):
+				gen = col if col.is_in_group("dual_generator") else col.get_parent()
+
+		if gen and gen.is_in_group("dual_generator") and gen.has_method("try_insert_battery"):
+			if gen.try_insert_battery(self, carried_object):
+				return
+
 		# If near socket (or facing it) and holding key module or battery
 		var sock = current_interactable
 		if sock and not sock.is_in_group("socket_terminal") and sock.get_parent() and sock.get_parent().is_in_group("socket_terminal"):
@@ -50,6 +63,11 @@ func interact() -> void:
 
 	# 3. Check if near key module to pick up
 	if current_interactable and current_interactable.is_in_group("key_module"):
+		var req = current_interactable.required_robot_id if "required_robot_id" in current_interactable else ""
+		if req == "cipher":
+			if RobotManager:
+				RobotManager.show_message("⚠️ Это плазменное ядро для JAM! Мои вилы раздавят его.", 3.0)
+			return
 		_pick_up_object(current_interactable)
 		return
 

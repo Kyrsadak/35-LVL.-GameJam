@@ -1,9 +1,13 @@
 extends Node
 
 var current_level_index: int = 1
-var total_levels: int = 1
+var total_levels: int = 5
 var level_scenes = [
-	"res://scenes/levels/level1.tscn"
+	"res://scenes/levels/tutorial.tscn",
+	"res://scenes/levels/level_bukhara.tscn",
+	"res://scenes/levels/level_khiva.tscn",
+	"res://scenes/levels/level_samarkand.tscn",
+	"res://scenes/levels/level_tashkent.tscn"
 ]
 
 var total_game_time: float = 0.0
@@ -16,10 +20,21 @@ func _ready() -> void:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
 
 func _unhandled_input(event: InputEvent) -> void:
-	# F11 or Alt+Enter to toggle fullscreen
 	if event is InputEventKey and event.pressed and not event.echo:
+		# F11 or Alt+Enter to toggle fullscreen
 		if event.keycode == KEY_F11 or (event.keycode == KEY_ENTER and event.alt_pressed):
 			toggle_fullscreen()
+		# F1 - F5 Quick Debug Level Jump
+		elif event.keycode == KEY_F1:
+			load_level(1)
+		elif event.keycode == KEY_F2:
+			load_level(2)
+		elif event.keycode == KEY_F3:
+			load_level(3)
+		elif event.keycode == KEY_F4:
+			load_level(4)
+		elif event.keycode == KEY_F5:
+			load_level(5)
 
 func toggle_fullscreen() -> void:
 	var mode = DisplayServer.window_get_mode()
@@ -60,3 +75,6 @@ func show_victory() -> void:
 func return_to_main_menu() -> void:
 	is_timer_running = false
 	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+
+func restart_current_level() -> void:
+	load_level(current_level_index)
