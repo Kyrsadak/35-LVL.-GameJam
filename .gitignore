@@ -27,7 +27,16 @@ build/
 Thumbs.db
 desktop.ini
 
+# Binaries & Builds
+*.exe
+*.pck
+*.zip
+*.console.exe
+game_exe/
+Builds/
+
 # IDEs
 .vscode/
 .idea/
 *.swp
+*.swop
