@@ -56,7 +56,7 @@ func _process(_delta):
 
 func add_property(object, property, display):
 	var label = Label.new()
-	label.set("theme_override_fonts/font", load("res://ui/fonts/roboto_mono_medium20.tres"))
+	label.add_theme_font_size_override("font_size", 14)
 	$VBoxContainer.add_child(label)
 	props.append(Property.new(object, property, label, display))
 	object.tree_exiting.connect(on_property_exiting.bind(object))
