@@ -387,7 +387,7 @@ light_energy = 1.8
 omni_range = 5.0
 
 [node name="ChargingStationSpawn" parent="." instance=ExtResource("4_station")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15.5)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 15.5)
 
 [node name="ChargingStationMid" parent="." instance=ExtResource("4_station")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.0, 0, 0.0)
@@ -440,7 +440,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.6, 0.0)
 
 [node name="KeyModule" parent="." instance=ExtResource("9_key")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 0.8, 0.0)
-module_name = "Хивинский Энергомодуль"
+module_name = "Хивинский Энергомодуль (Склад)"
+
+[node name="KeyModuleExit" parent="." instance=ExtResource("9_key")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, 0.8, -0.5)
+module_name = "Хивинский Энергомодуль (Эвакуация)"
 
 [node name="GuideTabletWest" parent="." instance=ExtResource("7_tablet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, 2.8)
