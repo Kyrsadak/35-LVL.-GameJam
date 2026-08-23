@@ -12,6 +12,8 @@ enum TerminalState {
 	ACTIVATED
 }
 
+@export var target_gate_path: NodePath
+
 var current_state: int = TerminalState.AWAITING_BATTERY
 
 @onready var socket_marker: Node3D = $SocketMarker
@@ -182,10 +184,22 @@ func activate_generator(cipher_robot: Node3D) -> void:
 	if SoundManager:
 		SoundManager.play_hack_success()
 
-	if RobotManager:
-		RobotManager.show_message("⚡ ГЕНЕРАТОР ЗАПУЩЕН! Питание базы полностью восстановлено!")
-		# Small delay for player to appreciate the victory before transitioning
-		var timer = get_tree().create_timer(1.2)
-		timer.timeout.connect(func():
-			RobotManager.complete_level()
-		)
+	if not target_gate_path.is_empty():
+		var gate = get_node_or_null(target_gate_path)
+		if gate:
+			if gate.has_method("open"):
+				gate.open()
+			elif gate.has_method("set_active"):
+				gate.set_active(false)
+			elif gate.has_method("unlock_gate"):
+				gate.unlock_gate()
+		if RobotManager:
+			RobotManager.show_message("⚡ ГЕНЕРАТОР ЗАПУЩЕН! Ворота открыты!", 4.0)
+	else:
+		if RobotManager:
+			RobotManager.show_message("⚡ ГЕНЕРАТОР ЗАПУЩЕН! Питание базы полностью восстановлено!", 4.0)
+			# Small delay for player to appreciate the victory before transitioning
+			var timer = get_tree().create_timer(1.2)
+			timer.timeout.connect(func():
+				RobotManager.complete_level()
+			)
