@@ -1,11 +1,12 @@
 extends Node
 
 var current_level_index: int = 1
-var total_levels: int = 3
+var total_levels: int = 4
 var level_scenes = [
 	"res://scenes/levels/tutorial.tscn",
 	"res://scenes/levels/level_bukhara.tscn",
-	"res://scenes/levels/level_khiva.tscn"
+	"res://scenes/levels/level_khiva.tscn",
+	"res://scenes/levels/level_samarkand.tscn"
 ]
 
 var total_game_time: float = 0.0

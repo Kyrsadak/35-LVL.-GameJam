@@ -2,6 +2,8 @@ class_name Terminal
 extends Area3D
 
 @export var terminal_id: String = "terminal_1"
+@export var minigame_type: String = "wires" # "wires" or "switches"
+@export var switch_sequence: Array[int] = [3, 1, 4, 2, 5]
 @export var wires_count: int = 3
 @export var solution_wires: Array[int] = [0]
 @export var require_exact_order: bool = false
@@ -15,7 +17,8 @@ extends Area3D
 @onready var omni_light: OmniLight3D = $OmniLight3D
 
 var is_hacked: bool = false
-var minigame_scene = preload("res://minigames/wire_cutting.tscn")
+var minigame_wires_scene = preload("res://minigames/wire_cutting.tscn")
+var minigame_switches_scene = preload("res://minigames/switch_puzzle.tscn")
 var time_passed: float = 0.0
 
 func _ready() -> void:
@@ -98,8 +101,14 @@ func start_hack(robot: Node) -> void:
 			RobotManager.show_message("✅ Терминал уже взломан! Лазеры отключены.")
 		return
 
-	var minigame = minigame_scene.instantiate()
-	minigame.setup(self, wires_count, solution_wires, clue_id, require_exact_order)
+	var minigame = null
+	if minigame_type == "switches":
+		minigame = minigame_switches_scene.instantiate()
+		minigame.setup(self, switch_sequence, clue_id)
+	else:
+		minigame = minigame_wires_scene.instantiate()
+		minigame.setup(self, wires_count, solution_wires, clue_id, require_exact_order)
+
 	get_tree().root.add_child(minigame)
 	minigame.completed.connect(_on_hack_completed)
 
