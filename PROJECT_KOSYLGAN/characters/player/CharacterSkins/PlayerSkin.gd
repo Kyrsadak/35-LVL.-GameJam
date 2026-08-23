@@ -42,29 +42,54 @@ func _setup_sleep_zzz() -> void:
 		sleep_zzz_node.position = Vector3(0.20, 1.80, 0.0)
 		add_child(sleep_zzz_node)
 
+var sleep_fade_tween: Tween = null
+
 func set_sleeping(sleeping: bool) -> void:
 	if is_sleeping == sleeping:
 		return
 	is_sleeping = sleeping
 	
+	if sleep_fade_tween and sleep_fade_tween.is_valid():
+		sleep_fade_tween.kill()
+		
 	if is_sleeping:
-		# 1. Enter sleep mode: Screen powers off completely and Sleep animation plays
-		if sleep_zzz_node and sleep_zzz_node.has_method("set_active"):
-			sleep_zzz_node.set_active(true)
-			
-		if screen_face and mat_screen_off:
-			screen_face.set_surface_override_material(0, mat_screen_off)
+		# 1. Gradual, gentle sleep sequence (drowsy blink -> slow dim -> screen off -> Zzz)
+		if screen_face and mat_screen_blink:
+			screen_face.set_surface_override_material(0, mat_screen_blink)
 			
 		if anim_player:
 			if anim_player.has_animation("Sleep"):
-				anim_player.play("Sleep", 0.35)
+				anim_player.play("Sleep", 1.1) # Gentle, slow ease-in head droop
 				current_anim = "Sleep"
 			else:
-				anim_player.speed_scale = 0.2
+				anim_player.speed_scale = 0.3
+				
+		sleep_fade_tween = create_tween()
+		
+		# Phase 1: Screen emission dims slowly over 0.85s
+		if mat_screen_blink:
+			mat_screen_blink.emission_energy_multiplier = 0.85
+			sleep_fade_tween.tween_property(mat_screen_blink, "emission_energy_multiplier", 0.0, 0.85).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		
+		# Phase 2: Once dark, switch to completely powered off glass
+		sleep_fade_tween.tween_callback(func():
+			if is_sleeping and is_instance_valid(screen_face) and mat_screen_off:
+				screen_face.set_surface_override_material(0, mat_screen_off)
+		)
+		
+		# Phase 3: Zzz sleep bubbles start floating after robot has settled asleep
+		sleep_fade_tween.tween_interval(0.35)
+		sleep_fade_tween.tween_callback(func():
+			if is_sleeping and sleep_zzz_node and sleep_zzz_node.has_method("set_active"):
+				sleep_zzz_node.set_active(true)
+		)
 	else:
-		# 2. Wake up mode: Screen lights back on and Idle animation raises head up
+		# 2. Wake up mode: Screen immediately powers back on and head raises up gracefully
 		if sleep_zzz_node and sleep_zzz_node.has_method("set_active"):
 			sleep_zzz_node.set_active(false)
+			
+		if mat_screen_blink:
+			mat_screen_blink.emission_energy_multiplier = 0.85
 			
 		if screen_face and mat_screen_normal:
 			screen_face.set_surface_override_material(0, mat_screen_normal)
@@ -72,7 +97,7 @@ func set_sleeping(sleeping: bool) -> void:
 		if anim_player:
 			anim_player.speed_scale = 1.0
 			if anim_player.has_animation("Idle"):
-				anim_player.play("Idle", 0.25)
+				anim_player.play("Idle", 0.5) # Smooth graceful head rise
 				current_anim = "Idle"
 
 func _setup_tshirt_material() -> void:

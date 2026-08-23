@@ -47,6 +47,9 @@ var is_orbiting: bool = false
 var is_panning: bool = false
 var _last_target_node: Node = null
 
+var is_flying_transition: bool = false
+var flight_tween: Tween = null
+
 func _ready() -> void:
 	target_yaw = deg_to_rad(default_yaw_deg)
 	current_yaw = target_yaw
@@ -59,10 +62,45 @@ func _ready() -> void:
 		camera_3d.fov = 44.0
 		_update_camera_transform()
 
-	# Snap directly to active robot on startup
-	if RobotManager and RobotManager.active_robot:
-		_last_target_node = RobotManager.active_robot
-		global_position = _last_target_node.global_position + Vector3(0, target_height_offset, 0)
+	# Connect to robot switching signal for silky flying camera transition
+	if RobotManager:
+		RobotManager.robot_switched.connect(_on_robot_switched)
+		if RobotManager.active_robot:
+			_last_target_node = RobotManager.active_robot
+			global_position = _last_target_node.global_position + Vector3(0, target_height_offset, 0)
+
+func _on_robot_switched(active_robot: Node) -> void:
+	if not active_robot or not active_robot is Node3D:
+		return
+	if _last_target_node == null:
+		_last_target_node = active_robot
+		global_position = (active_robot as Node3D).global_position + Vector3(0, target_height_offset, 0)
+		return
+	if active_robot != _last_target_node:
+		_last_target_node = active_robot
+		fly_to_robot(active_robot as Node3D, 0.95)
+
+func fly_to_robot(target: Node3D, duration: float = 0.95) -> void:
+	if not target:
+		return
+	if flight_tween and flight_tween.is_valid():
+		flight_tween.kill()
+		
+	is_flying_transition = true
+	var start_pos = global_position
+	
+	flight_tween = create_tween()
+	flight_tween.tween_method(func(t: float):
+		if is_instance_valid(target):
+			var current_target_pos = target.global_position + Vector3(0, target_height_offset, 0) + pan_offset
+			# Cinematic flying trajectory with gentle vertical lift arc
+			var lift_arc = sin(t * PI) * 0.55
+			global_position = start_pos.lerp(current_target_pos, t) + Vector3(0, lift_arc, 0)
+	, 0.0, 1.0, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	
+	flight_tween.tween_callback(func():
+		is_flying_transition = false
+	)
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Mouse button events
@@ -127,18 +165,14 @@ func _process(delta: float) -> void:
 	current_pitch = lerp(current_pitch, target_pitch, rotation_smoothing * delta)
 	pan_offset = pan_offset.lerp(target_pan_offset, 10.0 * delta)
 
-	# Track target robot
 	var target: Node = null
 	if RobotManager and RobotManager.active_robot:
 		target = RobotManager.active_robot
 
-	if target and target is Node3D:
-		var target_pos = (target as Node3D).global_position + Vector3(0, target_height_offset, 0) + pan_offset
-		if target != _last_target_node:
-			_last_target_node = target
-			# Fast glide transition when switching robots
-			global_position = global_position.lerp(target_pos, follow_speed * 1.6 * delta)
-		else:
+	# Track target robot (when not in flying transition)
+	if not is_flying_transition:
+		if target and target is Node3D:
+			var target_pos = (target as Node3D).global_position + Vector3(0, target_height_offset, 0) + pan_offset
 			global_position = global_position.lerp(target_pos, follow_speed * delta)
 
 	# Smart Wall Collision Avoidance (Spring-Arm raycast)
