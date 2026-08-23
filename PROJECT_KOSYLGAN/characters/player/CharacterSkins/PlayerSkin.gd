@@ -32,7 +32,8 @@ func _setup_tshirt_material() -> void:
 	var tshirt_mesh = find_child("TshirtChestFront", true, false) as MeshInstance3D
 	if not tshirt_mesh:
 		return
-	var tshirt_path = "res://assets/textures/tex_atlas_tshirt_21.png"
+	var prefix = "atlas" if character_id == "atlas" else "cipher"
+	var tshirt_path = "res://assets/textures/tex_" + prefix + "_tshirt_21.png"
 	var img = Image.load_from_file(ProjectSettings.globalize_path(tshirt_path))
 	if img:
 		img.generate_mipmaps()
