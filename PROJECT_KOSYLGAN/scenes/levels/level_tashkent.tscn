@@ -383,19 +383,19 @@ size = Vector3(0.5, 3, 11.5)
 material = ExtResource("15_wall")
 
 [node name="WallEast_Partition_N" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 1.5, -3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 1.5, -4.75)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(0.5, 3, 4.0)
+size = Vector3(0.5, 3, 1.5)
 material = ExtResource("15_wall")
 
 [node name="WallEast_Partition_S" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 1.5, 4.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 1.5, 2.0)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(0.5, 3, 3.0)
+size = Vector3(0.5, 3, 7.0)
 material = ExtResource("15_wall")
 
 [node name="Furniture" type="Node3D" parent="."]
@@ -416,16 +416,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 0, 5.0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.2, 0, 3.5)
 
 [node name="PalletEast2" parent="Furniture" instance=ExtResource("18_pallet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.2, 0, -3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.2, 0, -2.25)
 
 [node name="CardboardStackEast" parent="Furniture" instance=ExtResource("32_cstack")]
 transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 16.2, 0, 3.5)
 
 [node name="BoxSealedEast" parent="Furniture" instance=ExtResource("34_box_sealed")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8, 0, -3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8, 0, -4.5)
 
 [node name="BoxTornEast" parent="Furniture" instance=ExtResource("36_box_torn")]
-transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 15.6, 0, -3.2)
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 15.6, 0, -4.2)
 
 [node name="LockerEast" parent="Furniture" instance=ExtResource("19_locker")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0, 0, -5.0)
@@ -683,7 +683,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.5)
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -12.5, 0, 0.5)
 
 [node name="LaserGateEast" parent="." instance=ExtResource("5_laser")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 12.5, 0, 0.5)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 12.5, 0, -2.25)
 
 [node name="PushableBoxWest" parent="." instance=ExtResource("8_box")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.0, 0.6, 2.5)
@@ -720,18 +720,18 @@ guide_id = "guide_tashkent_west"
 clue_text = "МАТРИЦА ПЕРЕКЛЮЧАТЕЛЕЙ: Код питания системы: 3 -> 1 -> 4 -> 2 -> 5. Поставьте ящик на плиту для активации панели!"
 
 [node name="PressurePlateEast" parent="." instance=ExtResource("7_plate")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0.05, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0.05, -2.25)
 target_node_path = NodePath("../LaserGateEast")
 
 [node name="CableEastPlateToGate" parent="." instance=ExtResource("30_cable")]
-points = Array[Vector3]([Vector3(10.5, 0.05, 0.5), Vector3(12.5, 0.05, 0.5)])
+points = Array[Vector3]([Vector3(9.5, 0.05, -2.25), Vector3(12.5, 0.05, -2.25)])
 source_plate_path = NodePath("../PressurePlateEast")
 
 [node name="PushableBoxEast1" parent="." instance=ExtResource("8_box")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0.6, -1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0.6, -2.25)
 
 [node name="PushableBoxEast2" parent="." instance=ExtResource("8_box")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0.6, 1.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0.6, 1.5)
 
 [node name="KeyModuleGreen" parent="." instance=ExtResource("9_key")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5, 0.8, 0.0)
@@ -741,7 +741,7 @@ custom_color = Color(0.2, 0.95, 0.4, 1)
 is_custom_colored = true
 
 [node name="KeyModuleOrange" parent="." instance=ExtResource("9_key")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 0.8, -3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.2, 0.8, -2.25)
 module_name = "Оранжевое Титановое Ядро (DAU)"
 required_robot_id = "atlas"
 custom_color = Color(1, 0.55, 0.1, 1)
