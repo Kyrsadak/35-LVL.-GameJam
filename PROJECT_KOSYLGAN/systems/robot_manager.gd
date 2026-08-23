@@ -89,7 +89,6 @@ func try_switch_robot() -> void:
 
 	# Switch control without any teleportation
 	set_active_robot(target_robot)
-	show_message("🔄 Управление: " + target_name, 1.5)
 	if SoundManager:
 		SoundManager.play_switch()
 
