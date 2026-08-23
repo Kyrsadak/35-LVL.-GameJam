@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3]
-
-[resource]
-resource_name = "TreeLeavesLight"
-diffuse_mode = 3
-specular_mode = 1
-albedo_color = Color(0.38, 0.76, 0.28, 1)
-roughness = 0.70

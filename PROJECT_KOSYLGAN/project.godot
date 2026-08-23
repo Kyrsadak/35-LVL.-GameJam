@@ -17,7 +17,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="KOSYLGAN - DAU and JAM"
 config/tags=PackedStringArray("gamejam", "puzzle", "3d")
 run/main_scene="res://ui/main_menu.tscn"
-config/features=PackedStringArray("4.6")
+config/features=PackedStringArray("4.7")
 
 [autoload]
 
@@ -117,8 +117,8 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-textures/vram_compression/import_etc2_astc=true
+textures/vram_compression/import_etc2_astc=false
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
 environment/defaults/default_clear_color=Color(0.06, 0.08, 0.12, 1)
 environment/defaults/default_environment="res://scenes/default_env.tres"
-vram_compression/import_etc=true
+vram_compression/import_etc=false
