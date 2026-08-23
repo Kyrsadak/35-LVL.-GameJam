@@ -9,7 +9,7 @@ extends Node3D
 
 func _ready() -> void:
 	if RobotManager:
-		RobotManager.register_level(1, atlas, cipher, charging_station, camera_pivot)
+		RobotManager.register_level(0, atlas, cipher, charging_station, camera_pivot)
 	if hud and hud.has_method("set_level_info"):
 		hud.set_level_info(0, "Лаборатория: Пробуждение", "ПКМ: Обзор 360° | Колесо: Зум | TAB: Смена DAU/JAM | E: Действие | H: Гид")
 

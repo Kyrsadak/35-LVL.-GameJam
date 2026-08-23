@@ -8,7 +8,7 @@ extends Node3D
 
 func _ready() -> void:
 	if RobotManager:
-		RobotManager.register_level(5, atlas, cipher, charging_station, camera_pivot)
+		RobotManager.register_level(4, atlas, cipher, charging_station, camera_pivot)
 	if hud and hud.has_method("set_level_info"):
 		hud.set_level_info(4, "Сектор: Ташкент (Центральное Ядро)", "ФИНАЛ: Собрать оба ядра, запустить Генератор и открыть Врата Свободы!")
 

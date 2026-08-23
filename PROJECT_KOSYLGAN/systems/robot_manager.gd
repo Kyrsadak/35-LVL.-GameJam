@@ -13,7 +13,7 @@ var active_robot: Node = null
 var charging_station: Node3D = null
 var camera_pivot: Node3D = null
 
-var current_level_index: int = 1
+var current_level_index: int = 0
 var is_game_paused: bool = false
 var is_dialogue_active: bool = false
 var infinite_energy_active: bool = false
@@ -36,14 +36,22 @@ func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station
 	if SoundManager:
 		SoundManager.play_bgm()
 
-	# Configure battery discharge rates per level
-	var rate = 2.8 # ~35s on lvl 1
+	# Configure battery capacity and discharge rates per level
+	var max_bat = 100.0
+	var rate = 2.8 # ~35s on lvl 0 (Tutorial) & lvl 1 (Bukhara)
 	if level_idx == 2:
-		rate = 3.2 # ~30s on lvl 2
-	elif level_idx >= 3:
-		rate = 3.6 # ~27s on lvl 3
+		max_bat = 130.0 # +30% Stamina/Energy on Khiva!
+		rate = 2.2      # Generous battery duration (~60s runtime)
+	elif level_idx == 3:
+		rate = 3.6      # ~27s on lvl 3 (Samarkand)
+	elif level_idx >= 4:
+		max_bat = 200.0 # 2x Battery Capacity on Tashkent (200 HP)!
+		rate = 1.8      # 2x Longer battery duration (~110s runtime)
 
 	if atlas:
+		if "max_battery" in atlas:
+			atlas.max_battery = max_bat
+			atlas.battery = max_bat
 		if "discharge_rate" in atlas:
 			atlas.discharge_rate = rate
 			atlas.charge_rate = rate * 1.5
@@ -55,6 +63,9 @@ func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station
 			atlas.battery_changed.emit(atlas.battery, atlas.max_battery)
 			
 	if cipher:
+		if "max_battery" in cipher:
+			cipher.max_battery = max_bat
+			cipher.battery = max_bat
 		if "discharge_rate" in cipher:
 			cipher.discharge_rate = rate
 			cipher.charge_rate = rate * 1.5
@@ -97,7 +108,7 @@ func set_active_robot(robot: Node) -> void:
 	robot_switched.emit(active_robot)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if is_game_paused:
+	if is_game_paused or is_dialogue_active:
 		return
 
 	if event.is_action_pressed("switch_robot"):
@@ -106,7 +117,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		restart_level()
 
 func try_switch_robot() -> void:
-	if not atlas or not cipher or not active_robot:
+	if is_dialogue_active or not atlas or not cipher or not active_robot:
 		return
 	
 	var target_robot = cipher if active_robot == atlas else atlas

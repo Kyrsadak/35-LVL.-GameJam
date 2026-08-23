@@ -14,7 +14,7 @@ func _ready() -> void:
 	await self.owner.ready
 	print("State Owner ", self.owner.name, " is ready")
 	var parent: = get_parent()
-	if not parent.is_in_group("state_machine"):
+	if not parent.is_in_group("state_machine") and parent is State:
 		_parent = parent
 
 func unhandled_input(event: InputEvent) -> void:

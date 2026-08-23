@@ -138,7 +138,7 @@ autowrap_mode = 3
 
 [node name="EnterBadge" type="PanelContainer" parent="DialogueContainer/DialogueBoxPanel/HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(56, 46)
+custom_minimum_size = Vector2(96, 42)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
@@ -146,9 +146,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_enter_key")
 
 [node name="EnterIcon" type="Label" parent="DialogueContainer/DialogueBoxPanel/HBox/EnterBadge"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.38, 0.30, 0.24, 1)
-theme_override_font_sizes/font_size = 26
-text = "↵"
+theme_override_colors/font_color = Color(0.35, 0.25, 0.18, 1)
+theme_override_font_sizes/font_size = 15
+text = "↵ ENTER"
 horizontal_alignment = 1
 vertical_alignment = 1
 

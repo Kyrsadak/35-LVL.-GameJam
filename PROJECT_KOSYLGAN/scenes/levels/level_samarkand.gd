@@ -8,7 +8,7 @@ extends Node3D
 
 func _ready() -> void:
 	if RobotManager:
-		RobotManager.register_level(4, atlas, cipher, charging_station, camera_pivot)
+		RobotManager.register_level(3, atlas, cipher, charging_station, camera_pivot)
 	if hud and hud.has_method("set_level_info"):
 		hud.set_level_info(3, "Сектор: Самарканд (Квантовый узел)", "Синхронизировать 5-релейную матрицу, запитать шлюзы и доставить ядро")
 

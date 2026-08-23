@@ -74,10 +74,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not is_dialogue_open or not dialogue_container or not dialogue_container.visible:
 		return
 		
+	var is_advance_key = false
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER or event.keycode == KEY_SPACE:
-			get_viewport().set_input_as_handled()
-			_handle_dialogue_advance()
+		if event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER or event.keycode == KEY_SPACE or event.keycode == KEY_E:
+			is_advance_key = true
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		is_advance_key = true
+
+	if is_advance_key:
+		get_viewport().set_input_as_handled()
+		_handle_dialogue_advance()
 
 func _handle_dialogue_advance() -> void:
 	if is_typing_active:
@@ -209,10 +215,14 @@ func _start_badge_pulse() -> void:
 	if pulse_badge_tween and pulse_badge_tween.is_valid():
 		pulse_badge_tween.kill()
 		
+	enter_badge.pivot_offset = enter_badge.size * 0.5
+	enter_badge.scale = Vector2.ONE
 	enter_badge.modulate.a = 1.0
 	pulse_badge_tween = create_tween().set_loops()
-	pulse_badge_tween.tween_property(enter_badge, "scale", Vector2(1.12, 1.12), 0.45).set_trans(Tween.TRANS_SINE)
-	pulse_badge_tween.tween_property(enter_badge, "scale", Vector2(1.0, 1.0), 0.45).set_trans(Tween.TRANS_SINE)
+	pulse_badge_tween.tween_property(enter_badge, "scale", Vector2(1.15, 1.15), 0.38).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	pulse_badge_tween.parallel().tween_property(enter_badge, "modulate:a", 1.0, 0.38)
+	pulse_badge_tween.tween_property(enter_badge, "scale", Vector2(0.92, 0.92), 0.38).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	pulse_badge_tween.parallel().tween_property(enter_badge, "modulate:a", 0.40, 0.38)
 
 func _dismiss_dialogue() -> void:
 	if not is_dialogue_open:

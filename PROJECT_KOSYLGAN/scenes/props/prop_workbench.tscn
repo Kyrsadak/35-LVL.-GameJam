@@ -25,11 +25,14 @@ size = Vector3(0.58, 0.58, 0.76)
 [sub_resource type="QuadMesh" id="QuadMesh_drawer_front"]
 size = Vector2(0.56, 0.56)
 
+[sub_resource type="BoxMesh" id="BoxMesh_pegboard_back"]
+size = Vector3(1.85, 0.9, 0.06)
+
 [sub_resource type="QuadMesh" id="QuadMesh_pegboard"]
 size = Vector2(1.75, 0.85)
 
 [sub_resource type="BoxMesh" id="BoxMesh_lamp_hood"]
-size = Vector3(1.85, 0.08, 0.16)
+size = Vector3(1.85, 0.08, 0.22)
 
 [sub_resource type="QuadMesh" id="QuadMesh_screen"]
 size = Vector2(0.58, 0.38)
@@ -84,17 +87,17 @@ mesh = SubResource("QuadMesh_drawer_front")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_steel")
 
 [node name="PegboardBack" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.28, -0.44)
-mesh = SubResource("BoxMesh_steel_frame")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -0.42)
+mesh = SubResource("BoxMesh_pegboard_back")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_steel")
 
 [node name="PegboardPanel" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30, -0.42)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -0.385)
 mesh = SubResource("QuadMesh_pegboard")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_steel")
 
 [node name="LampHood" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.76, -0.38)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, -0.32)
 mesh = SubResource("BoxMesh_lamp_hood")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_steel")
 

@@ -20,6 +20,10 @@ func _reset_elements() -> void:
 	var vp_size = get_viewport().get_visible_rect().size
 	if vp_size.x <= 0: vp_size = Vector2(1280, 720)
 	
+	for control in [top_shutter, bottom_shutter, left_shutter, right_shutter, center_beam, center_dot]:
+		if control:
+			control.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	
 	# Initial open state
 	top_shutter.position = Vector2.ZERO
 	top_shutter.size = Vector2(vp_size.x, 0)
@@ -44,7 +48,6 @@ func _reset_elements() -> void:
 	center_dot.modulate = Color(1.0, 1.0, 1.0, 1.0)
 	
 	blackout.visible = false
-	blackout.size = vp_size
 
 func play_effect(callback: Callable = Callable()) -> void:
 	var vp_size = get_viewport().get_visible_rect().size
