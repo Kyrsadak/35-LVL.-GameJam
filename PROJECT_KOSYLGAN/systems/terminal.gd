@@ -88,9 +88,15 @@ func _on_hack_completed(success: bool) -> void:
 			gate = get_node_or_null(target_gate_path)
 		if not gate:
 			gate = get_tree().get_first_node_in_group("laser_gate")
+		if not gate:
+			gate = get_parent().find_child("LaserGate", true, false)
 		
 		if gate and gate.has_method("open"):
 			gate.open()
+		elif gate and "is_active" in gate:
+			gate.is_active = false
+			if gate.has_method("_apply_door_state"):
+				gate._apply_door_state(false, false)
 
 		if RobotManager:
 			RobotManager.show_message("🔓 Взлом успешен! Защитные гермодвери открыты.")

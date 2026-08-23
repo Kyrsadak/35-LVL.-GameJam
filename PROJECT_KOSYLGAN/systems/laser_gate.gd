@@ -1,19 +1,22 @@
 class_name LaserGate
 extends StaticBody3D
 
+## Sci-Fi Sliding Blast Doors (Защитные гермодвери)
+
 @export var is_active: bool = true # true = closed/locked, false = open
 
-@onready var collision_shape: CollisionShape3D = $CollisionShape3D
-@onready var door_left: Node3D = $DoorLeft
-@onready var door_right: Node3D = $DoorRight
-@onready var door_frame: MeshInstance3D = $DoorFrame
-@onready var status_light: OmniLight3D = $StatusLight
-@onready var status_beacon: MeshInstance3D = $StatusBeacon
+@onready var collision_shape: CollisionShape3D = find_child("CollisionShape3D", true, false) as CollisionShape3D
+@onready var door_left: Node3D = find_child("DoorLeft", true, false) as Node3D
+@onready var door_right: Node3D = find_child("DoorRight", true, false) as Node3D
+@onready var door_frame: MeshInstance3D = find_child("DoorFrame", true, false) as MeshInstance3D
+@onready var status_light: OmniLight3D = find_child("StatusLight", true, false) as OmniLight3D
+@onready var status_beacon: MeshInstance3D = find_child("StatusBeacon", true, false) as MeshInstance3D
 
 var door_tween: Tween
 var beacon_mat: StandardMaterial3D
 
 func _ready() -> void:
+	add_to_group("laser_gate")
 	_load_textures()
 	_apply_door_state(is_active, true)
 
@@ -74,7 +77,15 @@ func set_active(active: bool) -> void:
 	_apply_door_state(is_active, false)
 
 func _apply_door_state(closed: bool, immediate: bool) -> void:
+	if not collision_shape:
+		collision_shape = find_child("CollisionShape3D", true, false) as CollisionShape3D
+	if not door_left:
+		door_left = find_child("DoorLeft", true, false) as Node3D
+	if not door_right:
+		door_right = find_child("DoorRight", true, false) as Node3D
+
 	if collision_shape:
+		collision_shape.disabled = not closed
 		collision_shape.set_deferred("disabled", not closed)
 
 	# Closed: left and right leaves meet seamlessly with overlap in center (±1.18)
@@ -93,8 +104,14 @@ func _apply_door_state(closed: bool, immediate: bool) -> void:
 		beacon_mat.emission_energy_multiplier = 2.5
 
 	if immediate:
-		if door_left: door_left.position.x = target_left_x
-		if door_right: door_right.position.x = target_right_x
+		if door_left:
+			var p = door_left.position
+			p.x = target_left_x
+			door_left.position = p
+		if door_right:
+			var p = door_right.position
+			p.x = target_right_x
+			door_right.position = p
 	else:
 		if SoundManager and not closed:
 			SoundManager.play_door_open()
@@ -103,9 +120,13 @@ func _apply_door_state(closed: bool, immediate: bool) -> void:
 			door_tween.kill()
 		door_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		if door_left:
-			door_tween.tween_property(door_left, "position:x", target_left_x, 0.85)
+			var p_l = door_left.position
+			p_l.x = target_left_x
+			door_tween.tween_property(door_left, "position", p_l, 0.85)
 		if door_right:
-			door_tween.tween_property(door_right, "position:x", target_right_x, 0.85)
+			var p_r = door_right.position
+			p_r.x = target_right_x
+			door_tween.tween_property(door_right, "position", p_r, 0.85)
 
 func open() -> void:
 	set_active(false)
