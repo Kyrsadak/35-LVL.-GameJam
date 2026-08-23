@@ -80,7 +80,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(14, 0.5, 10)
+size = Vector3(18, 0.5, 7.5)
 material = ExtResource("14_floor")
 
 [node name="FloorNexusCross2" type="CSGBox3D" parent="Geometry/Floors"]
@@ -88,7 +88,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(10, 0.5, 14)
+size = Vector3(7.5, 0.5, 18)
 material = ExtResource("14_floor")
 
 [node name="FloorSouthCorridor" type="CSGBox3D" parent="Geometry/Floors"]
@@ -108,19 +108,19 @@ size = Vector3(12, 0.5, 8)
 material = ExtResource("14_floor")
 
 [node name="FloorWestHackerLab" type="CSGBox3D" parent="Geometry/Floors"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, -0.25, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -0.25, 0)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(11, 0.5, 10)
+size = Vector3(12, 0.5, 10.5)
 material = ExtResource("14_floor")
 
 [node name="FloorEastCargoVault" type="CSGBox3D" parent="Geometry/Floors"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, -0.25, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -0.25, 0)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(11, 0.5, 10)
+size = Vector3(12, 0.5, 10.5)
 material = ExtResource("14_floor")
 
 [node name="FloorNorthCorridor" type="CSGBox3D" parent="Geometry/Floors"]
@@ -198,83 +198,115 @@ size = Vector3(0.5, 3, 6)
 material = ExtResource("15_wall")
 
 [node name="WallNexus_SW_Arc" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -5.6, 1.5, 5.6)
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -5.2, 1.5, 4.6)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(0.5, 3, 4.8)
+size = Vector3(0.5, 3, 3.8)
 material = ExtResource("15_wall")
 
 [node name="WallNexus_SE_Arc" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 5.6, 1.5, 5.6)
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 5.2, 1.5, 4.6)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(0.5, 3, 4.8)
+size = Vector3(0.5, 3, 3.8)
 material = ExtResource("15_wall")
 
 [node name="WallNexus_NW_Arc" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -5.6, 1.5, -5.6)
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -5.2, 1.5, -4.6)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(0.5, 3, 4.8)
+size = Vector3(0.5, 3, 3.8)
 material = ExtResource("15_wall")
 
 [node name="WallNexus_NE_Arc" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 5.6, 1.5, -5.6)
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 5.2, 1.5, -4.6)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(0.5, 3, 4.8)
+size = Vector3(0.5, 3, 3.8)
 material = ExtResource("15_wall")
 
 [node name="WallWest_W" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.25, 1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.25, 1.5, 0)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(0.5, 3, 10.5)
+size = Vector3(0.5, 3, 11)
 material = ExtResource("15_wall")
 
 [node name="WallWest_N" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, 1.5, -5.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, 1.5, -5.5)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(11.5, 3, 0.5)
+size = Vector3(13.5, 3, 0.5)
 material = ExtResource("15_wall")
 
 [node name="WallWest_S" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, 1.5, 5.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, 1.5, 5.5)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(11.5, 3, 0.5)
+size = Vector3(13.5, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallWest_EL" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0, 1.5, -4.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 2.5)
+material = ExtResource("15_wall")
+
+[node name="WallWest_ER" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0, 1.5, 4.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 2.5)
 material = ExtResource("15_wall")
 
 [node name="WallEast_E" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.25, 1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.25, 1.5, 0)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(0.5, 3, 10.5)
+size = Vector3(0.5, 3, 11)
 material = ExtResource("15_wall")
 
 [node name="WallEast_N" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 1.5, -5.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 1.5, -5.5)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(11.5, 3, 0.5)
+size = Vector3(13.5, 3, 0.5)
 material = ExtResource("15_wall")
 
 [node name="WallEast_S" type="CSGBox3D" parent="Geometry/Walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 1.5, 5.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 1.5, 5.5)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
-size = Vector3(11.5, 3, 0.5)
+size = Vector3(13.5, 3, 0.5)
+material = ExtResource("15_wall")
+
+[node name="WallEast_WL" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0, 1.5, -4.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 2.5)
+material = ExtResource("15_wall")
+
+[node name="WallEast_WR" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0, 1.5, 4.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 2.5)
 material = ExtResource("15_wall")
 
 [node name="WallNorthCorridor_W" type="CSGBox3D" parent="Geometry/Walls"]
