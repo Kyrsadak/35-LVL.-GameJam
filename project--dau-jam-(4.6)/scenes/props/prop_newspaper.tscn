@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/props/prop_newspaper.gd" id="1_news"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_paper"]
+size = Vector2(0.65, 0.48)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_newsprint"]
+albedo_color = Color(0.92, 0.89, 0.82, 1)
+roughness = 0.85
+metallic = 0.02
+
+[sub_resource type="QuadMesh" id="QuadMesh_under"]
+size = Vector2(0.66, 0.49)
+
+[node name="PropNewspaper" type="Node3D"]
+script = ExtResource("1_news")
+
+[node name="UnderPage" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.996195, 0, 0.0871557, 0, -4.37114e-08, 1, 0.0871557, 1, 3.8097e-09, 0.01, 0.005, 0.01)
+mesh = SubResource("QuadMesh_under")
+surface_material_override/0 = SubResource("StandardMaterial3D_newsprint")
+
+[node name="PageMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.01, 0)
+mesh = SubResource("QuadMesh_paper")
+surface_material_override/0 = SubResource("StandardMaterial3D_newsprint")

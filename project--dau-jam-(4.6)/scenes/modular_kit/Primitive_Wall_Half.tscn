@@ -1,0 +1,54 @@
+[gd_scene format=4]
+
+[ext_resource type="Texture2D" path="res://assets/kits/kaykit_prototype_bits_prototypebits_texture.png" id="1_thtr5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_saql2"]
+resource_name = "prototype_texture.070"
+albedo_texture = ExtResource("1_thtr5")
+roughness = 0.4
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_153nd"]
+_surfaces = [{
+"aabb": AABB(-1, 1.49012e-07, -0.5, 2.00001, 4, 1.00001),
+"format": 34359742465,
+"index_count": 36,
+"index_data": PackedByteArray("BwAEAAUABwAGAAQAAQAEAAAAAQAFAAQAAgAEAAYAAgAAAAQAAQACAAMAAQAAAAIAAQAHAAUAAQADAAcAAwAGAAcAAwACAAYA"),
+"name": "prototype_texture.070",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("AACAPwAAIDT9//8+AACAPwEAgED9//8+AACAvwAAIDQBAAA/AACAvwEAgEABAAA/AACAPwAAIDQBAAC/AACAPwEAgEABAAC/AACAvwAAIDT9//++AACAvwEAgED9//++")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_6qw28"]
+resource_name = "kaykit_prototype_bits_Cube_16430"
+_surfaces = [{
+"aabb": AABB(-1, 1.49012e-07, -0.5, 2.00001, 4, 1.00001),
+"attribute_data": PackedByteArray("eJ6jPZg8Rz54nqM9mDxHPnieoz2YPGc+eJ6jPUAZxjx4nqM9oAxjPXieoz2gDGM9EMM4PZg8Rz4Qwzg9mDxHPhDDOD2YPGc+EMM4PUAZxjwQwzg9oAxjPRDDOD2gDGM9eJ6jPZg8Rz54nqM9mDxHPnieoz2YPGc+eJ6jPUAZxjx4nqM9oAxjPXieoz2gDGM9EMM4PZg8Rz4Qwzg9mDxHPhDDOD2YPGc+EMM4PUAZxjwQwzg9oAxjPRDDOD2gDGM9"),
+"format": 34359742487,
+"index_count": 36,
+"index_data": PackedByteArray("FwAMABAAFwATAAwABQANAAEABQARAA0ACAAOABQACAACAA4ABAAHAAsABAAAAAcAAwAVAA8AAwAJABUACgASABYACgAGABIA"),
+"material": SubResource("StandardMaterial3D_saql2"),
+"name": "prototype_texture.070",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 24,
+"vertex_data": PackedByteArray("AACAPwAAIDT9//8+AACAPwAAIDT9//8+AACAPwAAIDT9//8+AACAPwEAgED9//8+AACAPwEAgED9//8+AACAPwEAgED9//8+AACAvwAAIDQBAAA/AACAvwAAIDQBAAA/AACAvwAAIDQBAAA/AACAvwEAgEABAAA/AACAvwEAgEABAAA/AACAvwEAgEABAAA/AACAPwAAIDQBAAC/AACAPwAAIDQBAAC/AACAPwAAIDQBAAC/AACAPwEAgEABAAC/AACAPwEAgEABAAC/AACAPwEAgEABAAC/AACAvwAAIDT9//++AACAvwAAIDT9//++AACAvwAAIDT9//++AACAvwEAgED9//++AACAvwEAgED9//++AACAvwEAgED9//++/3//f////7////9/////v/9/AAD///+//3///////7//f/9/////v////3////+/AAD/f////7//f/9/////v/9/AAD///+//3///////78AAP9/////v/9//3////+//////////z////9/////v/9/AAD///+//3///////7//////////P////3////+/AAD/f////7//////////P/9/AAD///+//3///////78AAP9/////v/////////8/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_153nd")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cesi6"]
+size = Vector3(2.00001, 4, 1.00001)
+
+[node name="Primitive_Wall_Half" type="StaticBody3D" unique_id=754210491]
+collision_layer = 2
+collision_mask = 7
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1941819591]
+mesh = SubResource("ArrayMesh_6qw28")
+
+[node name="CollisionShape0" type="CollisionShape3D" parent="." unique_id=525480034]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.00679e-06, 2, 4.94719e-06)
+shape = SubResource("BoxShape3D_cesi6")

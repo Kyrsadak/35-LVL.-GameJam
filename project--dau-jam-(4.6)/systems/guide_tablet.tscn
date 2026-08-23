@@ -1,0 +1,136 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://systems/guide_tablet.gd" id="1_tablet"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tablet_interact"]
+height = 2.2
+radius = 1.4
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tablet_solid"]
+height = 1.1
+radius = 0.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_base_foot"]
+top_radius = 0.44
+bottom_radius = 0.48
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_metal"]
+albedo_color = Color(0.18, 0.20, 0.26, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_column"]
+top_radius = 0.24
+bottom_radius = 0.28
+height = 0.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_column_metal"]
+albedo_color = Color(0.28, 0.32, 0.42, 1)
+metallic = 0.7
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_glow_strip"]
+size = Vector3(0.04, 0.65, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cyan_glow"]
+albedo_color = Color(0.1, 0.85, 1.0, 1)
+emission_enabled = true
+emission = Color(0.1, 0.85, 1.0, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_deck"]
+size = Vector3(0.62, 0.12, 0.52)
+
+[sub_resource type="TorusMesh" id="TorusMesh_emitter"]
+inner_radius = 0.16
+outer_radius = 0.20
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_beam"]
+top_radius = 0.25
+bottom_radius = 0.16
+height = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_beam_holo"]
+albedo_color = Color(0.1, 0.85, 1.0, 0.3)
+transparency = 1
+emission_enabled = true
+emission = Color(0.1, 0.85, 1.0, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_tablet"]
+size = Vector3(0.52, 0.04, 0.36)
+
+[sub_resource type="QuadMesh" id="QuadMesh_screen"]
+size = Vector2(0.48, 0.32)
+
+[node name="GuideTablet" type="Area3D" groups=["guide_tablet", "interactable"]]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_tablet")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+shape = SubResource("CylinderShape3D_tablet_interact")
+
+[node name="SolidBody" type="StaticBody3D" parent="."]
+collision_layer = 2
+collision_mask = 7
+
+[node name="SolidCollision" type="CollisionShape3D" parent="SolidBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("CylinderShape3D_tablet_solid")
+
+[node name="BaseFoot" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("CylinderMesh_base_foot")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="Column" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+mesh = SubResource("CylinderMesh_column")
+surface_material_override/0 = SubResource("StandardMaterial3D_column_metal")
+
+[node name="GlowStrip1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0.26)
+mesh = SubResource("BoxMesh_glow_strip")
+surface_material_override/0 = SubResource("StandardMaterial3D_cyan_glow")
+
+[node name="GlowStrip2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -0.26)
+mesh = SubResource("BoxMesh_glow_strip")
+surface_material_override/0 = SubResource("StandardMaterial3D_cyan_glow")
+
+[node name="ConsoleDeck" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.85, 0)
+mesh = SubResource("BoxMesh_deck")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="EmitterRing" type="MeshInstance3D" parent="ConsoleDeck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07, 0)
+mesh = SubResource("TorusMesh_emitter")
+surface_material_override/0 = SubResource("StandardMaterial3D_cyan_glow")
+
+[node name="Hologram" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+
+[node name="HoloBeam" type="MeshInstance3D" parent="Hologram"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.18, 0)
+mesh = SubResource("CylinderMesh_beam")
+surface_material_override/0 = SubResource("StandardMaterial3D_beam_holo")
+
+[node name="TabletBody" type="MeshInstance3D" parent="Hologram"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, -0.34202, 0, 0.34202, 0.939693, 0, 0, 0)
+mesh = SubResource("BoxMesh_tablet")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="TabletScreen" type="MeshInstance3D" parent="Hologram"]
+transform = Transform3D(1, 0, 0, 0, -4.1074e-08, 1, 0, -0.939693, -3.85906e-08, 0, 0.025, 0)
+mesh = SubResource("QuadMesh_screen")
+surface_material_override/0 = SubResource("StandardMaterial3D_cyan_glow")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+light_color = Color(0.15, 0.9, 1.0, 1)
+light_energy = 0.9
+omni_range = 3.0

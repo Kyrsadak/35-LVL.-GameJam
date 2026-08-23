@@ -1,0 +1,152 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scenes/modular_kit/Pallet_Large.gd" id="1_plt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_col"]
+size = Vector3(2.4, 1.4, 2.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_top_plank"]
+size = Vector3(2.35, 0.035, 0.34)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pine"]
+albedo_color = Color(0.72, 0.58, 0.44, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_stringer"]
+size = Vector3(0.14, 0.035, 1.95)
+
+[sub_resource type="BoxMesh" id="BoxMesh_block"]
+size = Vector3(0.18, 0.16, 0.18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_box1"]
+size = Vector3(0.95, 0.65, 0.85)
+
+[sub_resource type="BoxMesh" id="BoxMesh_box2"]
+size = Vector3(0.75, 0.55, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_box3"]
+size = Vector3(0.60, 0.45, 0.55)
+
+[node name="Pallet_Large" type="StaticBody3D"]
+collision_layer = 2
+collision_mask = 7
+script = ExtResource("1_plt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("BoxShape3D_col")
+
+[node name="WoodMesh_Plank1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, -0.80)
+mesh = SubResource("BoxMesh_top_plank")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Plank2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, -0.40)
+mesh = SubResource("BoxMesh_top_plank")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Plank3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, 0.0)
+mesh = SubResource("BoxMesh_top_plank")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Plank4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, 0.40)
+mesh = SubResource("BoxMesh_top_plank")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Plank5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, 0.80)
+mesh = SubResource("BoxMesh_top_plank")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_StringerL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0.245, 0)
+mesh = SubResource("BoxMesh_stringer")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_StringerC" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.245, 0)
+mesh = SubResource("BoxMesh_stringer")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_StringerR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.95, 0.245, 0)
+mesh = SubResource("BoxMesh_stringer")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Block1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0.145, -0.85)
+mesh = SubResource("BoxMesh_block")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Block2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.145, -0.85)
+mesh = SubResource("BoxMesh_block")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Block3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.95, 0.145, -0.85)
+mesh = SubResource("BoxMesh_block")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Block4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0.145, 0.0)
+mesh = SubResource("BoxMesh_block")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Block5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.145, 0.0)
+mesh = SubResource("BoxMesh_block")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Block6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.95, 0.145, 0.0)
+mesh = SubResource("BoxMesh_block")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Block7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0.145, 0.85)
+mesh = SubResource("BoxMesh_block")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Block8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.145, 0.85)
+mesh = SubResource("BoxMesh_block")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_Block9" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.95, 0.145, 0.85)
+mesh = SubResource("BoxMesh_block")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_RunnerL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0.02, 0)
+mesh = SubResource("BoxMesh_stringer")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_RunnerC" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.02, 0)
+mesh = SubResource("BoxMesh_stringer")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="WoodMesh_RunnerR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.95, 0.02, 0)
+mesh = SubResource("BoxMesh_stringer")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="BoxMesh_Cargo1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.996195, 0, 0.0871557, 0, 1, 0, -0.0871557, 0, 0.996195, -0.45, 0.62, 0.25)
+mesh = SubResource("BoxMesh_box1")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="BoxMesh_Cargo2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.978148, 0, -0.207912, 0, 1, 0, 0.207912, 0, 0.978148, 0.48, 0.57, -0.35)
+mesh = SubResource("BoxMesh_box2")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")
+
+[node name="BoxMesh_Cargo3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.906308, 0, 0.422618, 0, 1, 0, -0.422618, 0, 0.906308, -0.38, 1.17, 0.22)
+mesh = SubResource("BoxMesh_box3")
+surface_material_override/0 = SubResource("StandardMaterial3D_pine")

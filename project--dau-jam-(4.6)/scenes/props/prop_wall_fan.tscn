@@ -1,0 +1,82 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scenes/props/prop_wall_fan.gd" id="1_fan"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_outer_frame"]
+size = Vector3(0.95, 0.95, 0.10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_frame"]
+albedo_color = Color(0.18, 0.22, 0.28, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cavity"]
+top_radius = 0.40
+bottom_radius = 0.40
+height = 0.08
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cavity"]
+albedo_color = Color(0.05, 0.06, 0.08, 1)
+metallic = 0.3
+roughness = 0.9
+
+[sub_resource type="SphereMesh" id="SphereMesh_hub"]
+radius = 0.10
+height = 0.08
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hub"]
+albedo_color = Color(0.95, 0.55, 0.10, 1)
+metallic = 0.7
+roughness = 0.3
+
+[sub_resource type="TorusMesh" id="TorusMesh_grille_ring"]
+inner_radius = 0.38
+outer_radius = 0.395
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wire_grille"]
+albedo_color = Color(0.12, 0.15, 0.20, 1)
+metallic = 0.9
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_grille_wire"]
+top_radius = 0.005
+bottom_radius = 0.005
+height = 0.78
+
+[node name="PropWallFan" type="Node3D"]
+script = ExtResource("1_fan")
+
+[node name="VentFrame" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05)
+mesh = SubResource("BoxMesh_outer_frame")
+surface_material_override/0 = SubResource("StandardMaterial3D_frame")
+
+[node name="VentCavity" type="MeshInstance3D" parent="VentFrame"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.01)
+mesh = SubResource("CylinderMesh_cavity")
+surface_material_override/0 = SubResource("StandardMaterial3D_cavity")
+
+[node name="Turbine" type="Node3D" parent="VentFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.025)
+
+[node name="FanBladeMesh" type="MeshInstance3D" parent="VentFrame/Turbine"]
+
+[node name="CenterHub" type="MeshInstance3D" parent="VentFrame/Turbine"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.02)
+mesh = SubResource("SphereMesh_hub")
+surface_material_override/0 = SubResource("StandardMaterial3D_hub")
+
+[node name="GrilleRing" type="MeshInstance3D" parent="VentFrame"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.05)
+mesh = SubResource("TorusMesh_grille_ring")
+surface_material_override/0 = SubResource("StandardMaterial3D_wire_grille")
+
+[node name="GrilleWireH" type="MeshInstance3D" parent="VentFrame"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0.055)
+mesh = SubResource("CylinderMesh_grille_wire")
+surface_material_override/0 = SubResource("StandardMaterial3D_wire_grille")
+
+[node name="GrilleWireV" type="MeshInstance3D" parent="VentFrame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.055)
+mesh = SubResource("CylinderMesh_grille_wire")
+surface_material_override/0 = SubResource("StandardMaterial3D_wire_grille")
