@@ -342,10 +342,10 @@ transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 5.0)
 [node name="Robots" type="Node3D" parent="."]
 
 [node name="RobotAtlas" parent="Robots" instance=ExtResource("2_atlas")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0.1, 4.0)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1.8, 0.1, 4.0)
 
 [node name="RobotCipher" parent="Robots" instance=ExtResource("3_cipher")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0.1, 4.0)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.8, 0.1, 4.0)
 
 [node name="PushableBox" parent="." instance=ExtResource("5_box")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 1.5)

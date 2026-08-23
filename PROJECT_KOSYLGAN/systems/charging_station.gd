@@ -263,10 +263,11 @@ func undock_robot(robot: Node3D) -> void:
 	docked_robot = null
 	is_docked = false
 	
-	# Smoothly step robot OUT in front of the capsule
-	var exit_pos = global_position + Vector3(0, 0.05, 1.45)
+	# Smoothly step robot OUT in front of the capsule respecting its rotation
+	var exit_pos = to_global(Vector3(0, 0.05, 1.45))
 	if r is CharacterBody3D:
 		r.velocity = Vector3.ZERO
+	r.rotation.y = global_rotation.y
 	var exit_tween = create_tween()
 	exit_tween.tween_property(r, "global_position", exit_pos, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	exit_tween.tween_callback(func():

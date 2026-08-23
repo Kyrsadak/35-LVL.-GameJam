@@ -381,10 +381,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.0, 0, 0.0)
 [node name="Robots" type="Node3D" parent="."]
 
 [node name="RobotAtlas" parent="Robots" instance=ExtResource("2_atlas")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0.1, 13.5)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1.6, 0.1, 13.5)
 
 [node name="RobotCipher" parent="Robots" instance=ExtResource("3_cipher")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0.1, 13.5)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.6, 0.1, 13.5)
 
 [node name="LaserGateSpawn" parent="." instance=ExtResource("6_gate")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.0)
