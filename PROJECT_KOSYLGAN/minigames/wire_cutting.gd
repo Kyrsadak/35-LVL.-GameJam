@@ -323,12 +323,17 @@ func _on_success() -> void:
 	)
 
 func _on_failure() -> void:
-	status_label.text = "❌ ОШИБКА ЦЕПИ! (-20% БАТАРЕИ)"
+	status_label.text = "❌ КОРОТКОЕ ЗАМЫКАНИЕ! (-30% БАТАРЕИ)"
 	status_label.modulate = Color(1.0, 0.2, 0.2)
 
 	if RobotManager and RobotManager.cipher:
-		RobotManager.cipher.battery = max(0.0, RobotManager.cipher.battery - 20.0)
+		RobotManager.cipher.battery = max(0.0, RobotManager.cipher.battery - 30.0)
 		RobotManager.cipher.battery_changed.emit(RobotManager.cipher.battery, RobotManager.cipher.max_battery)
+		if RobotManager.cipher.battery <= 0.0:
+			completed.emit(false)
+			queue_free()
+			RobotManager.cipher.on_battery_depleted()
+			return
 
 	get_tree().create_timer(1.4).timeout.connect(_build_ui)
 
