@@ -99,6 +99,10 @@ func _process(_delta: float) -> void:
 		if "is_on_charging_station" in RobotManager.cipher:
 			cipher_battery_display.set_charging(RobotManager.cipher.is_on_charging_station)
 
+	if RobotManager.active_robot and RobotManager.active_robot.has_method("get_best_interactable"):
+		var target = RobotManager.active_robot.get_best_interactable()
+		_on_interact_target_changed(target)
+
 func set_level_info(level_num: int, title: String, mode_desc: String = "") -> void:
 	if level_title:
 		level_title.text = "📍 УРОВЕНЬ " + str(level_num) + ": " + title.to_upper()

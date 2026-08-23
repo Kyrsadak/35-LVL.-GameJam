@@ -30,9 +30,7 @@ func interact() -> void:
 			_drop_carried_object()
 			return
 
-	var target = current_interactable
-	if not target and push_ray and push_ray.is_colliding():
-		target = push_ray.get_collider()
+	var target = get_best_interactable()
 	
 	# Find ancestor if collider or docked item is a child of interactable system
 	var node = target

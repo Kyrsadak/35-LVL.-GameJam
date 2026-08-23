@@ -233,3 +233,19 @@ func _on_interaction_body_exited(body: Node3D) -> void:
 	if current_interactable == body:
 		current_interactable = null
 		interact_target_changed.emit(null)
+
+func get_best_interactable() -> Node:
+	if current_interactable and is_instance_valid(current_interactable):
+		return current_interactable
+	if push_ray and push_ray.is_colliding():
+		var col = push_ray.get_collider()
+		if col:
+			return col
+	if interaction_area:
+		for a in interaction_area.get_overlapping_areas():
+			if a.is_in_group("socket_terminal") or a.is_in_group("terminal") or a.is_in_group("dual_generator") or a.is_in_group("guide_tablet") or a.is_in_group("interactable") or a.is_in_group("charging_station"):
+				return a
+		for b in interaction_area.get_overlapping_bodies():
+			if b.is_in_group("socket_terminal") or b.is_in_group("terminal") or b.is_in_group("dual_generator") or b.is_in_group("key_module") or b.is_in_group("interactable"):
+				return b
+	return null
