@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=38 format=3]
 
 [ext_resource type="Script" path="res://scenes/levels/level_tashkent.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://characters/robots/RobotAtlas.tscn" id="2_atlas"]
@@ -28,8 +28,17 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_traffic_cone.tscn" id="26_cone"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_safety_barrier.tscn" id="27_barrier"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_blue_barrel.tscn" id="28_blue_barrel"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_wall_poster.tscn" id="29_poster"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_plastic_drum.tscn" id="29_plastic_drum"]
 [ext_resource type="PackedScene" path="res://systems/floor_cable.tscn" id="30_cable"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_banana_peel.tscn" id="31_banana"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_open.tscn" id="32_news_open"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_folded.tscn" id="33_news_folded"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_crumpled.tscn" id="34_news_crumpled"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_news_scattered.tscn" id="35_news_scattered"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_trash_bin.tscn" id="36_trash_bin"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_cardboard_stack.tscn" id="37_cstack"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_box_sealed.tscn" id="38_box_sealed"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_box_torn.tscn" id="39_box_torn"]
 
 [node name="LevelTashkent" type="Node3D"]
 script = ExtResource("1_script")
@@ -364,6 +373,22 @@ collision_mask = 7
 size = Vector3(0.5, 3, 11.5)
 material = ExtResource("15_wall")
 
+[node name="WallEast_Partition_N" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 1.5, -3.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 4.0)
+material = ExtResource("15_wall")
+
+[node name="WallEast_Partition_S" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 1.5, 4.0)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 3.0)
+material = ExtResource("15_wall")
+
 [node name="Furniture" type="Node3D" parent="."]
 
 [node name="ServerRotundaW" parent="Furniture" instance=ExtResource("21_server")]
@@ -373,16 +398,61 @@ transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 4.5, 0, 4.0)
 
 [node name="WorkbenchWest" parent="Furniture" instance=ExtResource("20_workbench")]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -19.0, 0, 2.5)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -17.5, 0, 2.5)
+
+[node name="WorkbenchEast" parent="Furniture" instance=ExtResource("20_workbench")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 0, 5.0)
 
 [node name="PalletEast1" parent="Furniture" instance=ExtResource("18_pallet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5, 0, 3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.2, 0, 3.5)
 
 [node name="PalletEast2" parent="Furniture" instance=ExtResource("18_pallet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5, 0, -3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.2, 0, -3.5)
+
+[node name="CardboardStackEast" parent="Furniture" instance=ExtResource("37_cstack")]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 16.2, 0, 3.5)
+
+[node name="BoxSealedEast" parent="Furniture" instance=ExtResource("38_box_sealed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8, 0, -3.5)
+
+[node name="BoxTornEast" parent="Furniture" instance=ExtResource("39_box_torn")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 15.6, 0, -3.2)
 
 [node name="LockerEast" parent="Furniture" instance=ExtResource("19_locker")]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 19.0, 0, 2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0, 0, -5.0)
+
+[node name="ServerEast" parent="Furniture" instance=ExtResource("21_server")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 17.5, 0, 0)
+
+[node name="BarrelsEast" parent="Furniture" instance=ExtResource("22_barrel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, -4.8)
+
+[node name="BlueBarrelEast" parent="Furniture" instance=ExtResource("28_blue_barrel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 4.8)
+
+[node name="PlasticDrumEast" parent="Furniture" instance=ExtResource("29_plastic_drum")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 4.8)
+
+[node name="TrashBinEast" parent="Furniture" instance=ExtResource("36_trash_bin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2, 0, -4.8)
+
+[node name="BananaPeelEast" parent="Furniture" instance=ExtResource("31_banana")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 1.5)
+
+[node name="BananaPeelEast2" parent="Furniture" instance=ExtResource("31_banana")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 0, -1.0)
+
+[node name="NewsOpenEast" parent="Furniture" instance=ExtResource("32_news_open")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -2.0)
+
+[node name="NewsFoldedEast" parent="Furniture" instance=ExtResource("33_news_folded")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 14.5, 0, 2.0)
+
+[node name="NewsCrumpledEast" parent="Furniture" instance=ExtResource("34_news_crumpled")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0, -1.5)
+
+[node name="NewsScatteredEast" parent="Furniture" instance=ExtResource("35_news_scattered")]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 17.0, 0, 1.0)
 
 [node name="BarrelSpawn1" parent="Furniture" instance=ExtResource("22_barrel")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 19.0)
@@ -451,22 +521,21 @@ powered_emission_energy = 1.2
 [node name="GuideTabletWest" parent="." instance=ExtResource("10_tablet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -11.0, 0, -4.5)
 guide_id = "guide_tashkent_west"
-guide_title = "МАТРИЦА ПЕРЕКЛЮЧАТЕЛЕЙ"
-guide_text = "КОД ПИТАНИЯ СИСТЕМЫ: 3 -> 1 -> 4 -> 2 -> 5. Поставьте ящик на плиту для активации панели!"
+clue_text = "МАТРИЦА ПЕРЕКЛЮЧАТЕЛЕЙ: Код питания системы: 3 -> 1 -> 4 -> 2 -> 5. Поставьте ящик на плиту для активации панели!"
 
 [node name="PressurePlateEast" parent="." instance=ExtResource("7_plate")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.0, 0, 2.5)
-target_gate_path = NodePath("../LaserGateEast")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0.05, 0.5)
+target_node_path = NodePath("../LaserGateEast")
 
 [node name="CableEastPlateToGate" parent="." instance=ExtResource("30_cable")]
-points = Array[Vector3]([Vector3(11.0, 0.05, 2.5), Vector3(12.5, 0.05, 2.5), Vector3(12.5, 0.05, 0.5)])
+points = Array[Vector3]([Vector3(10.5, 0.05, 0.5), Vector3(12.5, 0.05, 0.5)])
 source_plate_path = NodePath("../PressurePlateEast")
 
 [node name="PushableBoxEast1" parent="." instance=ExtResource("8_box")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0, 0.6, 2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0.6, -1.5)
 
 [node name="PushableBoxEast2" parent="." instance=ExtResource("8_box")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 0.6, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0.6, 1.5)
 
 [node name="KeyModuleGreen" parent="." instance=ExtResource("9_key")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5, 0.8, 0.0)
@@ -485,8 +554,7 @@ is_custom_colored = true
 [node name="GuideTablet" parent="." instance=ExtResource("10_tablet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 14.5)
 guide_id = "guide_tashkent"
-guide_title = "ПЛАН ОПЕРАЦИИ: ТАШКЕНТ"
-guide_text = "ГЕНЕРАЛЬНЫЙ ПЛАН ТАШКЕНТА:\n1. DAU: Расчистите восточное хранилище, поставьте тяжелый ящик на плиту и заберите Оранжевое титановое ядро.\n2. JAM: Поставьте ящик на плиту, чтобы запитать терминал, взломайте матрицу (3-1-4-2-5) и заберите Зеленое квантовое ядро.\n3. Установите оба ядра в Центральный Генератор для запуска вечной энергии и открытия Врат Свободы!"
+clue_text = "ГЕНЕРАЛЬНЫЙ ПЛАН ТАШКЕНТА:\n1. DAU: Расчистите восточное хранилище, поставьте тяжелый ящик на плиту и заберите Оранжевое титановое ядро.\n2. JAM: Поставьте ящик на плиту, чтобы запитать терминал, взломайте матрицу (3-1-4-2-5) и заберите Зеленое квантовое ядро.\n3. Установите оба ядра в Центральный Генератор для запуска вечной энергии и открытия Врат Свободы!"
 
 [node name="FreedomPortal" parent="." instance=ExtResource("12_portal")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16.5)
