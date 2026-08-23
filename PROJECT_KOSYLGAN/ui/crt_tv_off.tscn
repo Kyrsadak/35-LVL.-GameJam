@@ -1,25 +1,60 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://ui/crt_tv_off.gd" id="1_tv_off"]
-[ext_resource type="Shader" path="res://assets/shaders/crt_tv_off.gdshader" id="2_shader"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_crt"]
-shader = ExtResource("2_shader")
-shader_parameter/collapse_v = 0.0
-shader_parameter/collapse_h = 0.0
-shader_parameter/dot_fade = 0.0
-shader_parameter/flash = 0.0
 
 [node name="CrtTvOff" type="CanvasLayer"]
-layer = 125
+layer = 128
 script = ExtResource("1_tv_off")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_crt")
+[node name="TopShutter" type="ColorRect" parent="."]
+offset_right = 1280.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BottomShutter" type="ColorRect" parent="."]
+offset_top = 720.0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="LeftShutter" type="ColorRect" parent="."]
+offset_right = 0.0
+offset_bottom = 720.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="RightShutter" type="ColorRect" parent="."]
+offset_left = 1280.0
+offset_top = 0.0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterBeam" type="ColorRect" parent="."]
+visible = false
+offset_top = 358.0
+offset_right = 1280.0
+offset_bottom = 362.0
+mouse_filter = 2
+color = Color(0.9, 0.96, 1.0, 1)
+
+[node name="CenterDot" type="ColorRect" parent="."]
+visible = false
+offset_left = 636.0
+offset_top = 356.0
+offset_right = 644.0
+offset_bottom = 364.0
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="Blackout" type="ColorRect" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(1, 1, 1, 1)
+color = Color(0, 0, 0, 1)
