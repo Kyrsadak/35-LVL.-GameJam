@@ -24,6 +24,8 @@ func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station
 	is_dialogue_active = false
 	infinite_energy_active = false
 	current_level_index = level_idx
+	if GameManager:
+		GameManager.current_level_index = level_idx
 	atlas = atlas_node
 	cipher = cipher_node
 	charging_station = station
@@ -158,10 +160,10 @@ func complete_level() -> void:
 	level_completed.emit()
 	if SoundManager:
 		SoundManager.play_success()
-	show_message("[РОБО-КОШКА]: (=^･ω･^=) УРА! Энергосеть полностью восстановлена! Уровень 1 успешно пройден! Переходим на 2 уровень! 🚀", 4.0)
+	show_message("[РОБО-КОШКА]: (=^･ω･^=) УРА! Энергосеть полностью восстановлена! Уровень успешно пройден! Переходим дальше! 🚀", 4.0)
 	
 	# After dialogue display, trigger CRT TV channel-switch transition into next level
-	var timer = get_tree().create_timer(3.2)
+	var timer = get_tree().create_timer(2.4)
 	timer.timeout.connect(func():
 		var crt_scene = load("res://ui/crt_tv_off.tscn")
 		if crt_scene:
@@ -169,11 +171,15 @@ func complete_level() -> void:
 			get_tree().root.add_child(crt)
 			crt.play_effect(func():
 				if GameManager:
-					GameManager.next_level()
+					GameManager.load_level(current_level_index + 1)
+				else:
+					get_tree().change_scene_to_file("res://scenes/levels/level_bukhara.tscn")
 			)
 		else:
 			if GameManager:
-				GameManager.next_level()
+				GameManager.load_level(current_level_index + 1)
+			else:
+				get_tree().change_scene_to_file("res://scenes/levels/level_bukhara.tscn")
 	)
 
 func restart_level() -> void:
