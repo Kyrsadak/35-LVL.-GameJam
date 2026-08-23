@@ -308,6 +308,8 @@ func _on_interact_target_changed(target: Node) -> void:
 					interact_prompt.text = "[E] ВСТАВИТЬ БАТАРЕЮ"
 				else:
 					interact_prompt.text = "🔒 ПРИЁМНИК (Нужна батарея)"
+		elif target.is_in_group("robocat") or target is PropRoboCatGirl:
+			interact_prompt.text = "[E] ПОГОВОРИТЬ С CRT-CAT"
 		elif target.is_in_group("key_module") or target.is_in_group("pushable_box") or target.is_in_group("boxes"):
 			interact_prompt.text = "[E] ПОДНЯТЬ ПРЕДМЕТ"
 		else:

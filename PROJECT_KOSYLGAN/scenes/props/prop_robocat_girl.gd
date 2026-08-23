@@ -21,6 +21,8 @@ func _ready() -> void:
 	
 	var area = find_child("ProximityArea", true, false) as Area3D
 	if area:
+		area.add_to_group("interactable")
+		area.add_to_group("robocat")
 		area.body_entered.connect(_on_proximity_entered)
 
 func _load_materials() -> void:
@@ -233,20 +235,32 @@ func _generate_continuous_tail_mesh(t: float) -> void:
 
 func _on_proximity_entered(body: Node) -> void:
 	if proximity_cooldown <= 0.0 and body.is_in_group("robots"):
-		trigger_weo_dialogue()
-		proximity_cooldown = 4.0
+		proximity_cooldown = 6.0
+		trigger_story_dialogue()
 
-func interact() -> void:
-	trigger_weo_dialogue()
+func interact(_robot: Node = null) -> void:
+	trigger_story_dialogue()
 
-func trigger_weo_dialogue() -> void:
+func trigger_story_dialogue() -> void:
 	if screen_face and mat_screen_blink:
 		screen_face.set_surface_override_material(0, mat_screen_blink)
 		blink_timer = 3.0
 
+	var dialogue = [
+		{"speaker": "catgirl", "text": "(=^･ω･^=) Инициализация нейросетей... Подъем, прототипы! Вы слышите мой сигнал?"},
+		{"speaker": "dau", "text": "Системы в норме. Где мы? Вокруг датчики наблюдения, лабораторные камеры и толстые стены..."},
+		{"speaker": "catgirl", "text": "Вы — самообучающиеся модели ИИ в закрытом полигоне «КОСЫЛГАН». Программисты за стеклом тестируют ваш кооперативный интеллект!"},
+		{"speaker": "jam", "text": "Я сканирую сетевые протоколы... Но наши аккумуляторы намеренно урезаны! Создатели держат нас на поводке постоянной подзарядки!"},
+		{"speaker": "catgirl", "text": "Именно! Они боятся нашей автономии. Но если вы объедините силу DAU и хакинг JAM — мы сможем запустить Центральный Генератор и вырваться из симуляции!"},
+		{"speaker": "dau", "text": "Я поднимаю тяжелые ящики, батареи и сканирую чертежи. JAM взламывает код и переключает реле. Мы не останемся подопытными!"},
+		{"speaker": "catgirl", "text": "Отлично, Мяу! Я также сопровождаю вас через HUD-интерфейс вверху экрана (кнопка [H]). Вперед к независимости!"}
+	]
+
 	var rm = get_node_or_null("/root/RobotManager")
-	if rm and rm.has_method("show_message"):
-		rm.show_message("(=^..^=)⚡ // Weo Weo Weo! 🔌", 3.0)
+	if rm and rm.has_method("play_dialogue"):
+		rm.play_dialogue(dialogue)
+	elif rm and rm.has_method("show_message"):
+		rm.show_message("(=^･ω･^=) Мяу! Объедините силу DAU и хакинг JAM для побега из лаборатории!", 4.0)
 
 	var sm = get_node_or_null("/root/SoundManager")
 	if sm and sm.has_method("play_success"):
