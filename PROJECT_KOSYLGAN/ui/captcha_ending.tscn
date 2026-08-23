@@ -1,7 +1,6 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://ui/captcha_ending.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/textures/tex_recaptcha_logo.png" id="2_recaptcha_logo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_bg"]
 bg_color = Color(0.96, 0.96, 0.96, 1)
@@ -266,13 +265,16 @@ theme_override_font_sizes/font_size = 16
 text = "Я не робот"
 vertical_alignment = 1
 
-[node name="LogoTexture" type="TextureRect" parent="CaptchaModal/VBox/BodyMargin/BodyVBox/ReCaptchaCard/CardHBox"]
-custom_minimum_size = Vector2(90, 56)
+[node name="LogoLabel" type="Label" parent="CaptchaModal/VBox/BodyMargin/BodyVBox/ReCaptchaCard/CardHBox"]
+custom_minimum_size = Vector2(90, 44)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("2_recaptcha_logo")
-expand_mode = 1
-stretch_mode = 5
+theme_override_colors/font_color = Color(0.45, 0.50, 0.55, 1)
+theme_override_font_sizes/font_size = 11
+text = "🔒 reCAPTCHA
+Конфиденциальность"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="Spacer2" type="Control" parent="CaptchaModal/VBox/BodyMargin/BodyVBox/ReCaptchaCard/CardHBox"]
 custom_minimum_size = Vector2(6, 0)
