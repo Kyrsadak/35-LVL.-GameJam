@@ -70,7 +70,7 @@ func next_level() -> void:
 
 func show_victory() -> void:
 	is_timer_running = false
-	get_tree().change_scene_to_file("res://ui/victory_screen.tscn")
+	get_tree().change_scene_to_file("res://ui/captcha_ending.tscn")
 
 func return_to_main_menu() -> void:
 	is_timer_running = false

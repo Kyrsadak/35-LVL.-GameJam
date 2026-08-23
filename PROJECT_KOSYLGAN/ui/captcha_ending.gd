@@ -2,7 +2,7 @@ extends Control
 
 @onready var white_flash = $WhiteFlash
 @onready var captcha_window = $CaptchaCard
-@onready var checkbox = $CaptchaCard/VBox/CheckboxArea/Checkbox
+@onready var checkbox = $CaptchaCard/VBox/CheckboxArea/HBox/Checkbox
 @onready var spinner = $CaptchaCard/VBox/CheckboxArea/Spinner
 @onready var check_mark = $CaptchaCard/VBox/CheckboxArea/CheckMark
 @onready var status_label = $CaptchaCard/VBox/StatusLabel
@@ -116,4 +116,4 @@ func _on_main_menu_pressed() -> void:
 	if SoundManager:
 		SoundManager.play_button_click()
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	get_tree().change_scene_to_file("res://ui/main_menu.tscn")

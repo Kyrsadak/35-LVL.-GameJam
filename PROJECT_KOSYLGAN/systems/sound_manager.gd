@@ -368,3 +368,89 @@ func play_tv_off() -> void:
 	player.pitch_scale = 1.0
 	player.play()
 
+# Aliases & Game Feel Helpers
+func play_button_click() -> void:
+	play_ui_click()
+
+func play_gate_open() -> void:
+	play_door_open()
+
+func play_battery_pickup() -> void:
+	play_pickup()
+
+func play_hack_success() -> void:
+	play_success()
+
+func play_terminal_solved() -> void:
+	play_success()
+
+func play_error() -> void:
+	play_spark_error()
+
+func play_ui_error() -> void:
+	play_spark_error()
+
+# 14. Alert Siren / Beep
+func play_alert() -> void:
+	var duration = 0.45
+	var num_samples = int(sample_rate * duration)
+	var bytes = PackedByteArray()
+	bytes.resize(num_samples * 2)
+	for i in range(num_samples):
+		var t = float(i) / sample_rate
+		var freq = 880.0 if fmod(t, 0.15) < 0.08 else 580.0
+		var env = sin((float(i) / num_samples) * PI)
+		var s = sin(t * freq * TAU) * 0.7
+		var val = int(clamp(s * env * 24000.0, -32767, 32767))
+		bytes.encode_s16(i * 2, val)
+	var player = _get_free_player()
+	player.stream = _create_wav(bytes)
+	player.volume_db = -4.0
+	player.play()
+
+# 15. Level Start Fanfare
+func play_level_start() -> void:
+	var duration = 0.8
+	var num_samples = int(sample_rate * duration)
+	var bytes = PackedByteArray()
+	bytes.resize(num_samples * 2)
+	for i in range(num_samples):
+		var t = float(i) / sample_rate
+		var note_idx = int(t / 0.2)
+		var freq = 440.0
+		if note_idx == 0: freq = 330.0
+		elif note_idx == 1: freq = 440.0
+		elif note_idx == 2: freq = 554.37
+		else: freq = 659.25
+		var note_t = fmod(t, 0.2)
+		var env = exp(-note_t * 6.0)
+		var s = (sin(t * freq * TAU) + 0.3 * sin(t * freq * 2.0 * TAU)) * 0.6
+		var val = int(clamp(s * env * 22000.0, -32767, 32767))
+		bytes.encode_s16(i * 2, val)
+	var player = _get_free_player()
+	player.stream = _create_wav(bytes)
+	player.volume_db = -5.0
+	player.play()
+
+# 16. Victory Jingle
+func play_victory() -> void:
+	var duration = 1.5
+	var num_samples = int(sample_rate * duration)
+	var bytes = PackedByteArray()
+	bytes.resize(num_samples * 2)
+	for i in range(num_samples):
+		var t = float(i) / sample_rate
+		var freq = 523.25 # C5
+		if t > 0.3 and t <= 0.6: freq = 659.25 # E5
+		elif t > 0.6 and t <= 0.9: freq = 783.99 # G5
+		elif t > 0.9: freq = 1046.50 # C6
+		var note_t = fmod(t, 0.3) if t < 0.9 else (t - 0.9)
+		var env = exp(-note_t * (3.0 if t >= 0.9 else 5.0))
+		var s = (sin(t * freq * TAU) + 0.4 * sin(t * freq * 2.0 * TAU) + 0.2 * sin(t * freq * 3.0 * TAU)) * 0.6
+		var val = int(clamp(s * env * 25000.0, -32767, 32767))
+		bytes.encode_s16(i * 2, val)
+	var player = _get_free_player()
+	player.stream = _create_wav(bytes)
+	player.volume_db = -3.0
+	player.play()
+
