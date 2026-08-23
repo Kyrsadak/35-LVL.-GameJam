@@ -2,6 +2,7 @@ class_name RobotCipher
 extends RobotBase
 
 signal hack_started(terminal: Node)
+signal key_module_picked(module: Node3D)
 
 func _ready() -> void:
 	robot_id = "cipher"

@@ -97,7 +97,7 @@ func _physics_process(delta: float) -> void:
 			battery_changed.emit(battery, max_battery)
 		if is_active:
 			_handle_input()
-		if skin:
+		if skin and skin.has_method("update_move_animation"):
 			skin.update_move_animation(0.0, delta)
 		return # Prevent physics engine from ever pushing robot upwards onto roof
 	elif is_dialogue_open:
@@ -129,7 +129,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
 		velocity.z = move_toward(velocity.z, 0, friction * delta)
-		if skin:
+		if skin and skin.has_method("update_move_animation"):
 			skin.update_move_animation(0.0, delta)
 
 	move_and_slide()
