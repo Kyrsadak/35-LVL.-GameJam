@@ -29,6 +29,7 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_safety_barrier.tscn" id="27_barrier"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_blue_barrel.tscn" id="28_blue_barrel"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_wall_poster.tscn" id="29_poster"]
+[ext_resource type="PackedScene" path="res://systems/floor_cable.tscn" id="30_cable"]
 
 [node name="LevelTashkent" type="Node3D"]
 script = ExtResource("1_script")
@@ -307,6 +308,22 @@ collision_mask = 7
 size = Vector3(0.5, 3, 11.5)
 material = ExtResource("15_wall")
 
+[node name="WallWest_Partition_N" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 1.5, -3.25)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 4.5)
+material = ExtResource("15_wall")
+
+[node name="WallWest_Partition_S" type="CSGBox3D" parent="Geometry/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 1.5, 3.75)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(0.5, 3, 3.5)
+material = ExtResource("15_wall")
+
 [node name="WallEast_WL" type="CSGBox3D" parent="Geometry/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 1.5, -4.5)
 use_collision = true
@@ -394,19 +411,48 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 18.5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.2)
 
 [node name="LaserGateFreedom" parent="." instance=ExtResource("5_laser")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.5)
 
 [node name="LaserGateWest" parent="." instance=ExtResource("5_laser")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -13.5, 0, -1.0)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -12.5, 0, 0.5)
 
 [node name="LaserGateEast" parent="." instance=ExtResource("5_laser")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 13.5, 0, -1.0)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 12.5, 0, 0.5)
+
+[node name="PushableBoxWest" parent="." instance=ExtResource("8_box")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.0, 0.6, 2.5)
+
+[node name="PressurePlateWest" parent="." instance=ExtResource("7_plate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.0, 0.05, -2.5)
+target_node_path = NodePath("../TerminalWest")
 
 [node name="TerminalWest" parent="." instance=ExtResource("6_terminal")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.0, 0, 2.5)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -11.0, 0, -2.5)
+terminal_id = "term_tashkent_west"
 target_gate_path = NodePath("../LaserGateWest")
 minigame_type = "switches"
 switch_sequence = Array[int]([3, 1, 4, 2, 5])
+requires_power = true
+is_powered = false
+clue_id = "guide_tashkent_west"
+
+[node name="CableWestPlateToTerminal" parent="." instance=ExtResource("30_cable")]
+points = Array[Vector3]([Vector3(-8.0, 0.05, -2.5), Vector3(-9.5, 0.05, -2.5), Vector3(-11.0, 0.05, -2.5)])
+source_plate_path = NodePath("../PressurePlateWest")
+target_terminal_path = NodePath("../TerminalWest")
+
+[node name="CableWestTerminalToGate" parent="." instance=ExtResource("30_cable")]
+points = Array[Vector3]([Vector3(-11.0, 0.05, -2.5), Vector3(-11.8, 0.05, -2.5), Vector3(-11.8, 0.05, 0.5), Vector3(-12.5, 0.05, 0.5)])
+is_powered = true
+unpowered_color = Color(0.3, 0.35, 0.4, 1)
+powered_color = Color(0.9, 0.7, 0.2, 1)
+powered_emission_energy = 1.2
+
+[node name="GuideTabletWest" parent="." instance=ExtResource("10_tablet")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -11.0, 0.8, -4.5)
+guide_id = "guide_tashkent_west"
+guide_title = "МАТРИЦА ПЕРЕКЛЮЧАТЕЛЕЙ"
+guide_text = "КОД ПИТАНИЯ СИСТЕМЫ: 3 -> 1 -> 4 -> 2 -> 5. Поставьте ящик на плиту для активации панели!"
 
 [node name="PressurePlateEast" parent="." instance=ExtResource("7_plate")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.0, 0, 2.5)
@@ -419,7 +465,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0, 0.6, 2.5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 0.6, 0.5)
 
 [node name="KeyModuleGreen" parent="." instance=ExtResource("9_key")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5, 0.8, -3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5, 0.8, 0.0)
 module_name = "Зеленое Квантовое Ядро (JAM)"
 required_robot_id = "cipher"
 custom_color = Color(0.2, 0.95, 0.4, 1)
@@ -433,21 +479,21 @@ custom_color = Color(1, 0.55, 0.1, 1)
 is_custom_colored = true
 
 [node name="GuideTablet" parent="." instance=ExtResource("10_tablet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.8, 16.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.8, 14.5)
 guide_id = "guide_tashkent"
 guide_title = "ПЛАН ОПЕРАЦИИ: ТАШКЕНТ"
-guide_text = "ГЕНЕРАЛЬНЫЙ ПЛАН ТАШКЕНТА:\n1. DAU: Расчистите восточное хранилище, поставьте тяжелый ящик на плиту и заберите Оранжевое титановое ядро.\n2. JAM: Взломайте западную релейную матрицу переключателями (3-1-4-2-5) и заберите Зеленое квантовое ядро.\n3. Установите оба ядра в Центральный Генератор для запуска вечной энергии и открытия Врат Свободы!"
+guide_text = "ГЕНЕРАЛЬНЫЙ ПЛАН ТАШКЕНТА:\n1. DAU: Расчистите восточное хранилище, поставьте тяжелый ящик на плиту и заберите Оранжевое титановое ядро.\n2. JAM: Поставьте ящик на плиту, чтобы запитать терминал, взломайте матрицу (3-1-4-2-5) и заберите Зеленое квантовое ядро.\n3. Установите оба ядра в Центральный Генератор для запуска вечной энергии и открытия Врат Свободы!"
 
 [node name="FreedomPortal" parent="." instance=ExtResource("12_portal")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -17.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16.5)
 
 [node name="Robots" type="Node3D" parent="."]
 
 [node name="RobotAtlas" parent="Robots" instance=ExtResource("2_atlas")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.1, 15.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0.1, 14.5)
 
 [node name="RobotCipher" parent="Robots" instance=ExtResource("3_cipher")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.1, 15.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0.1, 14.5)
 
 [node name="TopDownCamera" parent="." instance=ExtResource("16_cam")]
 
