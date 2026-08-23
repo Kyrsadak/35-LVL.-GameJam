@@ -117,16 +117,20 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 	current_total_chars = text.length()
 	var char_speed = 0.046 # Left-to-right steady typing cadence
 	var type_duration = max(0.60, current_total_chars * char_speed)
-	var is_catgirl = "Weo" in text or "(=^" in text or "CRT-CAT" in text or "кошко" in text.to_lower()
+	var is_catgirl = "Weo" in text or "(=^" in text or "CRT-CAT" in text or "кошк" in text.to_lower()
 
 	# Set speaker portrait
 	var speaker = "catgirl"
-	if "ATLAS" in text:
-		speaker = "atlas"
-	elif "CIPHER" in text:
-		speaker = "cipher"
-	elif is_catgirl:
+	if is_catgirl:
 		speaker = "catgirl"
+	elif text.begins_with("[ATLAS]") or text.begins_with("ATLAS:"):
+		speaker = "atlas"
+	elif text.begins_with("[CIPHER]") or text.begins_with("CIPHER:"):
+		speaker = "cipher"
+	elif "atlas" in text.to_lower() and not "cipher" in text.to_lower():
+		speaker = "atlas"
+	elif "cipher" in text.to_lower() and not "atlas" in text.to_lower():
+		speaker = "cipher"
 		
 	if dialogue_portrait:
 		dialogue_portrait.set_speaker(speaker)

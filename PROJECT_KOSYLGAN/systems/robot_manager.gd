@@ -135,10 +135,22 @@ func complete_level() -> void:
 	level_completed.emit()
 	if SoundManager:
 		SoundManager.play_success()
-	show_message("🎉 ЭНЕРГОБЛОК ЗАПУЩЕН! Уровень пройден!", 3.0)
-	get_tree().create_timer(2.0).timeout.connect(func():
-		if GameManager:
-			GameManager.next_level()
+	show_message("[РОБО-КОШКА]: (=^･ω･^=) УРА! Энергосеть полностью восстановлена! Уровень 1 успешно пройден! Переходим на 2 уровень! 🚀", 4.0)
+	
+	# After dialogue display, trigger CRT TV channel-switch transition into next level
+	var timer = get_tree().create_timer(3.2)
+	timer.timeout.connect(func():
+		var crt_scene = load("res://ui/crt_tv_off.tscn")
+		if crt_scene:
+			var crt = crt_scene.instantiate()
+			get_tree().root.add_child(crt)
+			crt.play_effect(func():
+				if GameManager:
+					GameManager.next_level()
+			)
+		else:
+			if GameManager:
+				GameManager.next_level()
 	)
 
 func restart_level() -> void:

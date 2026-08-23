@@ -117,7 +117,7 @@ func insert_module(battery: Node3D) -> void:
 
 	# Guide the player to switch to Cipher and activate the generator
 	if RobotManager:
-		RobotManager.show_message("🔋 Батарея установлена в приёмник! Переключитесь на CIPHER (зелёный робот) и активируйте подачу питания.")
+		RobotManager.show_message("[РОБО-КОШКА]: (=^･ω･^=) Мяу! Батарея на месте! Но цепь обесточена — активировать генератор может только инженер CIPHER (Зелёный робот)!", 4.5)
 
 ## Stage 2: CIPHER approaches the console and activates the circuit
 func activate_generator(cipher_robot: Node3D) -> void:
@@ -126,7 +126,7 @@ func activate_generator(cipher_robot: Node3D) -> void:
 
 	if current_state == TerminalState.AWAITING_BATTERY:
 		if RobotManager:
-			RobotManager.show_message("⚠️ В приёмнике нет батареи! Используйте ATLAS, чтобы принести и вставить батарею.")
+			RobotManager.show_message("[РОБО-КОШКА]: (=^･ω･^=) В приёмнике нет батареи! Сначала переключитесь на ATLAS и вставьте энергоблок.", 3.5)
 		return
 
 	# Perform activation!
