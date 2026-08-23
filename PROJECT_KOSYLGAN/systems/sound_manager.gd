@@ -8,6 +8,8 @@ var max_players: int = 12
 
 var sample_rate: int = 22050
 
+var bgm_player: AudioStreamPlayer = null  # dedicated loop music player
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	for i in range(max_players):
@@ -15,6 +17,31 @@ func _ready() -> void:
 		p.bus = "Master"
 		add_child(p)
 		sfx_players.append(p)
+
+	# Dedicated background music player
+	bgm_player = AudioStreamPlayer.new()
+	bgm_player.bus = "Master"
+	bgm_player.volume_db = -18.0
+	add_child(bgm_player)
+
+func play_bgm(path: String = "res://audio/ambient_level1.wav") -> void:
+	if bgm_player.playing:
+		return
+	var stream = load(path)
+	if stream:
+		if stream is AudioStreamWAV:
+			stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		bgm_player.stream = stream
+		bgm_player.play()
+
+func stop_bgm(fade_time: float = 1.5) -> void:
+	if not bgm_player.playing:
+		return
+	var t = create_tween()
+	t.tween_property(bgm_player, "volume_db", -60.0, fade_time)
+	t.tween_callback(bgm_player.stop)
+	t.tween_property(bgm_player, "volume_db", -18.0, 0.0)
+
 
 func _get_free_player() -> AudioStreamPlayer:
 	for p in sfx_players:

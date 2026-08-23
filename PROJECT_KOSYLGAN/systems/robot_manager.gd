@@ -26,6 +26,10 @@ func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station
 	camera_pivot = cam_pivot
 	discovered_clues.clear()
 
+	# Start ambient background music
+	if SoundManager:
+		SoundManager.play_bgm()
+
 	# Configure battery discharge rates per level
 	var rate = 2.8 # ~35s on lvl 1
 	if level_idx == 2:
@@ -104,6 +108,8 @@ func _on_robot_discharged(robot: Node) -> void:
 	level_failed.emit("Батарея разряжена")
 	
 	# Instantiate CRT TV Turn-Off Effect Overlay
+	if SoundManager:
+		SoundManager.stop_bgm(0.8)
 	var crt_scene = load("res://ui/crt_tv_off.tscn")
 	if crt_scene:
 		var crt = crt_scene.instantiate()
