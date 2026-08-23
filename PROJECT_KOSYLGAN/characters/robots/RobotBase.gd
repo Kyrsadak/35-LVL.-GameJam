@@ -136,13 +136,13 @@ func _physics_process(delta: float) -> void:
 
 func _handle_movement(delta: float) -> void:
 	var input_vec = Vector2.ZERO
-	if Input.is_action_pressed("p1_move_left"):
+	if Input.is_action_pressed("p1_move_left") or Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
 		input_vec.x -= 1.0
-	if Input.is_action_pressed("p1_move_right"):
+	if Input.is_action_pressed("p1_move_right") or Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
 		input_vec.x += 1.0
-	if Input.is_action_pressed("p1_move_up"):
+	if Input.is_action_pressed("p1_move_up") or Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP):
 		input_vec.y -= 1.0
-	if Input.is_action_pressed("p1_move_down"):
+	if Input.is_action_pressed("p1_move_down") or Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
 		input_vec.y += 1.0
 
 	var is_sprinting = Input.is_action_pressed("p1_sprint") or Input.is_key_pressed(KEY_SHIFT)

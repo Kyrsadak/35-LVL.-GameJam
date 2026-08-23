@@ -94,7 +94,6 @@ func play_dialogue(sequence: Array, on_completed: Callable = Callable()) -> void
 	dialogue_sequence_requested.emit(sequence, on_completed)
 
 func show_message(text: String, duration: float = 2.0) -> void:
-	is_dialogue_active = true
 	hud_message_requested.emit(text, duration)
 
 func set_active_robot(robot: Node) -> void:
