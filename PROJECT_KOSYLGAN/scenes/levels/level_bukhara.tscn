@@ -40,7 +40,6 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_news_stepped.tscn" id="39_news_stepped"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_wall_poster.tscn" id="40_poster"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_trash_bin.tscn" id="41_trash_bin"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_robocat_girl.tscn" id="42_robocat"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_poster_monster_white.tscn" id="43_poster_monster"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_sealed.tscn" id="44_box_sealed"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_dirty.tscn" id="45_box_dirty"]
