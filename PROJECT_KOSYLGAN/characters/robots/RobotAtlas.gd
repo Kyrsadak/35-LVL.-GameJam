@@ -16,20 +16,7 @@ func _ready() -> void:
 func interact() -> void:
 	# 0. If currently docked inside charging station, ALWAYS undock first!
 	if is_on_charging_station:
-		if RobotManager and RobotManager.charging_station and is_instance_valid(RobotManager.charging_station):
-			if RobotManager.charging_station.has_method("undock_robot"):
-				RobotManager.charging_station.undock_robot(self)
-				return
-			elif RobotManager.charging_station.has_method("interact"):
-				RobotManager.charging_station.interact(self)
-				return
-		for cs in get_tree().get_nodes_in_group("charging_station"):
-			if cs.has_method("undock_robot"):
-				cs.undock_robot(self)
-				return
-			elif cs.has_method("interact"):
-				cs.interact(self)
-				return
+		exit_charging_station()
 		return
 
 	# 1. If currently carrying an object (box or key module/battery)

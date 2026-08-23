@@ -28,6 +28,7 @@ var is_on_charging_station: bool = false:
 			charging_state_changed.emit(is_on_charging_station)
 var is_discharged: bool = false
 var current_interactable: Node = null
+var current_charging_station: Node3D = null
 
 @onready var skin = $Skin
 @onready var interaction_area: Area3D = find_child("InteractionArea", true, false) as Area3D
@@ -197,6 +198,20 @@ func _handle_input() -> void:
 func interact() -> void:
 	# Overridden in Atlas / Cipher subclasses
 	pass
+
+func exit_charging_station() -> void:
+	if current_charging_station and is_instance_valid(current_charging_station) and current_charging_station.has_method("undock_robot"):
+		current_charging_station.undock_robot(self)
+		return
+	for cs in get_tree().get_nodes_in_group("charging_station"):
+		if cs.get("docked_robot") == self:
+			cs.undock_robot(self)
+			return
+	for cs in get_tree().get_nodes_in_group("charging_station"):
+		if cs.has_method("undock_robot"):
+			cs.undock_robot(self)
+			if not is_on_charging_station:
+				return
 
 func on_battery_depleted() -> void:
 	if is_discharged:

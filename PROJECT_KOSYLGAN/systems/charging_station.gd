@@ -228,6 +228,8 @@ func dock_robot(robot: Node3D) -> void:
 	
 	if "is_on_charging_station" in robot:
 		robot.is_on_charging_station = true
+	if "current_charging_station" in robot:
+		robot.current_charging_station = self
 	
 	# Disable solid station collider so physics engine NEVER pops robot up onto roof
 	if station_collider:
@@ -254,6 +256,8 @@ func undock_robot(robot: Node3D) -> void:
 		
 	if "is_on_charging_station" in robot:
 		robot.is_on_charging_station = false
+	if "current_charging_station" in robot:
+		robot.current_charging_station = null
 		
 	var r = docked_robot
 	docked_robot = null
