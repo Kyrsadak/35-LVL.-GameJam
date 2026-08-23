@@ -163,7 +163,7 @@ func _handle_movement(delta: float) -> void:
 		if _step_timer >= 0.32:
 			_step_timer = 0.0
 			if SoundManager:
-				SoundManager.play_footstep(-16.0)
+				SoundManager.play_footstep(-6.0)
 
 		if skin:
 			skin.orient_model_to_direction(move_dir, delta)
