@@ -45,6 +45,7 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_torn.tscn" id="46_box_torn"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_crushed.tscn" id="47_box_crushed"]
 [ext_resource type="PackedScene" path="res://systems/floor_cable.tscn" id="50_cable"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_central_tree_planter.tscn" id="51_tree"]
 
 [node name="LevelSamarkand" type="Node3D"]
 script = ExtResource("1_samarkand")
@@ -368,23 +369,8 @@ transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -2.5, 0, 1
 [node name="TrashBin1" parent="Furniture" instance=ExtResource("41_trash_bin")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.0, 0, 10.5)
 
-[node name="CenterpieceRotunda" type="Node3D" parent="."]
-
-[node name="BaseRing" type="CSGCylinder3D" parent="CenterpieceRotunda"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
-use_collision = true
-collision_layer = 2
-collision_mask = 7
-radius = 1.5
-height = 0.16
-sides = 16
-material = ExtResource("15_wall")
-
-[node name="CenterLight" type="OmniLight3D" parent="CenterpieceRotunda"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-light_color = Color(0.1, 0.95, 1, 1)
-light_energy = 1.8
-omni_range = 5.0
+[node name="CenterpieceTree" parent="." instance=ExtResource("51_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="ChargingStationSpawn" parent="." instance=ExtResource("4_station")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 16.5)
