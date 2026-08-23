@@ -116,7 +116,7 @@ func start_hack(robot: Node) -> void:
 		minigame.setup(self, switch_sequence, clue_id)
 	elif minigame_type == "reaction_numpad" or minigame_type == "numpad":
 		minigame = minigame_numpad_scene.instantiate()
-		minigame.setup(self, clue_id, 0.50)
+		minigame.setup(self, clue_id, 2.00)
 	else:
 		minigame = minigame_wires_scene.instantiate()
 		minigame.setup(self, wires_count, solution_wires, clue_id, require_exact_order)

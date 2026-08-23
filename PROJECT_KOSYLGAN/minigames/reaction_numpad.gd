@@ -4,14 +4,14 @@ extends CanvasLayer
 signal completed(success: bool)
 
 @export var sequence_length: int = 9
-@export var time_limit_per_digit: float = 1.00
+@export var time_limit_per_digit: float = 2.00
 @export var clue_id: String = "guide_khiva_spawn"
 
 var terminal_ref: Node = null
 var target_sequence: Array[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 var current_step_index: int = 0
 var current_target_num: int = 1
-var remaining_time: float = 1.00
+var remaining_time: float = 2.00
 var is_active: bool = false
 var is_solved: bool = false
 var is_locked: bool = false
@@ -27,7 +27,7 @@ var is_locked: bool = false
 var num_buttons: Dictionary = {} # int -> Button
 var indicator_labels: Array[Label] = []
 
-func setup(p_terminal: Node, p_clue_id: String = "", p_time_limit: float = 1.00) -> void:
+func setup(p_terminal: Node, p_clue_id: String = "", p_time_limit: float = 2.00) -> void:
 	terminal_ref = p_terminal
 	if not p_clue_id.is_empty():
 		clue_id = p_clue_id
