@@ -42,8 +42,11 @@ func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station
 	if level_idx == 2:
 		max_bat = 130.0 # +30% Stamina/Energy on Khiva!
 		rate = 2.2      # Generous battery duration (~60s runtime)
-	elif level_idx >= 3:
-		rate = 3.6 # ~27s on lvl 3 (Samarkand) & lvl 4 (Tashkent)
+	elif level_idx == 3:
+		rate = 3.6      # ~27s on lvl 3 (Samarkand)
+	elif level_idx >= 4:
+		max_bat = 200.0 # 2x Battery Capacity on Tashkent (200 HP)!
+		rate = 1.8      # 2x Longer battery duration (~110s runtime)
 
 	if atlas:
 		if "max_battery" in atlas:
