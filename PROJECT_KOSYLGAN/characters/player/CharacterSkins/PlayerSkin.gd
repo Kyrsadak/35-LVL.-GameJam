@@ -106,41 +106,41 @@ func _setup_tshirt_material() -> void:
 		return
 	var prefix = "atlas" if character_id == "atlas" else "cipher"
 	var tshirt_path = "res://assets/textures/tex_" + prefix + "_tshirt_21.png"
-	var img = Image.load_from_file(ProjectSettings.globalize_path(tshirt_path))
-	if img:
-		img.generate_mipmaps()
-		var mat = StandardMaterial3D.new()
-		mat.albedo_texture = ImageTexture.create_from_image(img)
-		mat.roughness = 0.65
-		mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-		tshirt_mesh.set_surface_override_material(0, mat)
+	if ResourceLoader.exists(tshirt_path):
+		var tex = load(tshirt_path) as Texture2D
+		if tex:
+			var mat = StandardMaterial3D.new()
+			mat.albedo_texture = tex
+			mat.roughness = 0.65
+			mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+			tshirt_mesh.set_surface_override_material(0, mat)
 
 func _setup_screen_materials() -> void:
 	var prefix = "atlas" if character_id == "atlas" else "cipher"
 	var normal_path = "res://assets/textures/tex_" + prefix + "_face.png"
 	var blink_path = "res://assets/textures/tex_" + prefix + "_face_blink.png"
 	
-	var img_n = Image.load_from_file(ProjectSettings.globalize_path(normal_path))
-	if img_n:
-		img_n.generate_mipmaps()
-		mat_screen_normal = StandardMaterial3D.new()
-		mat_screen_normal.albedo_texture = ImageTexture.create_from_image(img_n)
-		mat_screen_normal.emission_enabled = true
-		mat_screen_normal.emission_texture = mat_screen_normal.albedo_texture
-		mat_screen_normal.emission_energy_multiplier = 0.85
-		mat_screen_normal.roughness = 0.25
-		mat_screen_normal.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	if ResourceLoader.exists(normal_path):
+		var tex_n = load(normal_path) as Texture2D
+		if tex_n:
+			mat_screen_normal = StandardMaterial3D.new()
+			mat_screen_normal.albedo_texture = tex_n
+			mat_screen_normal.emission_enabled = true
+			mat_screen_normal.emission_texture = tex_n
+			mat_screen_normal.emission_energy_multiplier = 0.85
+			mat_screen_normal.roughness = 0.25
+			mat_screen_normal.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 
-	var img_b = Image.load_from_file(ProjectSettings.globalize_path(blink_path))
-	if img_b:
-		img_b.generate_mipmaps()
-		mat_screen_blink = StandardMaterial3D.new()
-		mat_screen_blink.albedo_texture = ImageTexture.create_from_image(img_b)
-		mat_screen_blink.emission_enabled = true
-		mat_screen_blink.emission_texture = mat_screen_blink.albedo_texture
-		mat_screen_blink.emission_energy_multiplier = 0.85
-		mat_screen_blink.roughness = 0.25
-		mat_screen_blink.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	if ResourceLoader.exists(blink_path):
+		var tex_b = load(blink_path) as Texture2D
+		if tex_b:
+			mat_screen_blink = StandardMaterial3D.new()
+			mat_screen_blink.albedo_texture = tex_b
+			mat_screen_blink.emission_enabled = true
+			mat_screen_blink.emission_texture = tex_b
+			mat_screen_blink.emission_energy_multiplier = 0.85
+			mat_screen_blink.roughness = 0.25
+			mat_screen_blink.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 
 	# Powered-off screen (dark glass with no light emission)
 	mat_screen_off = StandardMaterial3D.new()
@@ -199,27 +199,27 @@ func update_move_animation(velocity_ratio: float, _delta: float) -> void:
 		return
 
 	if is_holding:
-		if velocity_ratio > 0.1:
+		if velocity_ratio > 0.05:
 			var target_run = "Run_Hold" if anim_player.has_animation("Run_Hold") else "Run"
-			if current_anim != target_run:
+			if current_anim != target_run or not anim_player.is_playing():
 				anim_player.play(target_run, 0.12)
 				current_anim = target_run
-			anim_player.speed_scale = clamp(velocity_ratio * 0.75, 0.5, 0.85)
+			anim_player.speed_scale = clamp(velocity_ratio * 1.25, 0.8, 1.8)
 		else:
 			var target_idle = "Idle_Hold" if anim_player.has_animation("Idle_Hold") else "Idle"
-			if current_anim != target_idle:
+			if current_anim != target_idle or not anim_player.is_playing():
 				anim_player.play(target_idle, 0.15)
 				current_anim = target_idle
 			anim_player.speed_scale = 1.0
 	else:
-		if velocity_ratio > 0.1:
-			if current_anim != "Run":
+		if velocity_ratio > 0.05:
+			if current_anim != "Run" or not anim_player.is_playing():
 				if anim_player.has_animation("Run"):
 					anim_player.play("Run", 0.12)
 					current_anim = "Run"
-			anim_player.speed_scale = clamp(velocity_ratio * 0.75, 0.5, 0.85)
+			anim_player.speed_scale = clamp(velocity_ratio * 1.25, 0.8, 1.8)
 		else:
-			if current_anim != "Idle":
+			if current_anim != "Idle" or not anim_player.is_playing():
 				if anim_player.has_animation("Idle"):
 					anim_player.play("Idle", 0.15)
 					current_anim = "Idle"
