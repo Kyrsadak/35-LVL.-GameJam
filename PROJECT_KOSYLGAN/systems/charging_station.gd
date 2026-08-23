@@ -246,10 +246,6 @@ func dock_robot(robot: Node3D) -> void:
 	if SoundManager and SoundManager.has_method("play_pickup"):
 		SoundManager.play_pickup()
 		
-	if RobotManager:
-		var r_name = robot.robot_display_name if "robot_display_name" in robot else "РОБОТ"
-		RobotManager.show_message("⚡ " + r_name + " ПОДКЛЮЧЕН К ЗАРЯДКЕ!")
-		
 	robot_docked.emit(robot)
 
 func undock_robot(robot: Node3D) -> void:
