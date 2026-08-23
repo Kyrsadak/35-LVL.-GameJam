@@ -61,7 +61,7 @@ size_flags_horizontal = 2
 script = ExtResource("2_bat")
 robot_name = "ATLAS"
 robot_role = "HEAVY LOADER // SCOOP MECHA"
-theme_color = Color(0.95, 0.32, 0.15, 1)
+theme_color = Color(0.91, 0.44, 0.36, 1)
 
 [node name="LevelInfo" type="VBoxContainer" parent="TopMargin/HBox"]
 layout_mode = 2
@@ -83,7 +83,7 @@ size_flags_horizontal = 10
 script = ExtResource("2_bat")
 robot_name = "CIPHER"
 robot_role = "INFILTRATOR // DATA PLUG MECHA"
-theme_color = Color(0.15, 0.95, 0.50, 1)
+theme_color = Color(0.24, 0.72, 0.47, 1)
 
 [node name="DialogueContainer" type="Control" parent="."]
 unique_name_in_owner = true

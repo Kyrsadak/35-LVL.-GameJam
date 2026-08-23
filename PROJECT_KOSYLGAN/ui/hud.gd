@@ -22,12 +22,12 @@ var current_total_chars: int = 0
 func _ready() -> void:
 	if atlas_battery_display:
 		atlas_battery_display.robot_name = "ATLAS"
-		atlas_battery_display.theme_color = Color(0.95, 0.32, 0.15) # Fiery Orange-Red
+		atlas_battery_display.theme_color = Color(0.91, 0.44, 0.36) # Soft Warm Coral
 		atlas_battery_display.set_active(true)
 		
 	if cipher_battery_display:
 		cipher_battery_display.robot_name = "CIPHER"
-		cipher_battery_display.theme_color = Color(0.15, 0.95, 0.50) # Cyber Matrix Green
+		cipher_battery_display.theme_color = Color(0.24, 0.72, 0.47) # Calm Mint Sage
 		cipher_battery_display.set_active(false)
 
 	if RobotManager:
