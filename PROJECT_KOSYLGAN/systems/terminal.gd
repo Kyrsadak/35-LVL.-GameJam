@@ -29,10 +29,11 @@ func _ready() -> void:
 	# Apply Front Hatch Texture
 	if front_hatch:
 		var path_f = "res://assets/textures/tex_terminal_front.png"
-		var global_f = ProjectSettings.globalize_path(path_f)
-		var img_f = Image.load_from_file(global_f)
+		# globalize_path replaced
+		var global_f_loaded = load(path_f)
+		var img_f = global_f_loaded if (global_f_loaded != null) else load(global_f_loaded)
 		if img_f:
-			var tex_f = ImageTexture.create_from_image(img_f)
+			var tex_f = (img_f if img_f is Texture2D else (ImageTexture.create_from_image(img_f) if img_f != null else null))
 			var mat_f = StandardMaterial3D.new()
 			mat_f.albedo_texture = tex_f
 			mat_f.metallic = 0.55
@@ -72,10 +73,11 @@ func set_powered(state: bool) -> void:
 func _update_screen_texture(solved: bool) -> void:
 	if screen_mesh:
 		var path_s = "res://assets/textures/tex_terminal_screen_solved.png" if solved else "res://assets/textures/tex_terminal_screen.png"
-		var global_s = ProjectSettings.globalize_path(path_s)
-		var img_s = Image.load_from_file(global_s)
+		# globalize_path replaced
+		var global_s_loaded = load(path_s)
+		var img_s = global_s_loaded if (global_s_loaded != null) else load(global_s_loaded)
 		if img_s:
-			var tex_s = ImageTexture.create_from_image(img_s)
+			var tex_s = (img_s if img_s is Texture2D else (ImageTexture.create_from_image(img_s) if img_s != null else null))
 			var mat_s = StandardMaterial3D.new()
 			mat_s.albedo_texture = tex_s
 			mat_s.emission_enabled = true

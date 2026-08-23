@@ -19,10 +19,11 @@ func _ready() -> void:
 	# Apply custom sci-fi schematic texture to the tablet screen
 	if tablet_screen:
 		var path = "res://assets/textures/tex_guide_tablet.png"
-		var global_p = ProjectSettings.globalize_path(path)
-		var img = Image.load_from_file(global_p)
+		# globalize_path replaced
+		var global_p_loaded = load(path)
+		var img = global_p_loaded if (global_p_loaded != null) else load(global_p_loaded)
 		if img:
-			var tex = ImageTexture.create_from_image(img)
+			var tex = (img if img is Texture2D else (ImageTexture.create_from_image(img) if img != null else null))
 			var mat = StandardMaterial3D.new()
 			mat.albedo_texture = tex
 			mat.emission_enabled = true

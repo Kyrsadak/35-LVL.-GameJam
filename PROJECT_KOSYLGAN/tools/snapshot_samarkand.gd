@@ -29,7 +29,8 @@ func _ready() -> void:
 
 	var img = vp.get_texture().get_image()
 	if img and not img.is_empty():
-		var p = ProjectSettings.globalize_path("res://../Data/Level 3. Samarkand_schematic.png")
+		# globalize_path replaced
+		var p_loaded = load("res://../Data/Level 3. Samarkand_schematic.png")
 		img.save_png(p)
 		print("Samarkand schematic saved: ", p)
 

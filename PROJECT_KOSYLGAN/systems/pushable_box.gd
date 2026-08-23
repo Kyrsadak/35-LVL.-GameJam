@@ -22,11 +22,13 @@ func _ready() -> void:
 	# 1. Apply Wooden Crate Side Texture (planks with X-bracing & stencils)
 	if inner_body:
 		var path_s = "res://assets/textures/tex_wooden_crate_side.png"
-		var global_s = ProjectSettings.globalize_path(path_s)
-		var img_s = Image.load_from_file(global_s)
+		# globalize_path replaced
+		var global_s_loaded = load(path_s)
+		var img_s = global_s_loaded if (global_s_loaded != null) else load(global_s_loaded)
 		if img_s:
-			img_s.generate_mipmaps()
-			var tex_s = ImageTexture.create_from_image(img_s)
+			if img_s is Image:
+				img_s.generate_mipmaps()
+			var tex_s = (img_s if img_s is Texture2D else (ImageTexture.create_from_image(img_s) if img_s != null else null))
 			var mat_s = StandardMaterial3D.new()
 			mat_s.albedo_texture = tex_s
 			mat_s.metallic = 0.0
@@ -37,11 +39,13 @@ func _ready() -> void:
 	# 2. Apply Wooden Crate Top Lid Texture
 	if top_lid:
 		var path_t = "res://assets/textures/tex_wooden_crate_top.png"
-		var global_t = ProjectSettings.globalize_path(path_t)
-		var img_t = Image.load_from_file(global_t)
+		# globalize_path replaced
+		var global_t_loaded = load(path_t)
+		var img_t = global_t_loaded if (global_t_loaded != null) else load(global_t_loaded)
 		if img_t:
-			img_t.generate_mipmaps()
-			var tex_t = ImageTexture.create_from_image(img_t)
+			if img_t is Image:
+				img_t.generate_mipmaps()
+			var tex_t = (img_t if img_t is Texture2D else (ImageTexture.create_from_image(img_t) if img_t != null else null))
 			var mat_t = StandardMaterial3D.new()
 			mat_t.albedo_texture = tex_t
 			mat_t.metallic = 0.0

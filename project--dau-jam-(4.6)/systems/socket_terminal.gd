@@ -36,11 +36,13 @@ func _ready() -> void:
 	# 1. Apply Front Screen Texture
 	if front_screen:
 		var path_f = "res://assets/textures/tex_receiver_front.png"
-		var global_f = ProjectSettings.globalize_path(path_f)
-		var img_f = Image.load_from_file(global_f)
+		# globalize_path replaced
+		var global_f_loaded = load(path_f)
+		var img_f = global_f_loaded if (global_f_loaded != null) else load(global_f_loaded)
 		if img_f:
-			img_f.generate_mipmaps()
-			var tex_f = ImageTexture.create_from_image(img_f)
+			if img_f is Image:
+				img_f.generate_mipmaps()
+			var tex_f = (img_f if img_f is Texture2D else (ImageTexture.create_from_image(img_f) if img_f != null else null))
 			var mat_f = StandardMaterial3D.new()
 			mat_f.albedo_texture = tex_f
 			mat_f.emission_enabled = true
@@ -54,11 +56,13 @@ func _ready() -> void:
 	# 2. Apply Top Deck Texture
 	if top_deck:
 		var path_t = "res://assets/textures/tex_receiver_top.png"
-		var global_t = ProjectSettings.globalize_path(path_t)
-		var img_t = Image.load_from_file(global_t)
+		# globalize_path replaced
+		var global_t_loaded = load(path_t)
+		var img_t = global_t_loaded if (global_t_loaded != null) else load(global_t_loaded)
 		if img_t:
-			img_t.generate_mipmaps()
-			var tex_t = ImageTexture.create_from_image(img_t)
+			if img_t is Image:
+				img_t.generate_mipmaps()
+			var tex_t = (img_t if img_t is Texture2D else (ImageTexture.create_from_image(img_t) if img_t != null else null))
 			var mat_t = StandardMaterial3D.new()
 			mat_t.albedo_texture = tex_t
 			mat_t.metallic = 0.6

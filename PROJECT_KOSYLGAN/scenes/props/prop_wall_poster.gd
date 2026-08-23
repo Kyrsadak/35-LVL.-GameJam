@@ -14,11 +14,13 @@ var poster_paths = [
 
 func _ready() -> void:
 	var path = poster_paths[posmod(poster_index, poster_paths.size())]
-	var global_p = ProjectSettings.globalize_path(path)
-	var img = Image.load_from_file(global_p)
+	# globalize_path replaced
+	var global_p_loaded = load(path)
+	var img = global_p_loaded if (global_p_loaded != null) else load(global_p_loaded)
 	if img and poster_sheet:
-		img.generate_mipmaps()
-		var tex = ImageTexture.create_from_image(img)
+		if img is Image:
+			img.generate_mipmaps()
+		var tex = (img if img is Texture2D else (ImageTexture.create_from_image(img) if img != null else null))
 		var mat = StandardMaterial3D.new()
 		mat.albedo_texture = tex
 		mat.metallic = 0.05

@@ -31,17 +31,12 @@ func _ready() -> void:
 			mat.metallic = 0.4
 			mat.roughness = 0.2
 		else:
-			var path = "res://assets/textures/tex_cylinder_battery.png"
-			var global_p = ProjectSettings.globalize_path(path)
-			if FileAccess.file_exists(global_p):
-				var img = Image.load_from_file(global_p)
-				if img:
-					img.generate_mipmaps()
-					var tex = ImageTexture.create_from_image(img)
-					mat.albedo_texture = tex
-					mat.metallic = 0.15
-					mat.roughness = 0.35
-					mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+			var tex = load("res://assets/textures/tex_cylinder_battery.png")
+			if tex:
+				mat.albedo_texture = tex
+				mat.metallic = 0.15
+				mat.roughness = 0.35
+				mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 			else:
 				mat.albedo_color = Color(1.0, 0.6, 0.1)
 		battery_cylinder.set_surface_override_material(0, mat)

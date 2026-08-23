@@ -15,12 +15,13 @@ func _ready() -> void:
 	_apply_tex("MonitorScreen", "res://assets/textures/tex_workbench_screen.png", true, 0.0, 0.4)
 
 func _apply_tex(node_name: String, path: String, is_screen: bool, metallic: float, roughness: float) -> void:
-	var global_p = ProjectSettings.globalize_path(path)
-	var img = Image.load_from_file(global_p)
+	# globalize_path replaced
+	var global_p_loaded = load(path)
+	var img = global_p_loaded if (global_p_loaded != null) else load(global_p_loaded)
 	if img:
 		var node = find_child(node_name, true, false) as MeshInstance3D
 		if node:
-			var tex = ImageTexture.create_from_image(img)
+			var tex = (img if img is Texture2D else (ImageTexture.create_from_image(img) if img != null else null))
 			var mat = StandardMaterial3D.new()
 			mat.albedo_texture = tex
 			mat.metallic = metallic

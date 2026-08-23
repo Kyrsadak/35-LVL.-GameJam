@@ -41,11 +41,13 @@ func _process(delta: float) -> void:
 
 func _load_textures() -> void:
 	var path_tex = "res://assets/textures/tex_pickle_rick.png"
-	var global_p = ProjectSettings.globalize_path(path_tex)
-	var img = Image.load_from_file(global_p)
+	# globalize_path replaced
+	var global_p_loaded = load(path_tex)
+	var img = global_p_loaded if (global_p_loaded != null) else load(global_p_loaded)
 	if img:
-		img.generate_mipmaps()
-		var tex = ImageTexture.create_from_image(img)
+		if img is Image:
+			img.generate_mipmaps()
+		var tex = (img if img is Texture2D else (ImageTexture.create_from_image(img) if img != null else null))
 		
 		# 1. Front face material
 		var mat_face = StandardMaterial3D.new()

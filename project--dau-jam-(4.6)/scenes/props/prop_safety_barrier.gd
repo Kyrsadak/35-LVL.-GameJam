@@ -6,9 +6,10 @@ func _ready() -> void:
 	var path_stripes = "res://assets/textures/tex_safety_barrier_stripes.png"
 	var img_stripes = Image.load_from_file(ProjectSettings.globalize_path(path_stripes))
 	if img_stripes:
-		img_stripes.generate_mipmaps()
+		if img_stripes is Image:
+			img_stripes.generate_mipmaps()
 		var mat_s = StandardMaterial3D.new()
-		mat_s.albedo_texture = ImageTexture.create_from_image(img_stripes)
+		mat_s.albedo_texture = (img_stripes if img_stripes is Texture2D else (ImageTexture.create_from_image(img_stripes) if img_stripes != null else null))
 		mat_s.metallic = 0.02
 		mat_s.roughness = 0.45
 		mat_s.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS

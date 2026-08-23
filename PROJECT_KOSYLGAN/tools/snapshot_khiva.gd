@@ -31,7 +31,8 @@ func _ready() -> void:
 
 	var img = vp.get_texture().get_image()
 	if img and not img.is_empty():
-		var p = ProjectSettings.globalize_path("res://../Data/Level 2. Khiva_schematic.png")
+		# globalize_path replaced
+		var p_loaded = load("res://../Data/Level 2. Khiva_schematic.png")
 		img.save_png(p)
 		print("Khiva schematic saved: ", p)
 

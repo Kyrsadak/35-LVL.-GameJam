@@ -23,11 +23,13 @@ func _ready() -> void:
 func _load_textures() -> void:
 	# 1. Left Door Leaf Texture
 	var path_l = "res://assets/textures/tex_lab_door_leaf_left.png"
-	var global_l = ProjectSettings.globalize_path(path_l)
-	var img_l = Image.load_from_file(global_l)
+	# globalize_path replaced
+	var global_l_loaded = load(path_l)
+	var img_l = global_l_loaded if (global_l_loaded != null) else load(global_l_loaded)
 	if img_l:
-		img_l.generate_mipmaps()
-		var tex_l = ImageTexture.create_from_image(img_l)
+		if img_l is Image:
+			img_l.generate_mipmaps()
+		var tex_l = (img_l if img_l is Texture2D else (ImageTexture.create_from_image(img_l) if img_l != null else null))
 		var mat_l = StandardMaterial3D.new()
 		mat_l.albedo_texture = tex_l
 		mat_l.metallic = 0.4
@@ -38,11 +40,13 @@ func _load_textures() -> void:
 
 	# 2. Right Door Leaf Texture (Mirrored Symmetrical)
 	var path_r = "res://assets/textures/tex_lab_door_leaf_right.png"
-	var global_r = ProjectSettings.globalize_path(path_r)
-	var img_r = Image.load_from_file(global_r)
+	# globalize_path replaced
+	var global_r_loaded = load(path_r)
+	var img_r = global_r_loaded if (global_r_loaded != null) else load(global_r_loaded)
 	if img_r:
-		img_r.generate_mipmaps()
-		var tex_r = ImageTexture.create_from_image(img_r)
+		if img_r is Image:
+			img_r.generate_mipmaps()
+		var tex_r = (img_r if img_r is Texture2D else (ImageTexture.create_from_image(img_r) if img_r != null else null))
 		var mat_r = StandardMaterial3D.new()
 		mat_r.albedo_texture = tex_r
 		mat_r.metallic = 0.4
@@ -54,11 +58,13 @@ func _load_textures() -> void:
 	# 3. Door Frame Texture
 	if door_frame:
 		var path_f = "res://assets/textures/tex_lab_door_frame.png"
-		var global_f = ProjectSettings.globalize_path(path_f)
-		var img_f = Image.load_from_file(global_f)
+		# globalize_path replaced
+		var global_f_loaded = load(path_f)
+		var img_f = global_f_loaded if (global_f_loaded != null) else load(global_f_loaded)
 		if img_f:
-			img_f.generate_mipmaps()
-			var tex_f = ImageTexture.create_from_image(img_f)
+			if img_f is Image:
+				img_f.generate_mipmaps()
+			var tex_f = (img_f if img_f is Texture2D else (ImageTexture.create_from_image(img_f) if img_f != null else null))
 			var mat_f = StandardMaterial3D.new()
 			mat_f.albedo_texture = tex_f
 			mat_f.metallic = 0.3

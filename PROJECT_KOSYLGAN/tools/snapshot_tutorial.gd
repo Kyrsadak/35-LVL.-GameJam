@@ -29,11 +29,13 @@ func _ready() -> void:
 
 	var img = vp.get_texture().get_image()
 	if img and not img.is_empty():
-		var p1 = ProjectSettings.globalize_path("res://../Data/Level 0. Tutorial_schematic.png")
+		# globalize_path replaced
+		var p1_loaded = load("res://../Data/Level 0. Tutorial_schematic.png")
 		img.save_png(p1)
 		print("Tutorial schematic saved: ", p1)
 		
-		var p2 = ProjectSettings.globalize_path("res://../Data/tutorial_level_topdown.png")
+		# globalize_path replaced
+		var p2_loaded = load("res://../Data/tutorial_level_topdown.png")
 		img.save_png(p2)
 		print("Tutorial topdown updated: ", p2)
 

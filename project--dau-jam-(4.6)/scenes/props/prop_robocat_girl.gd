@@ -30,9 +30,10 @@ func _load_materials() -> void:
 	var path_s = "res://assets/textures/tex_tv_cat_screen.png"
 	var img_s = Image.load_from_file(ProjectSettings.globalize_path(path_s))
 	if img_s:
-		img_s.generate_mipmaps()
+		if img_s is Image:
+			img_s.generate_mipmaps()
 		mat_screen_normal = StandardMaterial3D.new()
-		mat_screen_normal.albedo_texture = ImageTexture.create_from_image(img_s)
+		mat_screen_normal.albedo_texture = (img_s if img_s is Texture2D else (ImageTexture.create_from_image(img_s) if img_s != null else null))
 		mat_screen_normal.emission_enabled = true
 		mat_screen_normal.emission_texture = mat_screen_normal.albedo_texture
 		mat_screen_normal.emission_energy_multiplier = 0.65
@@ -43,9 +44,10 @@ func _load_materials() -> void:
 	var path_sb = "res://assets/textures/tex_tv_cat_screen_blink.png"
 	var img_sb = Image.load_from_file(ProjectSettings.globalize_path(path_sb))
 	if img_sb:
-		img_sb.generate_mipmaps()
+		if img_sb is Image:
+			img_sb.generate_mipmaps()
 		mat_screen_blink = StandardMaterial3D.new()
-		mat_screen_blink.albedo_texture = ImageTexture.create_from_image(img_sb)
+		mat_screen_blink.albedo_texture = (img_sb if img_sb is Texture2D else (ImageTexture.create_from_image(img_sb) if img_sb != null else null))
 		mat_screen_blink.emission_enabled = true
 		mat_screen_blink.emission_texture = mat_screen_blink.albedo_texture
 		mat_screen_blink.emission_energy_multiplier = 0.65

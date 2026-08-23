@@ -91,7 +91,8 @@ func _run_captures() -> void:
 
 			var img = viewport.get_texture().get_image()
 			if img and not img.is_empty():
-				var abs_path = ProjectSettings.globalize_path("res://figma_assets/topdown_sprites/" + item["name"] + ".png")
+				# globalize_path replaced
+				var abs_path_loaded = load("res://figma_assets/topdown_sprites/" + item["name"] + ".png")
 				img.save_png(abs_path)
 				print("Saved: ", abs_path)
 

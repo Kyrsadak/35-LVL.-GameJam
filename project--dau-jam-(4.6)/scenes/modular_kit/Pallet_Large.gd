@@ -9,11 +9,13 @@ func _ready() -> void:
 	_apply_tex("res://assets/textures/tex_cardboard_box.png", "BoxMesh", 0.02, 0.9)
 
 func _apply_tex(tex_path: String, group_prefix: String, metallic: float, roughness: float) -> void:
-	var global_p = ProjectSettings.globalize_path(tex_path)
-	var img = Image.load_from_file(global_p)
+	# globalize_path replaced
+	var global_p_loaded = load(tex_path)
+	var img = global_p_loaded if (global_p_loaded != null) else load(global_p_loaded)
 	if img:
-		img.generate_mipmaps()
-		var tex = ImageTexture.create_from_image(img)
+		if img is Image:
+			img.generate_mipmaps()
+		var tex = (img if img is Texture2D else (ImageTexture.create_from_image(img) if img != null else null))
 		var mat = StandardMaterial3D.new()
 		mat.albedo_texture = tex
 		mat.metallic = metallic

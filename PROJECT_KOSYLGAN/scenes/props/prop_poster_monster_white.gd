@@ -8,9 +8,10 @@ func _load_poster_material() -> void:
 	var path_tex = "res://assets/textures/tex_poster_monster_white.png"
 	var img = Image.load_from_file(ProjectSettings.globalize_path(path_tex))
 	if img:
-		img.generate_mipmaps()
+		if img is Image:
+			img.generate_mipmaps()
 		var mat = StandardMaterial3D.new()
-		mat.albedo_texture = ImageTexture.create_from_image(img)
+		mat.albedo_texture = (img if img is Texture2D else (ImageTexture.create_from_image(img) if img != null else null))
 		mat.emission_enabled = true
 		mat.emission_texture = mat.albedo_texture
 		mat.emission_energy_multiplier = 0.35
