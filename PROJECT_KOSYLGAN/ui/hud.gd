@@ -5,6 +5,8 @@ extends CanvasLayer
 @onready var cipher_battery_display = %CipherBatteryDisplay
 
 @onready var level_title: Label = %LevelTitle
+@onready var controls_hints: Label = %ControlsHints
+@onready var corner_hints_panel: PanelContainer = %CornerHintsPanel
 @onready var dialogue_container: Control = %DialogueContainer
 @onready var dialogue_portrait: Control = %DialoguePortrait
 @onready var message_banner: Label = %MessageBanner
@@ -86,8 +88,11 @@ func _process(_delta: float) -> void:
 		if "is_on_charging_station" in RobotManager.cipher:
 			cipher_battery_display.set_charging(RobotManager.cipher.is_on_charging_station)
 
-func set_level_info(level_num: int, title: String, mode_desc: String) -> void:
-	level_title.text = "УРОВЕНЬ " + str(level_num) + ": " + title.to_upper() + "\n" + mode_desc
+func set_level_info(level_num: int, title: String, mode_desc: String = "") -> void:
+	if level_title:
+		level_title.text = "📍 УРОВЕНЬ " + str(level_num) + ": " + title.to_upper()
+	if controls_hints and not mode_desc.is_empty():
+		controls_hints.text = mode_desc
 
 func _on_robot_switched(active_robot: Node) -> void:
 	if not active_robot:
