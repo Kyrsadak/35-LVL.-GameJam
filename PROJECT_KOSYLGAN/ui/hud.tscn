@@ -87,16 +87,16 @@ theme_color = Color(0.15, 0.95, 0.50, 1)
 
 [node name="DialogueContainer" type="Control" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(620, 68)
+custom_minimum_size = Vector2(810, 88)
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -310.0
-offset_top = -140.0
-offset_right = 310.0
-offset_bottom = -72.0
+offset_left = -405.0
+offset_top = -170.0
+offset_right = 405.0
+offset_bottom = -82.0
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -111,7 +111,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
 
 [node name="HBox" type="HBoxContainer" parent="DialogueContainer/DialogueBoxPanel"]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="MessageBanner" type="Label" parent="DialogueContainer/DialogueBoxPanel/HBox"]
@@ -120,13 +120,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0.18, 0.17, 0.20, 1)
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 28
 text = "(=^..^=)⚡ // Weo Weo Weo! 🔌"
 vertical_alignment = 1
 
 [node name="EnterBadge" type="PanelContainer" parent="DialogueContainer/DialogueBoxPanel/HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(44, 36)
+custom_minimum_size = Vector2(56, 46)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
@@ -135,24 +135,24 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_enter_key")
 [node name="EnterIcon" type="Label" parent="DialogueContainer/DialogueBoxPanel/HBox/EnterBadge"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.38, 0.30, 0.24, 1)
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 26
 text = "↵"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="DialoguePortrait" type="Control" parent="DialogueContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(110, 110)
+custom_minimum_size = Vector2(140, 140)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 0.0
-offset_left = -115.0
-offset_top = -88.0
+offset_left = -145.0
+offset_top = -115.0
 offset_right = -5.0
-offset_bottom = 22.0
+offset_bottom = 25.0
 grow_horizontal = 0
 mouse_filter = 2
 script = ExtResource("3_portrait")
