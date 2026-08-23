@@ -1,6 +1,9 @@
 class_name PushableBox
 extends CharacterBody3D
 
+## Wooden Cargo Crate (Room 1)
+## Can be pushed or lifted with Atlas's forklift forks to clear pathways and unblock the room.
+
 @export var gravity: float = 20.0
 
 var collision_shape: CollisionShape3D = null
@@ -14,33 +17,36 @@ func _ready() -> void:
 	add_to_group("pushable_box")
 	add_to_group("interactable")
 	add_to_group("boxes")
+	add_to_group("wooden_crate")
 
-	# 1. Apply Side Panel Texture
+	# 1. Apply Wooden Crate Side Texture (planks with X-bracing & stencils)
 	if inner_body:
-		var path_s = "res://assets/textures/tex_crate_side.png"
+		var path_s = "res://assets/textures/tex_wooden_crate_side.png"
 		var global_s = ProjectSettings.globalize_path(path_s)
 		var img_s = Image.load_from_file(global_s)
 		if img_s:
+			img_s.generate_mipmaps()
 			var tex_s = ImageTexture.create_from_image(img_s)
 			var mat_s = StandardMaterial3D.new()
 			mat_s.albedo_texture = tex_s
-			mat_s.metallic = 0.45
-			mat_s.roughness = 0.4
-			mat_s.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			mat_s.metallic = 0.0
+			mat_s.roughness = 0.85
+			mat_s.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 			inner_body.set_surface_override_material(0, mat_s)
 
-	# 2. Apply Dedicated Top Lid Texture
+	# 2. Apply Wooden Crate Top Lid Texture
 	if top_lid:
-		var path_t = "res://assets/textures/tex_crate_top.png"
+		var path_t = "res://assets/textures/tex_wooden_crate_top.png"
 		var global_t = ProjectSettings.globalize_path(path_t)
 		var img_t = Image.load_from_file(global_t)
 		if img_t:
+			img_t.generate_mipmaps()
 			var tex_t = ImageTexture.create_from_image(img_t)
 			var mat_t = StandardMaterial3D.new()
 			mat_t.albedo_texture = tex_t
-			mat_t.metallic = 0.5
-			mat_t.roughness = 0.35
-			mat_t.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			mat_t.metallic = 0.0
+			mat_t.roughness = 0.85
+			mat_t.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 			top_lid.set_surface_override_material(0, mat_t)
 
 func pick_up(carrier: Marker3D) -> void:
@@ -58,8 +64,9 @@ func pick_up(carrier: Marker3D) -> void:
 
 	var tween = create_tween()
 	tween.set_parallel(true)
-	tween.tween_property(self, "position", Vector3(0, 0.4, 0), 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "rotation", Vector3.ZERO, 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	# Position crate securely onto Atlas forklift forks
+	tween.tween_property(self, "position", Vector3.ZERO, 0.28).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "rotation", Vector3.ZERO, 0.28).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func drop(drop_pos: Vector3) -> void:
 	is_carried = false

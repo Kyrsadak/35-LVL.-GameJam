@@ -4,20 +4,20 @@
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_stem"]
 top_radius = 0.012
-bottom_radius = 0.024
-height = 0.09
+bottom_radius = 0.02
+height = 0.07
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stalk"]
 albedo_color = Color(0.28, 0.20, 0.08, 1)
-roughness = 0.85
+roughness = 0.6
 
 [sub_resource type="SphereMesh" id="SphereMesh_core"]
-radius = 0.028
-height = 0.035
+radius = 0.025
+height = 0.03
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pulp"]
-albedo_color = Color(0.96, 0.94, 0.82, 1)
-roughness = 0.65
+albedo_color = Color(0.98, 0.95, 0.82, 1)
+roughness = 0.5
 
 [node name="PropBananaPeel" type="Node3D"]
 script = ExtResource("1_banana")
@@ -25,11 +25,11 @@ script = ExtResource("1_banana")
 [node name="BananaMesh" type="MeshInstance3D" parent="."]
 
 [node name="StemMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0, 1, 0.015, 0.115, 0)
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, 0.01, 0.095, 0)
 mesh = SubResource("CylinderMesh_stem")
 surface_material_override/0 = SubResource("StandardMaterial3D_stalk")
 
 [node name="PulpCore" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.055, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.065, 0)
 mesh = SubResource("SphereMesh_core")
 surface_material_override/0 = SubResource("StandardMaterial3D_pulp")

@@ -1,123 +1,350 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://systems/charging_station.gd" id="1_station"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_area"]
-height = 2.4
-radius = 0.95
+height = 2.6
+radius = 1.35
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_base"]
-top_radius = 0.95
-bottom_radius = 1.05
-height = 0.12
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_solid"]
+height = 2.4
+radius = 0.76
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_metal"]
-albedo_color = Color(0.22, 0.25, 0.32, 1)
-metallic = 0.8
-roughness = 0.35
+albedo_color = Color(0.18, 0.21, 0.28, 1)
+metallic = 0.85
+roughness = 0.32
 
-[sub_resource type="QuadMesh" id="QuadMesh_floor"]
-size = Vector2(1.5, 1.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_wall"]
-size = Vector3(1.6, 2.2, 0.12)
-
-[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
-size = Vector3(0.18, 2.3, 0.25)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_tube"]
-top_radius = 0.04
-bottom_radius = 0.04
-height = 1.8
-
-[sub_resource type="BoxMesh" id="BoxMesh_canopy"]
-size = Vector3(1.85, 0.20, 1.45)
-
-[sub_resource type="QuadMesh" id="QuadMesh_screen"]
-size = Vector2(1.2, 0.45)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_arm_clamp"]
-top_radius = 0.18
-bottom_radius = 0.25
-height = 0.20
-
-[sub_resource type="TorusMesh" id="TorusMesh_laser"]
-inner_radius = 0.32
-outer_radius = 0.38
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_laser_mat"]
-transparency = 1
-albedo_color = Color(0.2, 1.0, 0.45, 0.9)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yellow_trim"]
+albedo_color = Color(1, 0.8, 0.08, 1)
+metallic = 0.5
+roughness = 0.4
 emission_enabled = true
-emission = Color(0.2, 1.0, 0.45, 1)
-emission_energy_multiplier = 2.5
+emission = Color(1, 0.8, 0.08, 1)
+emission_energy_multiplier = 0.6
 
-[node name="ChargingStation" type="Area3D" groups=["charging_station"]]
-collision_layer = 0
+[sub_resource type="CylinderMesh" id="CylinderMesh_outer_ring"]
+top_radius = 1.5
+bottom_radius = 1.6
+height = 0.04
+radial_segments = 32
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_base_plate"]
+top_radius = 1.45
+bottom_radius = 1.45
+height = 0.008
+radial_segments = 32
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pedestal"]
+top_radius = 0.84
+bottom_radius = 0.92
+height = 0.18
+radial_segments = 32
+
+[sub_resource type="TorusMesh" id="TorusMesh_trim_ring"]
+inner_radius = 0.82
+outer_radius = 0.88
+rings = 32
+ring_segments = 8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_floor_pad"]
+top_radius = 0.72
+bottom_radius = 0.72
+height = 0.016
+radial_segments = 32
+
+[sub_resource type="TorusMesh" id="TorusMesh_conduit_ring"]
+inner_radius = 0.80
+outer_radius = 0.85
+rings = 32
+ring_segments = 8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_conduit_pipe"]
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.58
+radial_segments = 12
+
+[sub_resource type="BoxMesh" id="BoxMesh_clamp_body"]
+size = Vector3(0.16, 0.22, 0.14)
+
+[sub_resource type="BoxMesh" id="BoxMesh_clamp_cap"]
+size = Vector3(0.13, 0.08, 0.13)
+
+[sub_resource type="BoxMesh" id="BoxMesh_clamp_led"]
+size = Vector3(0.05, 0.035, 0.035)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_glass"]
+top_radius = 0.75
+bottom_radius = 0.75
+height = 2.15
+radial_segments = 32
+rings = 4
+
+[sub_resource type="QuadMesh" id="QuadMesh_decal"]
+size = Vector2(0.70, 0.90)
+
+[sub_resource type="TorusMesh" id="TorusMesh_plasma_1"]
+inner_radius = 0.58
+outer_radius = 0.64
+rings = 24
+ring_segments = 6
+
+[sub_resource type="TorusMesh" id="TorusMesh_plasma_2"]
+inner_radius = 0.48
+outer_radius = 0.54
+rings = 24
+ring_segments = 6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_roof"]
+top_radius = 0.80
+bottom_radius = 0.86
+height = 0.24
+radial_segments = 32
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_roof_bevel"]
+top_radius = 0.62
+bottom_radius = 0.78
+height = 0.12
+radial_segments = 32
+
+[sub_resource type="TorusMesh" id="TorusMesh_roof_trim"]
+inner_radius = 0.78
+outer_radius = 0.83
+rings = 32
+ring_segments = 8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_arm_shaft"]
+top_radius = 0.09
+bottom_radius = 0.09
+height = 0.26
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_emitter_head"]
+top_radius = 0.20
+bottom_radius = 0.28
+height = 0.11
+
+[sub_resource type="TorusMesh" id="TorusMesh_laser_ring"]
+inner_radius = 0.24
+outer_radius = 0.30
+rings = 24
+ring_segments = 6
+
+[node name="ChargingStation" type="Area3D" groups=["charging_station", "interactable"]]
+collision_layer = 4
 collision_mask = 1
 script = ExtResource("1_station")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 shape = SubResource("CylinderShape3D_area")
 
-[node name="BasePlatform" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
-mesh = SubResource("CylinderMesh_base")
+[node name="StationCollider" type="StaticBody3D" parent="."]
+collision_layer = 2
+collision_mask = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StationCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("CylinderShape3D_solid")
+
+[node name="BasePlatform" type="Node3D" parent="."]
+
+[node name="OuterCollarRing" type="MeshInstance3D" parent="BasePlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+mesh = SubResource("CylinderMesh_outer_ring")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
 
-[node name="FloorPad" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.125, 0)
-mesh = SubResource("QuadMesh_floor")
+[node name="OuterHazardMesh" type="MeshInstance3D" parent="BasePlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.042, 0)
+mesh = SubResource("CylinderMesh_base_plate")
+
+[node name="Pedestal" type="MeshInstance3D" parent="BasePlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13, 0)
+mesh = SubResource("CylinderMesh_pedestal")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
 
-[node name="BackWall" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, -0.65)
-mesh = SubResource("BoxMesh_wall")
+[node name="PedestalTrimRing" type="MeshInstance3D" parent="BasePlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+mesh = SubResource("TorusMesh_trim_ring")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
+
+[node name="FloorDockPad" type="MeshInstance3D" parent="BasePlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.23, 0)
+mesh = SubResource("CylinderMesh_floor_pad")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
 
-[node name="PillarLeft" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.939693, 0, 0.34202, 0, 1, 0, -0.34202, 0, 0.939693, -0.80, 1.18, -0.15)
-mesh = SubResource("BoxMesh_pillar")
+[node name="BaseConduits" type="Node3D" parent="BasePlatform"]
+
+[node name="ConduitRing" type="MeshInstance3D" parent="BasePlatform/BaseConduits"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("TorusMesh_conduit_ring")
+
+[node name="PipeFront" type="MeshInstance3D" parent="BasePlatform/BaseConduits"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.045, 1.15)
+mesh = SubResource("CylinderMesh_conduit_pipe")
+
+[node name="PipeRight" type="MeshInstance3D" parent="BasePlatform/BaseConduits"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 1.15, 0.045, 0)
+mesh = SubResource("CylinderMesh_conduit_pipe")
+
+[node name="PipeBack" type="MeshInstance3D" parent="BasePlatform/BaseConduits"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.045, -1.15)
+mesh = SubResource("CylinderMesh_conduit_pipe")
+
+[node name="PipeLeft" type="MeshInstance3D" parent="BasePlatform/BaseConduits"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -1.15, 0.045, 0)
+mesh = SubResource("CylinderMesh_conduit_pipe")
+
+[node name="HydraulicClamps" type="Node3D" parent="BasePlatform"]
+
+[node name="Clamp1" type="Node3D" parent="BasePlatform/HydraulicClamps"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.20, 0.85)
+
+[node name="ClampBody" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp1"]
+mesh = SubResource("BoxMesh_clamp_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
 
-[node name="EnergyTube" type="MeshInstance3D" parent="PillarLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.14)
-mesh = SubResource("CylinderMesh_tube")
+[node name="ClampCap" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_clamp_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
 
-[node name="PillarRight" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.939693, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939693, 0.80, 1.18, -0.15)
-mesh = SubResource("BoxMesh_pillar")
+[node name="ClampLED" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0.08)
+mesh = SubResource("BoxMesh_clamp_led")
+
+[node name="Clamp2" type="Node3D" parent="BasePlatform/HydraulicClamps"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.85, 0.20, 0)
+
+[node name="ClampBody" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp2"]
+mesh = SubResource("BoxMesh_clamp_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
 
-[node name="EnergyTube" type="MeshInstance3D" parent="PillarRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.14)
-mesh = SubResource("CylinderMesh_tube")
+[node name="ClampCap" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_clamp_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
 
-[node name="TopCanopy" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.30, -0.15)
-mesh = SubResource("BoxMesh_canopy")
+[node name="ClampLED" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0.08)
+mesh = SubResource("BoxMesh_clamp_led")
+
+[node name="Clamp3" type="Node3D" parent="BasePlatform/HydraulicClamps"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.20, -0.85)
+
+[node name="ClampBody" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp3"]
+mesh = SubResource("BoxMesh_clamp_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
 
-[node name="HoloScreen" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.95, -0.58)
-mesh = SubResource("QuadMesh_screen")
+[node name="ClampCap" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_clamp_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
+
+[node name="ClampLED" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0.08)
+mesh = SubResource("BoxMesh_clamp_led")
+
+[node name="Clamp4" type="Node3D" parent="BasePlatform/HydraulicClamps"]
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, -0.85, 0.20, 0)
+
+[node name="ClampBody" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp4"]
+mesh = SubResource("BoxMesh_clamp_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
 
-[node name="ChargerArm" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15, -0.05)
+[node name="ClampCap" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+mesh = SubResource("BoxMesh_clamp_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
 
-[node name="ClampHead" type="MeshInstance3D" parent="ChargerArm"]
-mesh = SubResource("CylinderMesh_arm_clamp")
+[node name="ClampLED" type="MeshInstance3D" parent="BasePlatform/HydraulicClamps/Clamp4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0.08)
+mesh = SubResource("BoxMesh_clamp_led")
+
+[node name="GlassCylinder" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30, 0)
+mesh = SubResource("CylinderMesh_glass")
+
+[node name="GlassDecalMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00, 0.755)
+mesh = SubResource("QuadMesh_decal")
+
+[node name="EnergyField" type="Node3D" parent="."]
+
+[node name="PlasmaRing1" type="MeshInstance3D" parent="EnergyField"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90, 0)
+mesh = SubResource("TorusMesh_plasma_1")
+
+[node name="PlasmaRing2" type="MeshInstance3D" parent="EnergyField"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.60, 0)
+mesh = SubResource("TorusMesh_plasma_2")
+
+[node name="TopCap" type="Node3D" parent="."]
+
+[node name="RoofMesh" type="MeshInstance3D" parent="TopCap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45, 0)
+mesh = SubResource("CylinderMesh_roof")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
 
-[node name="LaserRing" type="MeshInstance3D" parent="ChargerArm"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
-mesh = SubResource("TorusMesh_laser")
-surface_material_override/0 = SubResource("StandardMaterial3D_laser_mat")
+[node name="RoofTopBevel" type="MeshInstance3D" parent="TopCap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.58, 0)
+mesh = SubResource("CylinderMesh_roof_bevel")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="RoofTrimRing" type="MeshInstance3D" parent="TopCap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34, 0)
+mesh = SubResource("TorusMesh_roof_trim")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
+
+[node name="TopLockClaws" type="Node3D" parent="TopCap"]
+
+[node name="Claw1" type="MeshInstance3D" parent="TopCap/TopLockClaws"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.32, 0.83)
+mesh = SubResource("BoxMesh_clamp_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
+
+[node name="Claw2" type="MeshInstance3D" parent="TopCap/TopLockClaws"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.83, 2.32, 0)
+mesh = SubResource("BoxMesh_clamp_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
+
+[node name="Claw3" type="MeshInstance3D" parent="TopCap/TopLockClaws"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.32, -0.83)
+mesh = SubResource("BoxMesh_clamp_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
+
+[node name="Claw4" type="MeshInstance3D" parent="TopCap/TopLockClaws"]
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, -0.83, 2.32, 0)
+mesh = SubResource("BoxMesh_clamp_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
+
+[node name="ChargerArm" type="Node3D" parent="TopCap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.40, 0)
+
+[node name="ArmShaft" type="MeshInstance3D" parent="TopCap/ChargerArm"]
+mesh = SubResource("CylinderMesh_arm_shaft")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="EmitterHead" type="MeshInstance3D" parent="TopCap/ChargerArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12, 0)
+mesh = SubResource("CylinderMesh_emitter_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="LaserRing" type="MeshInstance3D" parent="TopCap/ChargerArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.18, 0)
+visible = false
+mesh = SubResource("TorusMesh_laser_ring")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_trim")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0.0)
-light_color = Color(0.0, 0.85, 1.0, 1)
-light_energy = 1.2
-omni_range = 3.2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+light_color = Color(0, 0.85, 1, 1)
+light_energy = 1.4
+omni_range = 4.0
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.5, 0)
+light_color = Color(0, 0.9, 1, 1)
+light_energy = 1.8
+spot_range = 3.2
+spot_angle = 38.0

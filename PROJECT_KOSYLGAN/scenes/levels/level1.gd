@@ -8,6 +8,6 @@ extends Node3D
 
 func _ready() -> void:
 	if RobotManager:
-		RobotManager.register_level(1, atlas, cipher, charging_station, camera_pivot)
+		RobotManager.register_level(0, atlas, cipher, charging_station, camera_pivot)
 	if hud and hud.has_method("set_level_info"):
-		hud.set_level_info(1, "Энергоблок", "TAB: Смена робота | E: Действие / Поднять ящик (Atlas)")
+		hud.set_level_info(0, "Обучение (Тренировочный блок)", "WASD: Движение  •  TAB: Смена  •  E: Действие  •  ESC: Меню\nПКМ: Обзор 360°  •  Колесо: Зум  •  F: Сброс камеры")
