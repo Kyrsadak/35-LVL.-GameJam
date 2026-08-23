@@ -654,9 +654,6 @@ transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 4.8, 0, -15.0)
 [node name="ServerNorth" parent="Furniture" instance=ExtResource("21_server")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -4.8, 0, -15.0)
 
-[node name="RoboCatGirlNorth" parent="Furniture" instance=ExtResource("40_robocat")]
-transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, -4.5, 0, -17.5)
-
 [node name="SecurityCamNorthL" parent="Furniture" instance=ExtResource("23_cam_prop")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.2, 2.4, -17.0)
 

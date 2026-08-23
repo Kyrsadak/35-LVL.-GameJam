@@ -44,17 +44,11 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_sealed.tscn" id="44_box_sealed"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_dirty.tscn" id="45_box_dirty"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_torn.tscn" id="46_box_torn"]
-<<<<<<< HEAD
-[ext_resource type="PackedScene" path="res://systems/floor_cable.tscn" id="50_cable"]
-=======
 [ext_resource type="PackedScene" path="res://scenes/props/prop_central_tree_planter.tscn" id="47_tree"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_box_open_filled.tscn" id="48_box_filled"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_box_crushed.tscn" id="49_box_crushed"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_news_open.tscn" id="50_news_open"]
+[ext_resource type="PackedScene" path="res://systems/floor_cable.tscn" id="50_cable"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_news_folded.tscn" id="51_news_folded"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_news_crumpled.tscn" id="52_news_crumpled"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_news_scattered.tscn" id="53_news_scattered"]
->>>>>>> origin/Jamil
 
 [node name="LevelBukhara" type="Node3D"]
 script = ExtResource("1_bukhara")
@@ -228,52 +222,6 @@ collision_mask = 7
 size = Vector3(6.5, 3, 0.5)
 material = ExtResource("15_wall")
 
-<<<<<<< HEAD
-[node name="Furniture" type="Node3D" parent="."]
-
-[node name="PalletLarge1" parent="Furniture" instance=ExtResource("17_pallet_lg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0, 2.2)
-
-[node name="CardboardStack1" parent="Furniture" instance=ExtResource("26_cstack")]
-transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 11.5, 0, 1.5)
-
-[node name="BoxSealed1" parent="Furniture" instance=ExtResource("44_box_sealed")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2, 0, 2.5)
-
-[node name="BoxTorn1" parent="Furniture" instance=ExtResource("46_box_torn")]
-transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 10.8, 0, 2.2)
-
-[node name="ServerRotunda" parent="Furniture" instance=ExtResource("20_server")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.2, 0, -1.5)
-
-[node name="ServerRotunda2" parent="Furniture" instance=ExtResource("20_server")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.2, 0, 1.5)
-
-[node name="WorkbenchRotunda" parent="Furniture" instance=ExtResource("19_workbench")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.2, 0, 0)
-
-[node name="LockerEast" parent="Furniture" instance=ExtResource("18_locker")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 0, -3.2)
-
-[node name="WorkbenchEast" parent="Furniture" instance=ExtResource("19_workbench")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0, 0, -3.2)
-=======
-[node name="WallExitWest" type="CSGBox3D" parent="Geometry/NorthExitWing"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.5, -14.5)
-use_collision = true
-collision_layer = 2
-collision_mask = 7
-size = Vector3(0.5, 3, 10)
-material = ExtResource("15_wall")
-
-[node name="WallExitEast" type="CSGBox3D" parent="Geometry/NorthExitWing"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.5, -14.5)
-use_collision = true
-collision_layer = 2
-collision_mask = 7
-size = Vector3(0.5, 3, 10)
-material = ExtResource("15_wall")
-
 [node name="Lights" type="Node3D" parent="."]
 
 [node name="OmniSpawn" type="OmniLight3D" parent="Lights"]
@@ -321,33 +269,50 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, 13.5)
 [node name="BlueBarrelSpawn" parent="Furniture" instance=ExtResource("29_blue_barrel")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 13.5)
 
-[node name="TrashBinSpawn" parent="Furniture" instance=ExtResource("41_trash_bin")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 6.8)
->>>>>>> origin/Jamil
-
-[node name="BarrelsSpawn" parent="Furniture" instance=ExtResource("21_barrel")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, 13.2)
-
-<<<<<<< HEAD
-[node name="BlueBarrelSpawn" parent="Furniture" instance=ExtResource("29_blue_barrel")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 13.2)
-
 [node name="PlasticDrum" parent="Furniture" instance=ExtResource("30_plastic_drum")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, 12.2)
-=======
+
+[node name="TrashBinSpawn" parent="Furniture" instance=ExtResource("41_trash_bin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 6.8)
+
 [node name="WallFanSpawn" parent="Furniture" instance=ExtResource("23_fan")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2.9, 2.1, 10)
->>>>>>> origin/Jamil
 
 [node name="TrafficCone1" parent="Furniture" instance=ExtResource("27_cone")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0, 6.2)
 
-<<<<<<< HEAD
 [node name="TrafficCone2" parent="Furniture" instance=ExtResource("27_cone")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 6.2)
 
 [node name="SafetyBarrierEast" parent="Furniture" instance=ExtResource("28_barrier")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.2, 0, 2.8)
+
+[node name="PalletLarge1" parent="Furniture" instance=ExtResource("17_pallet_lg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0, 2.2)
+
+[node name="CardboardStack1" parent="Furniture" instance=ExtResource("26_cstack")]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 11.5, 0, 1.5)
+
+[node name="BoxSealed1" parent="Furniture" instance=ExtResource("44_box_sealed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2, 0, 2.5)
+
+[node name="BoxTorn1" parent="Furniture" instance=ExtResource("46_box_torn")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 10.8, 0, 2.2)
+
+[node name="ServerRotunda" parent="Furniture" instance=ExtResource("20_server")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.2, 0, -1.5)
+
+[node name="ServerRotunda2" parent="Furniture" instance=ExtResource("20_server")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.2, 0, 1.5)
+
+[node name="WorkbenchRotunda" parent="Furniture" instance=ExtResource("19_workbench")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.2, 0, 0)
+
+[node name="LockerEast" parent="Furniture" instance=ExtResource("18_locker")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 0, -3.2)
+
+[node name="WorkbenchEast" parent="Furniture" instance=ExtResource("19_workbench")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0, 0, -3.2)
 
 [node name="BananaPeelSpawn" parent="Furniture" instance=ExtResource("31_banana")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 9.5)
@@ -381,11 +346,10 @@ transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -2.0, 0, 1
 
 [node name="TrashBin1" parent="Furniture" instance=ExtResource("41_trash_bin")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 6.5)
-=======
+
 [node name="PosterBlueprintSpawn" parent="Furniture" instance=ExtResource("40_poster")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2.73, 1.6, 8.5)
 poster_index = 1
->>>>>>> origin/Jamil
 
 [node name="PosterBananaSpawn" parent="Furniture" instance=ExtResource("40_poster")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.73, 1.6, 8.5)
@@ -403,9 +367,6 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -6.45, 0, -3.8)
 
 [node name="ServerRotundaW2" parent="Furniture" instance=ExtResource("20_server")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -6.45, 0, -0.2)
-
-[node name="RoboCatRotunda" parent="Furniture" instance=ExtResource("42_robocat")]
-transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -1.45, 0, -0.75)
 
 [node name="TrashBinRotunda" parent="Furniture" instance=ExtResource("41_trash_bin")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.4, 0, 0.6)
@@ -436,7 +397,7 @@ transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 
 [node name="WallFanNE" parent="Furniture" instance=ExtResource("23_fan")]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 4.7, 2.1, -7.45)
 
-[node name="NewsOpenNE" parent="Furniture" instance=ExtResource("50_news_open")]
+[node name="NewsOpenNE" parent="Furniture" instance=ExtResource("32_news_open")]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 3.9, 0, -6.8)
 
 [node name="BlueBarrelSE" parent="Furniture" instance=ExtResource("29_blue_barrel")]
