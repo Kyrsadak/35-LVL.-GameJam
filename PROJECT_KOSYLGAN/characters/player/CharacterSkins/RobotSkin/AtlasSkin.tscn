@@ -98,17 +98,23 @@ top_radius = 0.025
 bottom_radius = 0.025
 height = 0.24
 
-[sub_resource type="BoxMesh" id="BoxMesh_unified_scoop_bucket"]
-size = Vector3(0.74, 0.24, 0.28)
+[sub_resource type="BoxMesh" id="BoxMesh_scoop_floor"]
+size = Vector3(0.72, 0.035, 0.32)
 
-[sub_resource type="PrismMesh" id="PrismMesh_unified_scoop_blade"]
-size = Vector3(0.74, 0.16, 0.20)
+[sub_resource type="BoxMesh" id="BoxMesh_scoop_backwall"]
+size = Vector3(0.72, 0.24, 0.035)
+
+[sub_resource type="BoxMesh" id="BoxMesh_scoop_sidewall"]
+size = Vector3(0.035, 0.24, 0.34)
+
+[sub_resource type="BoxMesh" id="BoxMesh_scoop_cutting_lip"]
+size = Vector3(0.74, 0.035, 0.08)
+
+[sub_resource type="BoxMesh" id="BoxMesh_scoop_corner_gusset"]
+size = Vector3(0.04, 0.20, 0.04)
 
 [sub_resource type="BoxMesh" id="BoxMesh_gripper_tooth"]
-size = Vector3(0.045, 0.08, 0.05)
-
-[sub_resource type="BoxMesh" id="BoxMesh_scoop_sideplate"]
-size = Vector3(0.04, 0.24, 0.30)
+size = Vector3(0.045, 0.06, 0.09)
 
 [sub_resource type="BoxMesh" id="BoxMesh_thigh_frame"]
 size = Vector3(0.09, 0.34, 0.09)
@@ -747,57 +753,73 @@ surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
 [node name="UnifiedLoaderScoop" type="Node3D" parent="Visuals/ArmsRoot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.36, 0.18)
 
-[node name="BucketBody" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-mesh = SubResource("BoxMesh_unified_scoop_bucket")
+[node name="ScoopFloor" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.10, 0.06)
+mesh = SubResource("BoxMesh_scoop_floor")
+surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
+
+[node name="ScoopBackWall" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.09)
+mesh = SubResource("BoxMesh_scoop_backwall")
 surface_material_override/0 = SubResource("StandardMaterial3D_yellow_hazard")
 
-[node name="CuttingBlade" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.20)
-mesh = SubResource("PrismMesh_unified_scoop_blade")
+[node name="ScoopSideL" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36, 0.02, 0.06)
+mesh = SubResource("BoxMesh_scoop_sidewall")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_hazard")
+
+[node name="ScoopSideR" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36, 0.02, 0.06)
+mesh = SubResource("BoxMesh_scoop_sidewall")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_hazard")
+
+[node name="CuttingLip" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.10, 0.23)
+mesh = SubResource("BoxMesh_scoop_cutting_lip")
+surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
+
+[node name="GussetL" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -0.35, 0.01, -0.08)
+mesh = SubResource("BoxMesh_scoop_corner_gusset")
 surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
 
-[node name="SidePlateL" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.38, 0.02, 0.04)
-mesh = SubResource("BoxMesh_scoop_sideplate")
-surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
-
-[node name="SidePlateR" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38, 0.02, 0.04)
-mesh = SubResource("BoxMesh_scoop_sideplate")
+[node name="GussetR" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0.35, 0.01, -0.08)
+mesh = SubResource("BoxMesh_scoop_corner_gusset")
 surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
 
 [node name="Tooth1" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.30, -0.08, 0.28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.30, -0.10, 0.28)
 mesh = SubResource("BoxMesh_gripper_tooth")
 surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
 
 [node name="Tooth2" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.20, -0.08, 0.28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.20, -0.10, 0.28)
 mesh = SubResource("BoxMesh_gripper_tooth")
 surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
 
 [node name="Tooth3" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10, -0.08, 0.28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10, -0.10, 0.28)
 mesh = SubResource("BoxMesh_gripper_tooth")
 surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
 
 [node name="Tooth4" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, -0.08, 0.28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, -0.10, 0.28)
 mesh = SubResource("BoxMesh_gripper_tooth")
 surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
 
 [node name="Tooth5" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10, -0.08, 0.28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10, -0.10, 0.28)
 mesh = SubResource("BoxMesh_gripper_tooth")
 surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
 
 [node name="Tooth6" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.20, -0.08, 0.28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.20, -0.10, 0.28)
 mesh = SubResource("BoxMesh_gripper_tooth")
 surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
 
 [node name="Tooth7" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.30, -0.08, 0.28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.30, -0.10, 0.28)
 mesh = SubResource("BoxMesh_gripper_tooth")
 surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
 
