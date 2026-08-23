@@ -276,7 +276,7 @@ func play_door_open() -> void:
 
 # 13. Old CRT TV Power-Down (high-frequency capacitor discharge whine, static sweep & mechanical relay pop)
 func play_tv_off() -> void:
-	var duration = 1.5
+	var duration = 1.25
 	var num_samples = int(sample_rate * duration)
 	var bytes = PackedByteArray()
 	bytes.resize(num_samples * 2)
