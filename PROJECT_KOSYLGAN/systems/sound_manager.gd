@@ -25,13 +25,26 @@ func _ready() -> void:
 	add_child(bgm_player)
 
 func play_bgm(path: String = "res://audio/ambient_level1.wav") -> void:
-	if bgm_player.playing:
+	if bgm_player and bgm_player.playing:
 		return
-	var stream = load(path)
+	var stream: AudioStream = null
+	if FileAccess.file_exists(path):
+		var file = FileAccess.open(path, FileAccess.READ)
+		if file:
+			var bytes = file.get_buffer(file.get_length())
+			if bytes.size() > 44:
+				var wav = AudioStreamWAV.new()
+				wav.format = AudioStreamWAV.FORMAT_16_BITS
+				wav.stereo = true
+				wav.mix_rate = 44100
+				wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
+				wav.data = bytes.slice(44)
+				stream = wav
+	if not stream and ResourceLoader.exists(path):
+		stream = load(path)
 	if stream:
-		if stream is AudioStreamWAV:
-			stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 		bgm_player.stream = stream
+		bgm_player.volume_db = -16.0
 		bgm_player.play()
 
 func stop_bgm(fade_time: float = 1.5) -> void:
