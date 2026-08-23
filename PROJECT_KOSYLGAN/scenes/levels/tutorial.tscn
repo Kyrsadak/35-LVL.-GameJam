@@ -48,6 +48,8 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_robocat_girl.tscn" id="47_robocat"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_poster_monster_white.tscn" id="48_poster_monster"]
 [ext_resource type="PackedScene" path="res://systems/floor_cable.tscn" id="50_cable"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_poster_cyberpunk.tscn" id="51_cyberpunk"]
+[ext_resource type="PackedScene" path="res://scenes/props/prop_pickle_rick.tscn" id="52_pickle_rick"]
 
 [node name="Level1" type="Node3D"]
 script = ExtResource("1_lvl1")
@@ -331,6 +333,12 @@ poster_index = 1
 
 [node name="PosterMonsterWhite1" parent="Furniture" instance=ExtResource("48_poster_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, 2.05, -7.2)
+
+[node name="PosterCyberpunk1" parent="Furniture" instance=ExtResource("51_cyberpunk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 2.05, -7.2)
+
+[node name="PickleRick1" parent="Furniture" instance=ExtResource("52_pickle_rick")]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 4.6, 0, -8.2)
 
 [node name="PosterBanana1" parent="Furniture" instance=ExtResource("40_poster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 1.6, -16.45)

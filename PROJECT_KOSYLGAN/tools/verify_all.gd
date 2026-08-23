@@ -37,6 +37,8 @@ func _run_tests():
 		"res://scenes/levels/level_samarkand.tscn",
 		"res://scenes/levels/level_khiva.tscn",
 		"res://scenes/levels/level_tashkent.tscn",
+		"res://scenes/props/prop_poster_cyberpunk.tscn",
+		"res://scenes/props/prop_pickle_rick.tscn",
 		"res://scenes/main.tscn"
 	]
 	
