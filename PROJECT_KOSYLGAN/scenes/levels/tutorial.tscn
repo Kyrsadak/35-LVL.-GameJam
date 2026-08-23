@@ -46,7 +46,6 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_open_filled.tscn" id="45_box_filled"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_trash_bin.tscn" id="46_trash_bin"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_robocat_girl.tscn" id="47_robocat"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_poster_monster_white.tscn" id="48_poster_monster"]
 [ext_resource type="PackedScene" path="res://systems/floor_cable.tscn" id="50_cable"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_poster_cyberpunk.tscn" id="51_cyberpunk"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_pickle_rick.tscn" id="52_pickle_rick"]
@@ -330,9 +329,6 @@ poster_index = 0
 [node name="PosterBlueprint1" parent="Furniture" instance=ExtResource("40_poster")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.45, 1.6, 2.5)
 poster_index = 1
-
-[node name="PosterMonsterWhite1" parent="Furniture" instance=ExtResource("48_poster_monster")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, 2.05, -7.2)
 
 [node name="PosterCyberpunk1" parent="Furniture" instance=ExtResource("51_cyberpunk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 2.05, -7.2)

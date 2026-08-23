@@ -40,7 +40,6 @@
 [ext_resource type="PackedScene" path="res://scenes/props/prop_news_stepped.tscn" id="39_news_stepped"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_wall_poster.tscn" id="40_poster"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_trash_bin.tscn" id="41_trash_bin"]
-[ext_resource type="PackedScene" path="res://scenes/props/prop_poster_monster_white.tscn" id="43_poster_monster"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_sealed.tscn" id="44_box_sealed"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_dirty.tscn" id="45_box_dirty"]
 [ext_resource type="PackedScene" path="res://scenes/props/prop_box_torn.tscn" id="46_box_torn"]
@@ -384,9 +383,6 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -6.7, 2.4, -2.0)
 [node name="ServerRotundaNW" parent="Furniture" instance=ExtResource("20_server")]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -4.6, 0, -7.35)
 
-[node name="PosterMonsterNW" parent="Furniture" instance=ExtResource("43_poster_monster")]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -4.8, 1.8, -7.55)
-
 [node name="PosterSafetySW" parent="Furniture" instance=ExtResource("40_poster")]
 transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, -4.8, 1.8, 3.55)
 poster_index = 0
@@ -463,9 +459,6 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2.8, 2.4, -17.5)
 
 [node name="WallFanExit" parent="Furniture" instance=ExtResource("23_fan")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.8, 2.1, -17.5)
-
-[node name="PosterMonsterExit" parent="Furniture" instance=ExtResource("43_poster_monster")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.8, -18.98)
 
 [node name="NewsCrumpledExit" parent="Furniture" instance=ExtResource("52_news_crumpled")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, -14.2)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://scenes/props/prop_pickle_rick.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/textures/tex_pickle_rick.png" id="2_tex_pickle"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.11
@@ -21,7 +22,14 @@ albedo_color = Color(0.22, 0.48, 0.16, 1)
 roughness = 0.55
 metallic = 0.05
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_face_mat"]
+albedo_texture = ExtResource("2_tex_pickle")
+roughness = 0.45
+metallic = 0.05
+texture_filter = 2
+
 [sub_resource type="QuadMesh" id="QuadMesh_face"]
+material = SubResource("StandardMaterial3D_face_mat")
 size = Vector2(0.18, 0.44)
 
 [sub_resource type="SphereMesh" id="SphereMesh_eye"]
@@ -102,6 +110,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_skin")
 [node name="FaceDecal" type="MeshInstance3D" parent="AnimPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.23, 0.088)
 mesh = SubResource("QuadMesh_face")
+surface_material_override/0 = SubResource("StandardMaterial3D_face_mat")
 
 [node name="EyeLeft" type="MeshInstance3D" parent="AnimPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.028, 0.32, 0.082)
