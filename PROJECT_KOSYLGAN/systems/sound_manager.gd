@@ -30,26 +30,26 @@ func _create_wav(samples: PackedByteArray) -> AudioStreamWAV:
 	wav.data = samples
 	return wav
 
-# 1. Footstep (soft, warm and clearly audible mechanical tap)
-func play_footstep(volume_db: float = -6.0) -> void:
-	var duration = 0.08
+# 1. Footstep (soft, gentle cushioned mechanical step)
+func play_footstep(volume_db: float = -10.0) -> void:
+	var duration = 0.065
 	var num_samples = int(sample_rate * duration)
 	var bytes = PackedByteArray()
 	bytes.resize(num_samples * 2)
-
+	
 	for i in range(num_samples):
 		var t = float(i) / sample_rate
-		var env = exp(-t * 28.0) * sin((float(i) / num_samples) * PI)
-		# Warm, pleasant acoustic low-mid tap (165Hz -> 90Hz)
-		var freq = 165.0 * exp(-t * 22.0) + 90.0
-		var s = sin(t * freq * TAU) * 0.62 + sin(t * freq * 1.5 * TAU) * 0.24 + sin(t * freq * 2.0 * TAU) * 0.14
-		var val = int(clamp(s * env * 24000.0, -32767, 32767))
+		var env = exp(-t * 52.0) * sin((float(i) / num_samples) * PI)
+		# Smooth low warm cushioned thump (90Hz -> 48Hz)
+		var freq = 90.0 * exp(-t * 28.0) + 48.0
+		var s = sin(t * freq * TAU) * 0.68 + sin(t * freq * 2.0 * TAU) * 0.14
+		var val = int(clamp(s * env * 22000.0, -32767, 32767))
 		bytes.encode_s16(i * 2, val)
-
+	
 	var player = _get_free_player()
 	player.stream = _create_wav(bytes)
 	player.volume_db = volume_db
-	player.pitch_scale = randf_range(0.96, 1.04)
+	player.pitch_scale = randf_range(0.95, 1.05)
 	player.play()
 
 # 2. Robot Switch (gentle, warm soft sci-fi harmonic chime)
