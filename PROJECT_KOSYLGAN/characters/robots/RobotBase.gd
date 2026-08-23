@@ -162,11 +162,11 @@ func _handle_movement(delta: float) -> void:
 			skin.orient_model_to_direction(move_dir, delta)
 			skin.update_move_animation(velocity.length() / move_speed, delta)
 
-		# Footstep sound cadence precisely synchronized with 0.50s run animation cycle (0.25s per foot)
-		var current_speed_scale = 0.9
+		# Footstep sound cadence paced at a calm, natural mechanical tempo (~0.40s per step)
+		var current_speed_scale = 0.75
 		if skin and "anim_player" in skin and skin.anim_player:
 			current_speed_scale = skin.anim_player.speed_scale
-		var step_interval = 0.25 / max(0.1, current_speed_scale)
+		var step_interval = 0.38 / max(0.1, current_speed_scale)
 
 		_step_timer += delta
 		if _step_timer >= step_interval:
