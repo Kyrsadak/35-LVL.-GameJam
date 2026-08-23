@@ -19,11 +19,26 @@ var blink_timer: float = 0.0
 var is_sleeping: bool = false
 var sleep_zzz_node: Node3D = null
 
+var visuals_node: Node3D = null
+var left_leg_node: Node3D = null
+var right_leg_node: Node3D = null
+var left_arm_node: Node3D = null
+var right_arm_node: Node3D = null
+var arms_root_node: Node3D = null
+var _walk_cycle: float = 0.0
+
 func _ready() -> void:
 	anim_player = get_node_or_null("AnimationPlayer")
 	if not anim_player:
 		anim_player = find_child("AnimationPlayer", true, false)
 	screen_face = find_child("ScreenFace", true, false) as MeshInstance3D
+	
+	visuals_node = find_child("Visuals", true, false) as Node3D
+	left_leg_node = find_child("LeftLegPivot", true, false) as Node3D
+	right_leg_node = find_child("RightLegPivot", true, false) as Node3D
+	left_arm_node = find_child("LeftArmPivot", true, false) as Node3D
+	right_arm_node = find_child("RightArmPivot", true, false) as Node3D
+	arms_root_node = find_child("ArmsRoot", true, false) as Node3D
 	
 	_setup_screen_materials()
 	_setup_tshirt_material()
@@ -196,13 +211,11 @@ func set_holding(holding: bool) -> void:
 			anim_player.play("Idle", 0.15)
 			current_anim = "Idle"
 
-func update_move_animation(velocity_ratio: float, _delta: float) -> void:
+func update_move_animation(velocity_ratio: float, delta: float) -> void:
 	if not anim_player:
 		anim_player = get_node_or_null("AnimationPlayer")
 		if not anim_player:
 			anim_player = find_child("AnimationPlayer", true, false)
-	if not anim_player:
-		return
 
 	if velocity_ratio > 0.01:
 		is_sleeping = false
@@ -212,32 +225,53 @@ func update_move_animation(velocity_ratio: float, _delta: float) -> void:
 	if is_lifting or is_sleeping:
 		return
 
-	if is_holding:
-		if velocity_ratio > 0.01:
-			var target_run = "Run_Hold" if anim_player.has_animation("Run_Hold") else "Run"
-			if current_anim != target_run or not anim_player.is_playing():
-				anim_player.play(target_run, 0.08)
-				current_anim = target_run
+	if velocity_ratio > 0.01:
+		_walk_cycle += delta * 12.0 * velocity_ratio
+		
+		# 1. High priority keyframe animation
+		if anim_player:
+			var target_anim = "Run_Hold" if (is_holding and anim_player.has_animation("Run_Hold")) else "Run"
+			if current_anim != target_anim or not anim_player.is_playing():
+				if anim_player.has_animation(target_anim):
+					anim_player.play(target_anim, 0.08)
+					current_anim = target_anim
 			anim_player.speed_scale = clamp(velocity_ratio * 1.4, 0.9, 2.2)
-		else:
-			var target_idle = "Idle_Hold" if anim_player.has_animation("Idle_Hold") else "Idle"
-			if current_anim != target_idle or not anim_player.is_playing():
-				anim_player.play(target_idle, 0.15)
-				current_anim = target_idle
-			anim_player.speed_scale = 1.0
+
+		# 2. Universal procedural walk backup (guarantees dynamic movement in all exported builds)
+		if left_leg_node:
+			left_leg_node.rotation.x = sin(_walk_cycle) * 0.75
+		if right_leg_node:
+			right_leg_node.rotation.x = -sin(_walk_cycle) * 0.75
+		if not is_holding:
+			if left_arm_node:
+				left_arm_node.rotation.x = -sin(_walk_cycle) * 0.65
+			if right_arm_node:
+				right_arm_node.rotation.x = sin(_walk_cycle) * 0.65
+		if visuals_node:
+			visuals_node.position.y = abs(sin(_walk_cycle * 2.0)) * 0.05
+			visuals_node.rotation.z = sin(_walk_cycle) * 0.04
 	else:
-		if velocity_ratio > 0.01:
-			if current_anim != "Run" or not anim_player.is_playing():
-				if anim_player.has_animation("Run"):
-					anim_player.play("Run", 0.08)
-					current_anim = "Run"
-			anim_player.speed_scale = clamp(velocity_ratio * 1.4, 0.9, 2.2)
-		else:
-			if current_anim != "Idle" or not anim_player.is_playing():
-				if anim_player.has_animation("Idle"):
-					anim_player.play("Idle", 0.15)
-					current_anim = "Idle"
+		# Smooth return to idle stance
+		if anim_player:
+			var target_idle = "Idle_Hold" if (is_holding and anim_player.has_animation("Idle_Hold")) else "Idle"
+			if current_anim != target_idle or not anim_player.is_playing():
+				if anim_player.has_animation(target_idle):
+					anim_player.play(target_idle, 0.15)
+					current_anim = target_idle
 			anim_player.speed_scale = 1.0
+			
+		if left_leg_node:
+			left_leg_node.rotation.x = lerp_angle(left_leg_node.rotation.x, 0.0, delta * 12.0)
+		if right_leg_node:
+			right_leg_node.rotation.x = lerp_angle(right_leg_node.rotation.x, 0.0, delta * 12.0)
+		if not is_holding:
+			if left_arm_node:
+				left_arm_node.rotation.x = lerp_angle(left_arm_node.rotation.x, 0.0, delta * 12.0)
+			if right_arm_node:
+				right_arm_node.rotation.x = lerp_angle(right_arm_node.rotation.x, 0.0, delta * 12.0)
+		if visuals_node:
+			visuals_node.position.y = lerp(visuals_node.position.y, 0.0, delta * 12.0)
+			visuals_node.rotation.z = lerp_angle(visuals_node.rotation.z, 0.0, delta * 12.0)
 
 func move_to_dead() -> void:
 	if anim_player:
