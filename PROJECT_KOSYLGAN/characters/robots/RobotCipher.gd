@@ -5,7 +5,7 @@ signal hack_started(terminal: Node)
 
 func _ready() -> void:
 	robot_id = "cipher"
-	robot_display_name = "CIPHER (ХАКЕР)"
+	robot_display_name = "JAM (ХАКЕР)"
 	robot_color = Color(0.2, 0.9, 0.5)
 	super._ready()
 	if skin and skin.has_method("set_skin_material"):

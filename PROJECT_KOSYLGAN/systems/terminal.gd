@@ -101,10 +101,10 @@ func start_hack(robot: Node) -> void:
 			RobotManager.show_message("✅ Терминал уже взломан! Гермодвери открыты.")
 		return
 
-	# Strictly enforce cooperative workflow: Atlas MUST read the tablet clue first!
+	# Strictly enforce cooperative workflow: DAU MUST read the tablet clue first!
 	if not clue_id.is_empty() and RobotManager and not RobotManager.discovered_clues.has(clue_id):
 		if RobotManager:
-			RobotManager.show_message("Я не знаю, какой провод резать! Схема зашифрована. Сначала ATLAS должен найти и просканировать планшет-инструкцию!", 4.5)
+			RobotManager.show_message("Я не знаю, какой провод резать! Схема зашифрована. Сначала DAU должен найти и просканировать планшет-инструкцию!", 4.5)
 		if SoundManager and SoundManager.has_method("play_spark_error"):
 			SoundManager.play_spark_error()
 		return

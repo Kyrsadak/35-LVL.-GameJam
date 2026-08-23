@@ -406,7 +406,7 @@ text = "🎯 МИССИЯ:"
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.90, 0.95, 1)
 theme_override_font_sizes/font_size = 14
-text = "Исследуйте космическую станцию, управляя роботами ATLAS и CIPHER. Взаимодействуйте с энергосистемами, заряжайте батареи в крио-капсулах и активируйте шлюзы."
+text = "Исследуйте космическую станцию, управляя роботами DAU и JAM. Взаимодействуйте с энергосистемами, заряжайте батареи в крио-капсулах и активируйте шлюзы."
 autowrap_mode = 2
 
 [node name="ControlsHeader" type="Label" parent="CanvasLayer/RulesModal/VBox/Scroll/Content"]
@@ -420,7 +420,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.90, 0.95, 1)
 theme_override_font_sizes/font_size = 14
 text = "• [W][A][S][D] — Движение робота
-• [TAB] — Смена активного робота (ATLAS / CIPHER)
+• [TAB] — Смена активного робота (DAU / JAM)
 • [E] — Стыковка в капсулу / Взлом терминала / Взять предмет
 • [ПКМ] / [СКМ] — Вращение тактической 360° камеры
 • [Колесико мыши] — Зум камеры (приблизить / отдалить)

@@ -127,9 +127,9 @@ func insert_module(battery: Node3D) -> void:
 	if SoundManager:
 		SoundManager.play_drop()
 
-	# Guide the player to switch to Cipher and activate the generator
+	# Guide the player to switch to JAM and activate the generator
 	if RobotManager:
-		RobotManager.show_message("[РОБО-КОШКА]: (=^･ω･^=) Мяу! Батарея на месте! Но цепь обесточена — активировать генератор может только инженер CIPHER (Зелёный робот)!", 4.5)
+		RobotManager.show_message("[РОБО-КОШКА]: (=^･ω･^=) Мяу! Батарея на месте! Но цепь обесточена — активировать генератор может только инженер JAM (Зелёный робот)!", 4.5)
 
 func interact(robot: Node3D) -> void:
 	if current_state == TerminalState.ACTIVATED:
@@ -138,16 +138,16 @@ func interact(robot: Node3D) -> void:
 		activate_generator(robot)
 	elif current_state == TerminalState.BATTERY_INSERTED:
 		if RobotManager:
-			RobotManager.show_message("Активировать цепь генератора может только инженер CIPHER (клавиша TAB для переключения)!", 3.5)
+			RobotManager.show_message("Активировать цепь генератора может только инженер JAM (клавиша TAB для переключения)!", 3.5)
 
-## Stage 2: CIPHER approaches the console and activates the circuit
+## Stage 2: JAM approaches the console and activates the circuit
 func activate_generator(cipher_robot: Node3D) -> void:
 	if current_state == TerminalState.ACTIVATED:
 		return
 
 	if current_state == TerminalState.AWAITING_BATTERY:
 		if RobotManager:
-			RobotManager.show_message("[РОБО-КОШКА]: (=^･ω･^=) В приёмнике нет батареи! Сначала переключитесь на ATLAS и вставьте энергоблок.", 3.5)
+			RobotManager.show_message("[РОБО-КОШКА]: (=^･ω･^=) В приёмнике нет батареи! Сначала переключитесь на DAU и вставьте энергоблок.", 3.5)
 		return
 
 	# Perform activation!

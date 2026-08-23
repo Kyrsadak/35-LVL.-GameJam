@@ -24,12 +24,12 @@ var current_total_chars: int = 0
 
 func _ready() -> void:
 	if atlas_battery_display:
-		atlas_battery_display.robot_name = "ATLAS"
+		atlas_battery_display.robot_name = "DAU"
 		atlas_battery_display.theme_color = Color(0.91, 0.44, 0.36) # Soft Warm Coral
 		atlas_battery_display.set_active(true)
 		
 	if cipher_battery_display:
-		cipher_battery_display.robot_name = "CIPHER"
+		cipher_battery_display.robot_name = "JAM"
 		cipher_battery_display.theme_color = Color(0.24, 0.72, 0.47) # Calm Mint Sage
 		cipher_battery_display.set_active(false)
 
@@ -145,9 +145,9 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 	var speaker = "catgirl"
 	if is_catgirl:
 		speaker = "catgirl"
-	elif text.begins_with("[ATLAS]") or text.begins_with("ATLAS:"):
+	elif text.begins_with("[DAU]") or text.begins_with("DAU:") or text.begins_with("[ATLAS]") or text.begins_with("ATLAS:"):
 		speaker = "atlas"
-	elif text.begins_with("[CIPHER]") or text.begins_with("CIPHER:"):
+	elif text.begins_with("[JAM]") or text.begins_with("JAM:") or text.begins_with("[CIPHER]") or text.begins_with("CIPHER:"):
 		speaker = "cipher"
 	elif RobotManager and RobotManager.active_robot:
 		var r_id = RobotManager.active_robot.robot_id if "robot_id" in RobotManager.active_robot else "atlas"
@@ -247,7 +247,7 @@ func _on_interact_target_changed(target: Node) -> void:
 				if RobotManager and RobotManager.active_robot == RobotManager.cipher:
 					interact_prompt.text = "[E] ЗАПУСТИТЬ ГЕНЕРАТОР"
 				else:
-					interact_prompt.text = "🔒 НУЖЕН CIPHER (ЗЕЛЁНЫЙ)"
+					interact_prompt.text = "🔒 НУЖЕН JAM (ЗЕЛЁНЫЙ)"
 			elif "current_state" in target and target.current_state == 2: # ACTIVATED
 				interact_prompt.text = "⚡ ГЕНЕРАТОР РАБОТАЕТ"
 			else:

@@ -7,7 +7,7 @@ signal key_module_inserted()
 
 func _ready() -> void:
 	robot_id = "atlas"
-	robot_display_name = "ATLAS (СИЛОВОЙ)"
+	robot_display_name = "DAU (СИЛОВОЙ)"
 	robot_color = Color(0.1, 0.75, 1.0)
 	super._ready()
 	if skin and skin.has_method("set_skin_material"):

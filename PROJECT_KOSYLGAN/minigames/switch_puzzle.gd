@@ -53,7 +53,7 @@ func _build_ui() -> void:
 
 	# Clue / Blueprint Hint display
 	if RobotManager and RobotManager.discovered_clues.has(clue_id):
-		hint_label.text = "📋 СХЕМА АТЛАСА: " + RobotManager.discovered_clues[clue_id]
+		hint_label.text = "📋 СХЕМА DAU: " + RobotManager.discovered_clues[clue_id]
 		hint_label.modulate = Color(0.3, 0.95, 0.5)
 	else:
 		hint_label.text = "⚠️ НЕТ СХЕМЫ! (Изучите планшет силовым роботом DAU)"

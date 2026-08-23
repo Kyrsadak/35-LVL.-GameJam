@@ -134,7 +134,7 @@ func _draw() -> void:
 	draw_arc(badge_center, 13.5, 0, TAU, 24, theme_color * Color(1, 1, 1, active_alpha), 2.5, true)
 	
 	var font = ThemeDB.fallback_font
-	var badge_text = "⚡" if is_charging else ("1" if robot_name == "ATLAS" else "2")
+	var badge_text = "⚡" if is_charging else ("1" if robot_name == "DAU" or robot_name == "ATLAS" else "2")
 	draw_string(font, badge_center + Vector2(-5, 5), badge_text, HORIZONTAL_ALIGNMENT_CENTER, -1, 14, Color(0.28, 0.24, 0.20, active_alpha))
 	
 	# ==========================================
@@ -217,8 +217,8 @@ func _draw_robot_avatar(rect: Rect2, alpha: float) -> void:
 	var cx = rect.position.x + rect.size.x * 0.5
 	var cy = rect.position.y + rect.size.y * 0.5
 	
-	if robot_name == "ATLAS":
-		# --- ATLAS: Coral Retro CRT Mecha ---
+	if robot_name == "DAU" or robot_name == "ATLAS":
+		# --- DAU: Coral Retro CRT Mecha ---
 		# TV Monitor Casing
 		var crt_rect = Rect2(cx - 20, cy - 16, 40, 32)
 		var style_casing = StyleBoxFlat.new()
@@ -249,7 +249,7 @@ func _draw_robot_avatar(rect: Rect2, alpha: float) -> void:
 		draw_circle(Vector2(cx + 8, cy + 6), 2.6, Color(0.92, 0.45, 0.40, 0.6 * alpha))
 		
 	else:
-		# --- CIPHER: Mint Retro CRT Mecha ---
+		# --- JAM: Mint Retro CRT Mecha ---
 		# TV Monitor Casing
 		var crt_rect = Rect2(cx - 20, cy - 16, 40, 32)
 		var style_casing = StyleBoxFlat.new()

@@ -58,9 +58,9 @@ func _draw() -> void:
 	match speaker_id:
 		"catgirl", "weo", "crt_cat", "koshka":
 			_draw_catgirl_portrait(center, w, h)
-		"atlas":
+		"atlas", "dau":
 			_draw_atlas_portrait(center, w, h)
-		"cipher":
+		"cipher", "jam":
 			_draw_cipher_portrait(center, w, h)
 		_:
 			_draw_catgirl_portrait(center, w, h)

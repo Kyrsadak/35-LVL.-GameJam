@@ -78,7 +78,7 @@ custom_minimum_size = Vector2(430, 96)
 layout_mode = 2
 size_flags_horizontal = 2
 script = ExtResource("2_bat")
-robot_name = "ATLAS"
+robot_name = "DAU"
 robot_role = "HEAVY LOADER // FORKLIFT MECHA"
 theme_color = Color(0.91, 0.44, 0.36, 1)
 
@@ -92,7 +92,7 @@ custom_minimum_size = Vector2(430, 96)
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("2_bat")
-robot_name = "CIPHER"
+robot_name = "JAM"
 robot_role = "INFILTRATOR // DATA PLUG MECHA"
 theme_color = Color(0.24, 0.72, 0.47, 1)
 

@@ -70,12 +70,12 @@ func _build_ui() -> void:
 	sparks.clear()
 	hovered_wire = -1
 
-	# Display hint if discovered
+	# Clue / Blueprint Hint display
 	if RobotManager and RobotManager.discovered_clues.has(clue_id):
-		hint_label.text = RobotManager.discovered_clues[clue_id]
+		hint_label.text = "📋 СХЕМА DAU: " + RobotManager.discovered_clues[clue_id]
 		hint_label.modulate = Color(0.3, 0.95, 0.5)
 	else:
-		hint_label.text = "⚠️ НЕТ СХЕМЫ! (Найдите планшет роботом ATLAS)"
+		hint_label.text = "⚠️ НЕТ СХЕМЫ! (Найдите планшет роботом DAU)"
 		hint_label.modulate = Color(1.0, 0.75, 0.3)
 
 	if screen_text:
