@@ -2,6 +2,7 @@ extends Node
 
 signal robot_switched(active_robot: Node)
 signal hud_message_requested(text: String, duration: float)
+signal dialogue_sequence_requested(sequence: Array, on_completed: Callable)
 signal clue_revealed(text: String)
 signal level_completed()
 signal level_failed(reason: String)
@@ -22,7 +23,6 @@ var discovered_clues: Dictionary = {}
 func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station: Node3D, cam_pivot: Node3D = null) -> void:
 	is_game_over = false
 	is_dialogue_active = false
-	infinite_energy_active = false
 	current_level_index = level_idx
 	if GameManager:
 		GameManager.current_level_index = level_idx
@@ -65,6 +65,25 @@ func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station
 
 	# By default start with Atlas
 	set_active_robot(atlas)
+
+func set_infinite_energy(active: bool) -> void:
+	infinite_energy_active = active
+	if atlas and "battery" in atlas and "max_battery" in atlas:
+		atlas.battery = atlas.max_battery
+		if "discharge_rate" in atlas:
+			atlas.discharge_rate = 0.0
+	if cipher and "battery" in cipher and "max_battery" in cipher:
+		cipher.battery = cipher.max_battery
+		if "discharge_rate" in cipher:
+			cipher.discharge_rate = 0.0
+
+func play_dialogue(sequence: Array, on_completed: Callable = Callable()) -> void:
+	is_dialogue_active = true
+	dialogue_sequence_requested.emit(sequence, on_completed)
+
+func show_message(text: String, duration: float = 2.0) -> void:
+	is_dialogue_active = true
+	hud_message_requested.emit(text, duration)
 
 func set_active_robot(robot: Node) -> void:
 	if not robot:
@@ -145,13 +164,9 @@ func _on_guide_read(guide_id: String, clue_text: String) -> void:
 	elif clean_clue.begins_with("[ATLAS]:"):
 		clean_clue = clean_clue.substr(8).strip_edges()
 		
-	show_message(clean_clue + " — Теперь CIPHER может безопасно взломать терминал!", 4.0)
+	show_message(clean_clue + " — Теперь JAM может безопасно взломать терминал!", 4.0)
 	if SoundManager:
 		SoundManager.play_tablet_read()
-
-func show_message(text: String, duration: float = 2.0) -> void:
-	is_dialogue_active = true
-	hud_message_requested.emit(text, duration)
 
 func set_dialogue_active(active: bool) -> void:
 	is_dialogue_active = active

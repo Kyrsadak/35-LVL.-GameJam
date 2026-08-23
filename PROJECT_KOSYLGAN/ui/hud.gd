@@ -40,6 +40,7 @@ func _ready() -> void:
 	if RobotManager:
 		RobotManager.robot_switched.connect(_on_robot_switched)
 		RobotManager.hud_message_requested.connect(show_banner_message)
+		RobotManager.dialogue_sequence_requested.connect(show_dialogue_sequence)
 		RobotManager.clue_revealed.connect(_on_clue_revealed)
 		if RobotManager.atlas and RobotManager.atlas.has_signal("interact_target_changed"):
 			RobotManager.atlas.interact_target_changed.connect(_on_interact_target_changed)
@@ -51,8 +52,17 @@ func _ready() -> void:
 		dialogue_container.visible = false
 		dialogue_container.modulate.a = 0.0
 		default_dialogue_offset_top = dialogue_container.offset_top
+		dialogue_container.gui_input.connect(_on_dialogue_gui_input)
 	if enter_badge:
 		enter_badge.modulate.a = 0.0
+
+var dialogue_queue: Array = []
+var current_dialogue_callback: Callable = Callable()
+
+func _on_dialogue_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		get_viewport().set_input_as_handled()
+		_handle_dialogue_advance()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -67,61 +77,56 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER or event.keycode == KEY_SPACE:
 			get_viewport().set_input_as_handled()
-			if is_typing_active:
-				# Skip typing instantly
-				if active_typing_tween and active_typing_tween.is_valid():
-					active_typing_tween.kill()
-				message_banner.visible_characters = current_total_chars
-				is_typing_active = false
-				if dialogue_portrait:
-					dialogue_portrait.set_talking(false)
-				_start_badge_pulse()
-				if SoundManager and SoundManager.has_method("play_ui_hover"):
-					SoundManager.play_ui_hover()
-			else:
-				# Dismiss dialogue on Enter
-				_dismiss_dialogue()
+			_handle_dialogue_advance()
 
-func _process(_delta: float) -> void:
-	# Real-time frame-by-frame polling to guarantee 100% sync with active/inactive robot battery & charging
-	if not RobotManager:
+func _handle_dialogue_advance() -> void:
+	if is_typing_active:
+		# Skip typing instantly
+		if active_typing_tween and active_typing_tween.is_valid():
+			active_typing_tween.kill()
+		message_banner.visible_characters = current_total_chars
+		is_typing_active = false
+		if dialogue_portrait:
+			dialogue_portrait.set_talking(false)
+		_start_badge_pulse()
+		if SoundManager and SoundManager.has_method("play_ui_hover"):
+			SoundManager.play_ui_hover()
+	else:
+		# Advance to next dialogue item or close
+		if dialogue_queue.size() > 0:
+			var next_item = dialogue_queue.pop_front()
+			_display_dialogue_item(next_item)
+		else:
+			_dismiss_dialogue()
+
+func show_dialogue_sequence(sequence: Array, on_completed: Callable = Callable()) -> void:
+	if sequence.is_empty():
+		if on_completed.is_valid():
+			on_completed.call()
 		return
 
-	if RobotManager.atlas and atlas_battery_display:
-		if "battery" in RobotManager.atlas and "max_battery" in RobotManager.atlas:
-			atlas_battery_display.set_battery(RobotManager.atlas.battery, RobotManager.atlas.max_battery)
-		if "is_on_charging_station" in RobotManager.atlas:
-			atlas_battery_display.set_charging(RobotManager.atlas.is_on_charging_station)
-
-	if RobotManager.cipher and cipher_battery_display:
-		if "battery" in RobotManager.cipher and "max_battery" in RobotManager.cipher:
-			cipher_battery_display.set_battery(RobotManager.cipher.battery, RobotManager.cipher.max_battery)
-		if "is_on_charging_station" in RobotManager.cipher:
-			cipher_battery_display.set_charging(RobotManager.cipher.is_on_charging_station)
-
-	if RobotManager.active_robot and RobotManager.active_robot.has_method("get_best_interactable"):
-		var target = RobotManager.active_robot.get_best_interactable()
-		_on_interact_target_changed(target)
-
-func set_level_info(level_num: int, title: String, mode_desc: String = "") -> void:
-	if level_title:
-		level_title.text = "📍 УРОВЕНЬ " + str(level_num) + ": " + title.to_upper()
-	if controls_hints and not mode_desc.is_empty():
-		controls_hints.text = mode_desc
-
-func _on_robot_switched(active_robot: Node) -> void:
-	if not active_robot:
-		return
-	var r_id = active_robot.robot_id if "robot_id" in active_robot else "atlas"
-	if atlas_battery_display:
-		atlas_battery_display.set_active(r_id == "atlas")
-	if cipher_battery_display:
-		cipher_battery_display.set_active(r_id == "cipher")
+	dialogue_queue = sequence.duplicate()
+	current_dialogue_callback = on_completed
+	var first_item = dialogue_queue.pop_front()
+	_display_dialogue_item(first_item)
 
 func show_banner_message(text: String, _duration: float = 0.0) -> void:
+	dialogue_queue.clear()
+	current_dialogue_callback = Callable()
+	_display_dialogue_item({"text": text})
+
+func _display_dialogue_item(item: Variant) -> void:
 	if not dialogue_container or not message_banner:
 		return
 		
+	var text = ""
+	var forced_speaker = ""
+	if item is Dictionary:
+		text = item.get("text", "")
+		forced_speaker = item.get("speaker", "").to_lower()
+	elif item is String:
+		text = item
+
 	# Cancel previous active animations
 	if active_typing_tween and active_typing_tween.is_valid():
 		active_typing_tween.kill()
@@ -137,13 +142,20 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 	message_banner.visible_characters = 0
 	
 	current_total_chars = text.length()
-	var char_speed = 0.046 # Left-to-right steady typing cadence
-	var type_duration = max(0.60, current_total_chars * char_speed)
-	var is_catgirl = "Weo" in text or "(=^" in text or "CRT-CAT" in text or "кошк" in text.to_lower()
+	var char_speed = 0.042 # Crisp readable typing cadence
+	var type_duration = max(0.50, current_total_chars * char_speed)
+	var is_catgirl = forced_speaker == "catgirl" or "Weo" in text or "(=^" in text or "CRT-CAT" in text or "кошк" in text.to_lower()
 
 	# Set speaker portrait
 	var speaker = "catgirl"
-	if is_catgirl:
+	if not forced_speaker.is_empty():
+		if forced_speaker in ["dau", "atlas"]:
+			speaker = "atlas"
+		elif forced_speaker in ["jam", "cipher"]:
+			speaker = "cipher"
+		else:
+			speaker = "catgirl"
+	elif is_catgirl:
 		speaker = "catgirl"
 	elif text.begins_with("[DAU]") or text.begins_with("DAU:") or text.begins_with("[ATLAS]") or text.begins_with("ATLAS:"):
 		speaker = "atlas"
@@ -157,17 +169,18 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 		dialogue_portrait.set_speaker(speaker)
 		dialogue_portrait.set_talking(true)
 
-	# 1. Silky Smooth Panel Fade & Slide Up Entrance
-	dialogue_container.modulate.a = 0.0
-	dialogue_container.offset_top = default_dialogue_offset_top + 14.0
-	dialogue_container.offset_bottom = default_dialogue_offset_top + 14.0 + 108.0
-	if enter_badge:
-		enter_badge.modulate.a = 0.0
-	
-	var slide_tween = create_tween().set_parallel(true)
-	slide_tween.tween_property(dialogue_container, "modulate:a", 1.0, 0.28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	slide_tween.tween_property(dialogue_container, "offset_top", default_dialogue_offset_top, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	slide_tween.tween_property(dialogue_container, "offset_bottom", default_dialogue_offset_top + 108.0, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	# 1. Silky Smooth Panel Fade & Slide Up Entrance (if opening fresh)
+	if dialogue_container.modulate.a < 0.5:
+		dialogue_container.modulate.a = 0.0
+		dialogue_container.offset_top = default_dialogue_offset_top + 14.0
+		dialogue_container.offset_bottom = default_dialogue_offset_top + 14.0 + 108.0
+		if enter_badge:
+			enter_badge.modulate.a = 0.0
+		
+		var slide_tween = create_tween().set_parallel(true)
+		slide_tween.tween_property(dialogue_container, "modulate:a", 1.0, 0.28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		slide_tween.tween_property(dialogue_container, "offset_top", default_dialogue_offset_top, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		slide_tween.tween_property(dialogue_container, "offset_bottom", default_dialogue_offset_top + 108.0, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 	# 2. Strict Left-to-Right Typewriter Reveal (visible_characters)
 	active_typing_tween = create_tween()
@@ -222,7 +235,47 @@ func _dismiss_dialogue() -> void:
 	exit_tween.tween_property(dialogue_container, "offset_top", default_dialogue_offset_top + 8.0, 0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	exit_tween.chain().tween_callback(func():
 		dialogue_container.visible = false
+		if current_dialogue_callback.is_valid():
+			var cb = current_dialogue_callback
+			current_dialogue_callback = Callable()
+			cb.call()
 	)
+
+func _process(_delta: float) -> void:
+	# Real-time frame-by-frame polling to guarantee 100% sync with active/inactive robot battery & charging
+	if not RobotManager:
+		return
+
+	if RobotManager.atlas and atlas_battery_display:
+		if "battery" in RobotManager.atlas and "max_battery" in RobotManager.atlas:
+			atlas_battery_display.set_battery(RobotManager.atlas.battery, RobotManager.atlas.max_battery)
+		if "is_on_charging_station" in RobotManager.atlas:
+			atlas_battery_display.set_charging(RobotManager.atlas.is_on_charging_station)
+
+	if RobotManager.cipher and cipher_battery_display:
+		if "battery" in RobotManager.cipher and "max_battery" in RobotManager.cipher:
+			cipher_battery_display.set_battery(RobotManager.cipher.battery, RobotManager.cipher.max_battery)
+		if "is_on_charging_station" in RobotManager.cipher:
+			cipher_battery_display.set_charging(RobotManager.cipher.is_on_charging_station)
+
+	if RobotManager.active_robot and RobotManager.active_robot.has_method("get_best_interactable"):
+		var target = RobotManager.active_robot.get_best_interactable()
+		_on_interact_target_changed(target)
+
+func set_level_info(level_num: int, title: String, mode_desc: String = "") -> void:
+	if level_title:
+		level_title.text = "📍 УРОВЕНЬ " + str(level_num) + ": " + title.to_upper()
+	if controls_hints and not mode_desc.is_empty():
+		controls_hints.text = mode_desc
+
+func _on_robot_switched(active_robot: Node) -> void:
+	if not active_robot:
+		return
+	var r_id = active_robot.robot_id if "robot_id" in active_robot else "atlas"
+	if atlas_battery_display:
+		atlas_battery_display.set_active(r_id == "atlas")
+	if cipher_battery_display:
+		cipher_battery_display.set_active(r_id == "cipher")
 
 func _on_clue_revealed(_text: String) -> void:
 	pass
@@ -271,19 +324,19 @@ func _on_cat_avatar_pressed() -> void:
 	if SoundManager and SoundManager.has_method("play_ui_click"):
 		SoundManager.play_ui_click()
 
-	var lvl = RobotManager.current_level_index if RobotManager else 1
+	var lvl = RobotManager.current_level_index if RobotManager else 0
 	var hint_text = ""
-	if lvl == 1:
-		hint_text = "🐾 Мяу! В Бухаре взломайте стартовый терминал через JAM [TAB], заберите батарею в восточном крыле роботом DAU и вставьте в сокет эвакуации на севере!"
-	elif lvl == 2:
-		hint_text = "🐾 В Хиве робот DAU должен расчистить проход от ящиков на восточный склад, достать батарею, а затем поставить один тяжелый ящик на нажимную плиту в ангаре, чтобы запитать терминал выхода для JAM! Используйте [Shift] для быстрого спринта!"
-	elif lvl == 3:
-		hint_text = "🐾 В Самарканде нужно дважды активировать нажимные плиты! Сначала поставьте первый ящик на плиту у спавна, чтобы запитать 5-рубильниковый терминал (код 3-1-4-2-5). Затем в западном хранилище расчистите завал, заберите батарею и второй ящик, и поставьте второй ящик на плиту в ангаре эвакуации!"
-	elif lvl == 4:
-		hint_text = "🐾 ФИНАЛ В ТАШКЕНТЕ! Запустите Центральный Генератор двумя ядрами: JAM взламывает западное крыло и забирает Зеленое ядро, а DAU расчищает восточный завал и приносит Оранжевое ядро! После запуска оба робота получат бесконечный заряд!"
-	elif lvl == 0:
-		hint_text = "🐾 Привет! Я ваш бортовой ИИ-гид. Управляйте роботами на WASD, переключайтесь на TAB, а на Shift включайте спринт без потери заряда!"
+	if lvl == 0 or lvl == 1 and GameManager and GameManager.current_level_index == 0:
+		hint_text = "(=^･ω･^=) Мяу! Управляйте роботами на [WASD], переключайтесь на [TAB], а на [Shift] включайте спринт без потери заряда! DAU поднимает тяжести, JAM взламывает код!"
+	elif lvl == 1 or lvl == 2:
+		hint_text = "(=^･ω･^=) В Бухаре взломайте стартовый терминал через JAM [TAB], заберите батарею в восточном крыле роботом DAU и вставьте в сокет эвакуации на севере!"
+	elif lvl == 2 or lvl == 3:
+		hint_text = "(=^･ω･^=) В Хиве робот DAU должен расчистить проход от ящиков на восточный склад, достать батарею, а затем поставить один тяжелый ящик на нажимную плиту в ангаре, чтобы запитать терминал выхода для JAM!"
+	elif lvl == 3 or lvl == 4:
+		hint_text = "(=^･ω･^=) В Самарканде нужно запитать 5-рубильниковый терминал (код 3-1-4-2-5) ящиком на плите у спавна. Затем в западном хранилище заберите батарею и второй ящик, и поставьте его на плиту эвакуации!"
+	elif lvl == 4 or lvl == 5:
+		hint_text = "(=^･ω･^=) ФИНАЛ В ТАШКЕНТЕ! Запустите Центральный Генератор двумя ядрами: JAM взламывает западное крыло за Зеленым ядром, а DAU расчищает восточный завал за Оранжевым ядром! Запуск Генератора даст вечную энергию!"
 	else:
-		hint_text = "🐾 Действуйте сообща! DAU поднимает тяжести и читает чертежи, а JAM взламывает терминалы и переключает реле!"
+		hint_text = "(=^･ω･^=) Действуйте сообща! DAU поднимает тяжести и сканирует чертежи, а JAM взламывает терминалы и переключает реле!"
 
 	show_banner_message(hint_text, 0.0)

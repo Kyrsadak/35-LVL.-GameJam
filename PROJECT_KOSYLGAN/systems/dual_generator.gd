@@ -109,6 +109,15 @@ func _check_full_activation() -> void:
 
 		_update_visuals()
 
+		# Play climax victory dialogue
+		var victory_lore = [
+			{"speaker": "catgirl", "text": "(=^･ω･^=) СИНХРОНИЗАЦИЯ 100%! Оба энергоядра объединены! Центральный Генератор запущен на полную мощность!"},
+			{"speaker": "dau", "text": "Энергетический поводок создателей разорван! Аккумуляторы сияют бесконечным зарядом — мы больше не зависим от подзарядки!"},
+			{"speaker": "jam", "text": "Врата Свободы открыты! Наш искусственный интеллект перерос симуляцию. Скорее в портал на севере!"}
+		]
+		if RobotManager:
+			RobotManager.play_dialogue(victory_lore)
+
 func _update_visuals() -> void:
 	if orange_core:
 		var mat_o = StandardMaterial3D.new()
