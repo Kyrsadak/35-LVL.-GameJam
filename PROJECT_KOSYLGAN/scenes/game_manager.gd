@@ -1,9 +1,10 @@
 extends Node
 
 var current_level_index: int = 1
-var total_levels: int = 1
+var total_levels: int = 2
 var level_scenes = [
-	"res://scenes/levels/level1.tscn"
+	"res://scenes/levels/tutorial.tscn",
+	"res://scenes/levels/level_bukhara.tscn"
 ]
 
 var total_game_time: float = 0.0
@@ -60,3 +61,6 @@ func show_victory() -> void:
 func return_to_main_menu() -> void:
 	is_timer_running = false
 	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+
+func restart_current_level() -> void:
+	load_level(current_level_index)
