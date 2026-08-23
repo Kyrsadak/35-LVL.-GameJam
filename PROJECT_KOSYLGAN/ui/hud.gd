@@ -139,14 +139,14 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 	# 1. Silky Smooth Panel Fade & Slide Up Entrance
 	dialogue_container.modulate.a = 0.0
 	dialogue_container.offset_top = default_dialogue_offset_top + 14.0
-	dialogue_container.offset_bottom = default_dialogue_offset_top + 14.0 + 88.0
+	dialogue_container.offset_bottom = default_dialogue_offset_top + 14.0 + 108.0
 	if enter_badge:
 		enter_badge.modulate.a = 0.0
 	
 	var slide_tween = create_tween().set_parallel(true)
 	slide_tween.tween_property(dialogue_container, "modulate:a", 1.0, 0.28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	slide_tween.tween_property(dialogue_container, "offset_top", default_dialogue_offset_top, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	slide_tween.tween_property(dialogue_container, "offset_bottom", default_dialogue_offset_top + 88.0, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	slide_tween.tween_property(dialogue_container, "offset_bottom", default_dialogue_offset_top + 108.0, 0.32).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 	# 2. Strict Left-to-Right Typewriter Reveal (visible_characters)
 	active_typing_tween = create_tween()
