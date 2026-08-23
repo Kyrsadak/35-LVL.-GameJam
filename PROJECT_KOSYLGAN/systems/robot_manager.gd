@@ -14,11 +14,13 @@ var camera_pivot: Node3D = null
 
 var current_level_index: int = 1
 var is_game_paused: bool = false
+var infinite_energy_active: bool = false
 
 var discovered_clues: Dictionary = {}
 
 func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station: Node3D, cam_pivot: Node3D = null) -> void:
 	is_game_over = false
+	infinite_energy_active = false
 	current_level_index = level_idx
 	atlas = atlas_node
 	cipher = cipher_node
@@ -160,3 +162,15 @@ func complete_level() -> void:
 
 func restart_level() -> void:
 	get_tree().reload_current_scene()
+
+func enable_infinite_energy() -> void:
+	infinite_energy_active = true
+	if atlas:
+		atlas.battery = atlas.max_battery
+		atlas.discharge_rate = 0.0
+		atlas.battery_changed.emit(atlas.battery, atlas.max_battery)
+	if cipher:
+		cipher.battery = cipher.max_battery
+		cipher.discharge_rate = 0.0
+		cipher.battery_changed.emit(cipher.battery, cipher.max_battery)
+	show_message("⚡ ГЕНЕРАТОР ЗАПУЩЕН! РОБОТЫ ОБРЕЛИ БЕСКОНЕЧНУЮ ЭНЕРГИЮ И НЕЗАВИСИМОСТЬ! ⚡", 6.0)

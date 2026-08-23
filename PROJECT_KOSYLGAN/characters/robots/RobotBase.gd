@@ -83,7 +83,10 @@ func _physics_process(delta: float) -> void:
 		return
 
 	# Dynamic Battery Drain & Charge Logic
-	if is_on_charging_station:
+	if RobotManager and RobotManager.infinite_energy_active:
+		battery = max_battery
+		battery_changed.emit(battery, max_battery)
+	elif is_on_charging_station:
 		# Strictly charge only: zero drain while docked
 		velocity = Vector3.ZERO
 		if battery < max_battery:

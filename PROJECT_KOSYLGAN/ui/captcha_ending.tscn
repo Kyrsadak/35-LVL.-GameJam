@@ -1,0 +1,245 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://ui/captcha_ending.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.08, 0.1, 0.14, 0.96)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.2, 0.75, 1, 0.8)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_box"]
+bg_color = Color(0.12, 0.15, 0.22, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.8, 1, 0.5)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialog"]
+bg_color = Color(0.06, 0.08, 0.12, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.7, 0.2, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="CaptchaEnding" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="DarkOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.03, 0.04, 0.07, 0.9)
+
+[node name="CaptchaCard" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(560, 380)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -220.0
+offset_right = 280.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="VBox" type="VBoxContainer" parent="CaptchaCard"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="HeaderLabel" type="Label" parent="CaptchaCard/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "🛡️ TURING PROTOCOL v9.4 // HUMAN VERIFICATION"
+horizontal_alignment = 1
+
+[node name="SubLabel" type="Label" parent="CaptchaCard/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.8, 0.9, 0.8)
+theme_override_font_sizes/font_size = 14
+text = "Для открытия шлюза в Реальный Мир подтвердите свою биологическую природу:"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="CaptchaCard/VBox"]
+layout_mode = 2
+
+[node name="CheckboxArea" type="PanelContainer" parent="CaptchaCard/VBox"]
+custom_minimum_size = Vector2(400, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_box")
+
+[node name="HBox" type="HBoxContainer" parent="CaptchaCard/VBox/CheckboxArea"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ControlSpacer" type="Control" parent="CaptchaCard/VBox/CheckboxArea/HBox"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="Checkbox" type="CheckBox" parent="CaptchaCard/VBox/CheckboxArea/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "  Я не робот / I'm not a robot"
+
+[node name="Spinner" type="Label" parent="CaptchaCard/VBox/CheckboxArea"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "  ⚙️ Проверка биометрии..."
+vertical_alignment = 1
+
+[node name="CheckMark" type="Label" parent="CaptchaCard/VBox/CheckboxArea"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 28
+text = "  ❌"
+vertical_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="CaptchaCard/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 0.8)
+theme_override_font_sizes/font_size = 14
+text = "Пожалуйста, поставьте галочку в поле выше"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="DialogBox" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(760, 160)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -380.0
+offset_top = -200.0
+offset_right = 380.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dialog")
+
+[node name="Margin" type="MarginContainer" parent="DialogBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 15
+
+[node name="VBox" type="VBoxContainer" parent="DialogBox/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SpeakerName" type="Label" parent="DialogBox/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "🤖 ATLAS (DAU)"
+
+[node name="DialogText" type="Label" parent="DialogBox/Margin/VBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "Погоди... Мы же буквально роботы!"
+autowrap_mode = 2
+
+[node name="NextBtn" type="Button" parent="DialogBox/Margin/VBox"]
+custom_minimum_size = Vector2(140, 36)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 14
+text = "Дальше ➔"
+
+[node name="VictoryPanel" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(600, 420)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -210.0
+offset_right = 300.0
+offset_bottom = 210.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="VBox" type="VBoxContainer" parent="VictoryPanel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="VictoryPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 26
+text = "🏆 PROJECT: KOSYLGAN // ПОБЕДА!"
+horizontal_alignment = 1
+
+[node name="StatsLabel" type="Label" parent="VictoryPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "Статистика прохождения..."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="VictoryPanel/VBox"]
+layout_mode = 2
+
+[node name="MainMenuBtn" type="Button" parent="VictoryPanel/VBox"]
+custom_minimum_size = Vector2(220, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 16
+text = "🏠 В ГЛАВНОЕ МЕНЮ"
+
+[node name="WhiteFlash" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
