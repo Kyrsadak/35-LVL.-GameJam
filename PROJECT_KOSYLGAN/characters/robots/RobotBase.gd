@@ -175,11 +175,12 @@ func _handle_movement(delta: float) -> void:
 			if active_skin.has_method("orient_model_to_direction"):
 				active_skin.orient_model_to_direction(move_dir, delta)
 			if active_skin.has_method("update_move_animation"):
-				active_skin.update_move_animation(velocity.length() / move_speed, delta)
+				var ratio = max(0.9, velocity.length() / max(0.1, move_speed))
+				active_skin.update_move_animation(ratio, delta)
 
 		var current_speed_scale = 0.75 * (1.65 if is_sprinting else 1.0)
-		if skin and "anim_player" in skin and skin.anim_player:
-			current_speed_scale = skin.anim_player.speed_scale * (1.65 if is_sprinting else 1.0)
+		if active_skin and "anim_player" in active_skin and active_skin.anim_player:
+			current_speed_scale = active_skin.anim_player.speed_scale * (1.65 if is_sprinting else 1.0)
 		var step_interval = 0.38 / max(0.1, current_speed_scale)
 
 		_step_timer += delta
@@ -191,8 +192,9 @@ func _handle_movement(delta: float) -> void:
 		_step_timer = 0.20
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
 		velocity.z = move_toward(velocity.z, 0, friction * delta)
-		if skin and skin.has_method("update_move_animation"):
-			skin.update_move_animation(velocity.length() / move_speed, delta)
+		var active_skin = skin if (skin and is_instance_valid(skin)) else get_node_or_null("Skin")
+		if active_skin and active_skin.has_method("update_move_animation"):
+			active_skin.update_move_animation(0.0, delta)
 
 func _handle_input() -> void:
 	if Input.is_action_just_pressed("p1_interact"):

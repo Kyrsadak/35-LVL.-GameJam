@@ -20,7 +20,9 @@ var is_sleeping: bool = false
 var sleep_zzz_node: Node3D = null
 
 func _ready() -> void:
-	anim_player = find_child("AnimationPlayer", true, false)
+	anim_player = get_node_or_null("AnimationPlayer")
+	if not anim_player:
+		anim_player = find_child("AnimationPlayer", true, false)
 	screen_face = find_child("ScreenFace", true, false) as MeshInstance3D
 	
 	_setup_screen_materials()
@@ -202,7 +204,7 @@ func update_move_animation(velocity_ratio: float, _delta: float) -> void:
 	if not anim_player:
 		return
 
-	if velocity_ratio > 0.05:
+	if velocity_ratio > 0.01:
 		is_sleeping = false
 		if sleep_zzz_node and sleep_zzz_node.has_method("set_active"):
 			sleep_zzz_node.set_active(false)
@@ -211,12 +213,12 @@ func update_move_animation(velocity_ratio: float, _delta: float) -> void:
 		return
 
 	if is_holding:
-		if velocity_ratio > 0.05:
+		if velocity_ratio > 0.01:
 			var target_run = "Run_Hold" if anim_player.has_animation("Run_Hold") else "Run"
 			if current_anim != target_run or not anim_player.is_playing():
-				anim_player.play(target_run, 0.1)
+				anim_player.play(target_run, 0.08)
 				current_anim = target_run
-			anim_player.speed_scale = clamp(velocity_ratio * 1.3, 0.8, 2.0)
+			anim_player.speed_scale = clamp(velocity_ratio * 1.4, 0.9, 2.2)
 		else:
 			var target_idle = "Idle_Hold" if anim_player.has_animation("Idle_Hold") else "Idle"
 			if current_anim != target_idle or not anim_player.is_playing():
@@ -224,12 +226,12 @@ func update_move_animation(velocity_ratio: float, _delta: float) -> void:
 				current_anim = target_idle
 			anim_player.speed_scale = 1.0
 	else:
-		if velocity_ratio > 0.05:
+		if velocity_ratio > 0.01:
 			if current_anim != "Run" or not anim_player.is_playing():
 				if anim_player.has_animation("Run"):
-					anim_player.play("Run", 0.1)
+					anim_player.play("Run", 0.08)
 					current_anim = "Run"
-			anim_player.speed_scale = clamp(velocity_ratio * 1.3, 0.8, 2.0)
+			anim_player.speed_scale = clamp(velocity_ratio * 1.4, 0.9, 2.2)
 		else:
 			if current_anim != "Idle" or not anim_player.is_playing():
 				if anim_player.has_animation("Idle"):
