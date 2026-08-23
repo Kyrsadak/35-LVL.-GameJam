@@ -129,10 +129,9 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 		speaker = "atlas"
 	elif text.begins_with("[CIPHER]") or text.begins_with("CIPHER:"):
 		speaker = "cipher"
-	elif "atlas" in text.to_lower() and not "cipher" in text.to_lower():
-		speaker = "atlas"
-	elif "cipher" in text.to_lower() and not "atlas" in text.to_lower():
-		speaker = "cipher"
+	elif RobotManager and RobotManager.active_robot:
+		var r_id = RobotManager.active_robot.robot_id if "robot_id" in RobotManager.active_robot else "atlas"
+		speaker = r_id
 		
 	if dialogue_portrait:
 		dialogue_portrait.set_speaker(speaker)

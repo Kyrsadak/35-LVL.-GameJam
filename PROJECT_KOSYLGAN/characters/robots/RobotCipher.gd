@@ -36,12 +36,12 @@ func interact() -> void:
 	# 3. Guide tablet (Atlas only)
 	elif target and target.is_in_group("guide_tablet"):
 		if RobotManager:
-			RobotManager.show_message("[CIPHER]: Этот чертёж слишком сложен для меня. Нужен ATLAS!")
+			RobotManager.show_message("Этот чертёж слишком сложен для меня. Нужен ATLAS!")
 
 	# 4. Battery / Key module (Atlas only)
 	elif target and (target.is_in_group("key_module") or target.is_in_group("battery_cell")):
 		if RobotManager:
-			RobotManager.show_message("[CIPHER]: Батарея слишком тяжелая! Нужен вилочный погрузчик ATLAS.")
+			RobotManager.show_message("Батарея слишком тяжелая! Нужен вилочный погрузчик ATLAS.")
 
 	# 5. Generic interactable
 	elif target and target.has_method("interact"):

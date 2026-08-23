@@ -131,7 +131,17 @@ func _on_robot_discharged(robot: Node) -> void:
 func _on_guide_read(guide_id: String, clue_text: String) -> void:
 	discovered_clues[guide_id] = clue_text
 	clue_revealed.emit(clue_text)
-	show_message("[ATLAS]: " + clue_text + " — Теперь CIPHER может безопасно взломать терминал!", 4.0)
+	
+	# Strip redundant prefixes like "[ATLAS]:", "СХЕМА №1:", "СХЕМА:"
+	var clean_clue = clue_text
+	if clean_clue.begins_with("СХЕМА №1:") or clean_clue.begins_with("СХЕМА № 1:"):
+		clean_clue = clean_clue.substr(clean_clue.find(":") + 1).strip_edges()
+	elif clean_clue.begins_with("СХЕМА:"):
+		clean_clue = clean_clue.substr(clean_clue.find(":") + 1).strip_edges()
+	elif clean_clue.begins_with("[ATLAS]:"):
+		clean_clue = clean_clue.substr(8).strip_edges()
+		
+	show_message(clean_clue + " — Теперь CIPHER может безопасно взломать терминал!", 4.0)
 	if SoundManager:
 		SoundManager.play_tablet_read()
 
