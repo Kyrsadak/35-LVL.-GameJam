@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://systems/socket_terminal.gd" id="1_sock"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sock_interact"]
-size = Vector3(2.4, 2.0, 2.4)
+size = Vector3(3.2, 2.2, 3.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sock_solid"]
 size = Vector3(1.6, 1.1, 1.3)

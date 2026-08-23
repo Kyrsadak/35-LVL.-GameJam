@@ -30,8 +30,9 @@ var is_discharged: bool = false
 var current_interactable: Node = null
 
 @onready var skin = $Skin
-@onready var interaction_area: Area3D = $InteractionArea
-@onready var carry_pivot: Marker3D = $CarryPivot
+@onready var interaction_area: Area3D = find_child("InteractionArea", true, false) as Area3D
+@onready var carry_pivot: Marker3D = find_child("CarryPivot", true, false) as Marker3D
+@onready var push_ray: RayCast3D = find_child("PushRay", true, false) as RayCast3D
 
 var carried_object: Node3D = null
 var _step_timer: float = 0.0

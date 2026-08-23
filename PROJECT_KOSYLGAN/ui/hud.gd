@@ -219,6 +219,19 @@ func _on_interact_target_changed(target: Node) -> void:
 			interact_prompt.text = "[E] ИЗУЧИТЬ СХЕМУ"
 		elif target.is_in_group("terminal"):
 			interact_prompt.text = "[E] ВЗЛОМАТЬ ТЕРМИНАЛ"
+		elif target.is_in_group("socket_terminal"):
+			if "current_state" in target and target.current_state == 1: # BATTERY_INSERTED
+				if RobotManager and RobotManager.active_robot == RobotManager.cipher:
+					interact_prompt.text = "[E] ЗАПУСТИТЬ ГЕНЕРАТОР"
+				else:
+					interact_prompt.text = "🔒 НУЖЕН CIPHER (ЗЕЛЁНЫЙ)"
+			elif "current_state" in target and target.current_state == 2: # ACTIVATED
+				interact_prompt.text = "⚡ ГЕНЕРАТОР РАБОТАЕТ"
+			else:
+				if RobotManager and RobotManager.active_robot == RobotManager.atlas and RobotManager.atlas.carried_object != null:
+					interact_prompt.text = "[E] ВСТАВИТЬ БАТАРЕЮ"
+				else:
+					interact_prompt.text = "🔒 ПРИЁМНИК (Нужна батарея)"
 		elif target.is_in_group("key_module") or target.is_in_group("pushable_box") or target.is_in_group("boxes"):
 			interact_prompt.text = "[E] ПОДНЯТЬ ПРЕДМЕТ"
 		else:

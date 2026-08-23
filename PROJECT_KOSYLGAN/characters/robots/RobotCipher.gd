@@ -12,32 +12,40 @@ func _ready() -> void:
 		skin.set_skin_material(load("res://characters/player/CharacterSkins/character_mat_cipher.tres"))
 
 func interact() -> void:
+	var target = current_interactable
+	if not target and push_ray and push_ray.is_colliding():
+		target = push_ray.get_collider()
+	
+	if target and not target.is_in_group("socket_terminal") and not target.is_in_group("terminal"):
+		if target.get_parent() and (target.get_parent().is_in_group("socket_terminal") or target.get_parent().is_in_group("terminal")):
+			target = target.get_parent()
+
 	# 1. Hack standard door terminal
-	if current_interactable and current_interactable.is_in_group("terminal"):
-		if current_interactable.has_method("start_hack"):
-			current_interactable.start_hack(self)
-			hack_started.emit(current_interactable)
+	if target and target.is_in_group("terminal"):
+		if target.has_method("start_hack"):
+			target.start_hack(self)
+			hack_started.emit(target)
 			return
 
 	# 2. Activate Socket Terminal / Power Receiver Dock with battery
-	elif current_interactable and current_interactable.is_in_group("socket_terminal"):
-		if current_interactable.has_method("activate_generator"):
-			current_interactable.activate_generator(self)
+	elif target and target.is_in_group("socket_terminal"):
+		if target.has_method("activate_generator"):
+			target.activate_generator(self)
 			return
 
 	# 3. Guide tablet (Atlas only)
-	elif current_interactable and current_interactable.is_in_group("guide_tablet"):
+	elif target and target.is_in_group("guide_tablet"):
 		if RobotManager:
-			RobotManager.show_message("CIPHER не может прочесть чертёж! Нужен ATLAS.")
+			RobotManager.show_message("[CIPHER]: Этот чертёж слишком сложен для меня. Нужен ATLAS!")
 
 	# 4. Battery / Key module (Atlas only)
-	elif current_interactable and (current_interactable.is_in_group("key_module") or current_interactable.is_in_group("battery_cell")):
+	elif target and (target.is_in_group("key_module") or target.is_in_group("battery_cell")):
 		if RobotManager:
-			RobotManager.show_message("Батарея слишком тяжелая! Нужен ATLAS с вилочным захватом, чтобы поднять её.")
+			RobotManager.show_message("[CIPHER]: Батарея слишком тяжелая! Нужен вилочный погрузчик ATLAS.")
 
 	# 5. Generic interactable
-	elif current_interactable and current_interactable.has_method("interact"):
-		current_interactable.interact(self)
+	elif target and target.has_method("interact"):
+		target.interact(self)
 
 func play_hack_animation() -> void:
 	if skin and skin.has_method("play_hack"):

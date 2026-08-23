@@ -5,8 +5,6 @@ signal guide_read(guide_id: String, text: String)
 signal key_module_picked(module: Node3D)
 signal key_module_inserted()
 
-@onready var push_ray: RayCast3D = $PushRay
-
 func _ready() -> void:
 	robot_id = "atlas"
 	robot_display_name = "ATLAS (СИЛОВОЙ)"
@@ -20,10 +18,15 @@ func interact() -> void:
 	if carried_object != null:
 		# If near socket (or facing it) and holding key module or battery
 		var sock = current_interactable
+		if sock and not sock.is_in_group("socket_terminal") and sock.get_parent() and sock.get_parent().is_in_group("socket_terminal"):
+			sock = sock.get_parent()
 		if not sock and push_ray and push_ray.is_colliding():
 			var col = push_ray.get_collider()
-			if col and col.is_in_group("socket_terminal"):
-				sock = col
+			if col:
+				if col.is_in_group("socket_terminal"):
+					sock = col
+				elif col.get_parent() and col.get_parent().is_in_group("socket_terminal"):
+					sock = col.get_parent()
 				
 		if sock and sock.is_in_group("socket_terminal") and (carried_object.is_in_group("key_module") or carried_object.is_in_group("battery_cell")):
 			if sock.has_method("insert_module"):
