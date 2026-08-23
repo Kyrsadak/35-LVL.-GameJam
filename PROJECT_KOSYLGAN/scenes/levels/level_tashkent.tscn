@@ -458,6 +458,10 @@ guide_text = "КОД ПИТАНИЯ СИСТЕМЫ: 3 -> 1 -> 4 -> 2 -> 5. По�
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.0, 0, 2.5)
 target_gate_path = NodePath("../LaserGateEast")
 
+[node name="CableEastPlateToGate" parent="." instance=ExtResource("30_cable")]
+points = Array[Vector3]([Vector3(11.0, 0.05, 2.5), Vector3(12.5, 0.05, 2.5), Vector3(12.5, 0.05, 0.5)])
+source_plate_path = NodePath("../PressurePlateEast")
+
 [node name="PushableBoxEast1" parent="." instance=ExtResource("8_box")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0, 0.6, 2.5)
 
