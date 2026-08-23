@@ -37,17 +37,10 @@ func _ready() -> void:
 		close_rules_btn.pressed.connect(_hide_rules)
 		close_rules_btn.mouse_entered.connect(_play_hover)
 
-	# Play ambient background music safely
-	if audio_player:
-		var music_path = "res://audio/loading_screen.mp3"
-		if not ResourceLoader.exists(music_path):
-			music_path = "res://audio/bgm.mp3"
-		if ResourceLoader.exists(music_path):
-			var music_res = ResourceLoader.load(music_path)
-			if music_res is AudioStream:
-				audio_player.stream = music_res
-				_apply_music_volume()
-				audio_player.play()
+	# Play ambient background music safely via SoundManager
+	if SoundManager:
+		_apply_music_volume()
+		SoundManager.play_bgm()
 
 func _process(delta: float) -> void:
 	anim_time += delta
@@ -168,11 +161,11 @@ func _update_slider_positions() -> void:
 		slider_cube_sound.position.x = lerp(SLIDER_LOCAL_MIN, SLIDER_LOCAL_MAX, sound_vol_ratio)
 
 func _apply_music_volume() -> void:
+	var vol_db = -80.0 if music_vol_ratio <= 0.01 else linear_to_db(music_vol_ratio)
+	if SoundManager and SoundManager.has_method("set_bgm_volume"):
+		SoundManager.set_bgm_volume(vol_db)
 	if audio_player:
-		if music_vol_ratio <= 0.01:
-			audio_player.volume_db = -80.0
-		else:
-			audio_player.volume_db = linear_to_db(music_vol_ratio)
+		audio_player.volume_db = vol_db
 
 func _apply_sound_volume() -> void:
 	var bus_idx = AudioServer.get_bus_index("Master")

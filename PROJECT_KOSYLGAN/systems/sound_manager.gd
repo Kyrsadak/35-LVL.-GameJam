@@ -21,12 +21,20 @@ func _ready() -> void:
 	# Dedicated background music player
 	bgm_player = AudioStreamPlayer.new()
 	bgm_player.bus = "Master"
-	bgm_player.volume_db = -18.0
+	bgm_player.volume_db = -3.0
 	add_child(bgm_player)
 
+var bgm_base_volume: float = -3.0
+
 func play_bgm(path: String = "res://audio/ambient_level1.wav") -> void:
-	if bgm_player and bgm_player.playing:
+	if not bgm_player:
+		bgm_player = AudioStreamPlayer.new()
+		bgm_player.bus = "Master"
+		add_child(bgm_player)
+	
+	if bgm_player.playing:
 		return
+	
 	var stream: AudioStream = null
 	if FileAccess.file_exists(path):
 		var file = FileAccess.open(path, FileAccess.READ)
@@ -37,23 +45,30 @@ func play_bgm(path: String = "res://audio/ambient_level1.wav") -> void:
 				wav.format = AudioStreamWAV.FORMAT_16_BITS
 				wav.stereo = true
 				wav.mix_rate = 44100
-				wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
 				wav.data = bytes.slice(44)
+				wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
+				wav.loop_begin = 0
+				wav.loop_end = int(wav.data.size() / 4)
 				stream = wav
 	if not stream and ResourceLoader.exists(path):
 		stream = load(path)
 	if stream:
 		bgm_player.stream = stream
-		bgm_player.volume_db = -16.0
+		bgm_player.volume_db = bgm_base_volume
 		bgm_player.play()
 
+func set_bgm_volume(volume_db: float) -> void:
+	bgm_base_volume = volume_db
+	if bgm_player:
+		bgm_player.volume_db = volume_db
+
 func stop_bgm(fade_time: float = 1.5) -> void:
-	if not bgm_player.playing:
+	if not bgm_player or not bgm_player.playing:
 		return
 	var t = create_tween()
 	t.tween_property(bgm_player, "volume_db", -60.0, fade_time)
 	t.tween_callback(bgm_player.stop)
-	t.tween_property(bgm_player, "volume_db", -18.0, 0.0)
+	t.tween_property(bgm_player, "volume_db", bgm_base_volume, 0.0)
 
 
 func _get_free_player() -> AudioStreamPlayer:
