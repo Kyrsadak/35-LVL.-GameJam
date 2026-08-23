@@ -170,11 +170,12 @@ func _handle_movement(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, move_dir.x * current_move_speed, acceleration * (1.3 if is_sprinting else 1.0) * delta)
 		velocity.z = move_toward(velocity.z, move_dir.z * current_move_speed, acceleration * (1.3 if is_sprinting else 1.0) * delta)
 		
-		if skin:
-			if skin.has_method("orient_model_to_direction"):
-				skin.orient_model_to_direction(move_dir, delta)
-			if skin.has_method("update_move_animation"):
-				skin.update_move_animation(velocity.length() / move_speed, delta)
+		var active_skin = skin if (skin and is_instance_valid(skin)) else get_node_or_null("Skin")
+		if active_skin:
+			if active_skin.has_method("orient_model_to_direction"):
+				active_skin.orient_model_to_direction(move_dir, delta)
+			if active_skin.has_method("update_move_animation"):
+				active_skin.update_move_animation(velocity.length() / move_speed, delta)
 
 		var current_speed_scale = 0.75 * (1.65 if is_sprinting else 1.0)
 		if skin and "anim_player" in skin and skin.anim_player:

@@ -195,16 +195,28 @@ func set_holding(holding: bool) -> void:
 			current_anim = "Idle"
 
 func update_move_animation(velocity_ratio: float, _delta: float) -> void:
-	if not anim_player or is_lifting or is_sleeping:
+	if not anim_player:
+		anim_player = get_node_or_null("AnimationPlayer")
+		if not anim_player:
+			anim_player = find_child("AnimationPlayer", true, false)
+	if not anim_player:
+		return
+
+	if velocity_ratio > 0.05:
+		is_sleeping = false
+		if sleep_zzz_node and sleep_zzz_node.has_method("set_active"):
+			sleep_zzz_node.set_active(false)
+
+	if is_lifting or is_sleeping:
 		return
 
 	if is_holding:
 		if velocity_ratio > 0.05:
 			var target_run = "Run_Hold" if anim_player.has_animation("Run_Hold") else "Run"
 			if current_anim != target_run or not anim_player.is_playing():
-				anim_player.play(target_run, 0.12)
+				anim_player.play(target_run, 0.1)
 				current_anim = target_run
-			anim_player.speed_scale = clamp(velocity_ratio * 1.25, 0.8, 1.8)
+			anim_player.speed_scale = clamp(velocity_ratio * 1.3, 0.8, 2.0)
 		else:
 			var target_idle = "Idle_Hold" if anim_player.has_animation("Idle_Hold") else "Idle"
 			if current_anim != target_idle or not anim_player.is_playing():
@@ -215,9 +227,9 @@ func update_move_animation(velocity_ratio: float, _delta: float) -> void:
 		if velocity_ratio > 0.05:
 			if current_anim != "Run" or not anim_player.is_playing():
 				if anim_player.has_animation("Run"):
-					anim_player.play("Run", 0.12)
+					anim_player.play("Run", 0.1)
 					current_anim = "Run"
-			anim_player.speed_scale = clamp(velocity_ratio * 1.25, 0.8, 1.8)
+			anim_player.speed_scale = clamp(velocity_ratio * 1.3, 0.8, 2.0)
 		else:
 			if current_anim != "Idle" or not anim_player.is_playing():
 				if anim_player.has_animation("Idle"):
