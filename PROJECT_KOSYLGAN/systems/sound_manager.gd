@@ -274,3 +274,42 @@ func play_door_open() -> void:
 	player.pitch_scale = 1.0
 	player.play()
 
+# 13. Old CRT TV Power-Down (high-frequency capacitor discharge whine, static sweep & mechanical relay pop)
+func play_tv_off() -> void:
+	var duration = 1.5
+	var num_samples = int(sample_rate * duration)
+	var bytes = PackedByteArray()
+	bytes.resize(num_samples * 2)
+	for i in range(num_samples):
+		var t = float(i) / sample_rate
+		var s = 0.0
+		
+		# Part 1: High frequency capacitor flyback whine sweeping down from 4.2kHz to 60Hz
+		if t < 0.65:
+			var decay = exp(-t * 4.0)
+			var freq = 4200.0 * exp(-t * 5.5) + 60.0
+			s += sin(t * freq * TAU) * 0.45 * decay
+			# White noise sizzle
+			s += (randf() * 2.0 - 1.0) * 0.15 * decay
+		
+		# Part 2: Low-voltage coil de-energize hum and thump (around t = 0.35 to 0.95)
+		if t >= 0.30 and t < 0.95:
+			var t_sub = t - 0.30
+			var env_sub = exp(-t_sub * 5.5)
+			s += sin(t_sub * 100.0 * TAU) * 0.45 * env_sub
+		
+		# Part 3: Mechanical power switch click at t = 0.04
+		if t >= 0.03 and t < 0.12:
+			var t_click = t - 0.03
+			var click_env = exp(-t_click * 45.0)
+			s += sin(t_click * 850.0 * TAU) * 0.65 * click_env
+			s += (randf() * 2.0 - 1.0) * 0.45 * click_env
+			
+		var val = int(clamp(s * 28000.0, -32767, 32767))
+		bytes.encode_s16(i * 2, val)
+	var player = _get_free_player()
+	player.stream = _create_wav(bytes)
+	player.volume_db = 0.0
+	player.pitch_scale = 1.0
+	player.play()
+

@@ -18,6 +18,7 @@ var is_game_paused: bool = false
 var discovered_clues: Dictionary = {}
 
 func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station: Node3D, cam_pivot: Node3D = null) -> void:
+	is_game_over = false
 	current_level_index = level_idx
 	atlas = atlas_node
 	cipher = cipher_node
@@ -92,13 +93,33 @@ func try_switch_robot() -> void:
 	if SoundManager:
 		SoundManager.play_switch()
 
+var is_game_over: bool = false
+
 func _on_robot_discharged(robot: Node) -> void:
+	if is_game_over:
+		return
+	is_game_over = true
+	
 	var r_name = robot.robot_display_name if "robot_display_name" in robot else "РОБОТ"
-	show_message("⚡ БАТАРЕЯ " + r_name + " РАЗРЯЖЕНА! Перезапуск...", 2.5)
-	if SoundManager:
-		SoundManager.play_spark_error()
+	show_message("⚡ КРИТИЧЕСКИЙ РАЗРЯД: " + r_name + "! [СИСТЕМА ОТКЛЮЧЕНА]", 3.0)
 	level_failed.emit("Батарея разряжена")
-	get_tree().create_timer(2.0).timeout.connect(restart_level)
+	
+	# Instantiate CRT TV Turn-Off Effect Overlay
+	var crt_scene = load("res://ui/crt_tv_off.tscn")
+	if crt_scene:
+		var crt = crt_scene.instantiate()
+		get_tree().root.add_child(crt)
+		crt.play_effect(func():
+			is_game_over = false
+			get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+		)
+	else:
+		if SoundManager:
+			SoundManager.play_tv_off()
+		get_tree().create_timer(1.6).timeout.connect(func():
+			is_game_over = false
+			get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+		)
 
 func _on_guide_read(guide_id: String, clue_text: String) -> void:
 	discovered_clues[guide_id] = clue_text
