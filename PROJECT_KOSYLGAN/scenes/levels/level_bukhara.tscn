@@ -130,12 +130,28 @@ collision_mask = 7
 size = Vector3(0.5, 3, 4.5)
 material = ExtResource("15_wall")
 
+[node name="WallRotundaSW_Fill" type="CSGBox3D" parent="Geometry/CentralRotunda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.8, 1.5, 4.8)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(2.5, 3, 2.5)
+material = ExtResource("15_wall")
+
 [node name="WallRotundaSE" type="CSGBox3D" parent="Geometry/CentralRotunda"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 5.25, 1.5, 4.25)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
 size = Vector3(0.5, 3, 4.5)
+material = ExtResource("15_wall")
+
+[node name="WallRotundaSE_Fill" type="CSGBox3D" parent="Geometry/CentralRotunda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 1.5, 4.8)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(2.5, 3, 2.5)
 material = ExtResource("15_wall")
 
 [node name="WallRotundaNW" type="CSGBox3D" parent="Geometry/CentralRotunda"]
@@ -146,12 +162,28 @@ collision_mask = 7
 size = Vector3(0.5, 3, 4.5)
 material = ExtResource("15_wall")
 
+[node name="WallRotundaNW_Fill" type="CSGBox3D" parent="Geometry/CentralRotunda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.8, 1.5, -8.8)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(2.5, 3, 2.5)
+material = ExtResource("15_wall")
+
 [node name="WallRotundaNE" type="CSGBox3D" parent="Geometry/CentralRotunda"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 5.25, 1.5, -8.25)
 use_collision = true
 collision_layer = 2
 collision_mask = 7
 size = Vector3(0.5, 3, 4.5)
+material = ExtResource("15_wall")
+
+[node name="WallRotundaNE_Fill" type="CSGBox3D" parent="Geometry/CentralRotunda"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 1.5, -8.8)
+use_collision = true
+collision_layer = 2
+collision_mask = 7
+size = Vector3(2.5, 3, 2.5)
 material = ExtResource("15_wall")
 
 [node name="WallRotundaNorthL" type="CSGBox3D" parent="Geometry/CentralRotunda"]
@@ -339,9 +371,6 @@ transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.9, 1.8, 10)
 [node name="PosterBukhara" parent="Furniture" instance=ExtResource("40_poster")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2.95, 1.6, 7.5)
 poster_index = 1
-
-[node name="RoboCatGirl" parent="Furniture" instance=ExtResource("42_robocat")]
-transform = Transform3D(0.92388, 0, -0.382683, 0, 1, 0, 0.382683, 0, 0.92388, 4.5, 0, -4.5)
 
 [node name="ChargingStation" parent="." instance=ExtResource("4_station")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.2)
