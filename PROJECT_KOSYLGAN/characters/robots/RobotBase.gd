@@ -135,6 +135,9 @@ func _handle_movement(delta: float) -> void:
 	if Input.is_action_pressed("p1_move_down"):
 		input_vec.y += 1.0
 
+	var is_sprinting = Input.is_action_pressed("p1_sprint") or Input.is_key_pressed(KEY_SHIFT)
+	var current_move_speed = move_speed * 1.65 if is_sprinting else move_speed
+
 	var move_dir = Vector3.ZERO
 	if input_vec.length_squared() > 0.01:
 		input_vec = input_vec.normalized()
@@ -154,12 +157,13 @@ func _handle_movement(delta: float) -> void:
 			move_dir = Vector3(input_vec.x, 0, input_vec.y).normalized()
 
 	if move_dir.length_squared() > 0.01:
-		velocity.x = move_toward(velocity.x, move_dir.x * move_speed, acceleration * delta)
-		velocity.z = move_toward(velocity.z, move_dir.z * move_speed, acceleration * delta)
+		velocity.x = move_toward(velocity.x, move_dir.x * current_move_speed, acceleration * (1.3 if is_sprinting else 1.0) * delta)
+		velocity.z = move_toward(velocity.z, move_dir.z * current_move_speed, acceleration * (1.3 if is_sprinting else 1.0) * delta)
 		
-		# Footstep sound cadence (matching 0.64s walk cycle, 0.32s per foot)
+		# Footstep sound cadence
 		_step_timer += delta
-		if _step_timer >= 0.32:
+		var step_interval = 0.20 if is_sprinting else 0.32
+		if _step_timer >= step_interval:
 			_step_timer = 0.0
 			if SoundManager:
 				SoundManager.play_footstep(-16.0)

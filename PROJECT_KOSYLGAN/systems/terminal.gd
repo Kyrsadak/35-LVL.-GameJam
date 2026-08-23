@@ -7,6 +7,8 @@ extends Area3D
 @export var require_exact_order: bool = false
 @export var clue_id: String = "guide_1"
 @export var target_gate_path: NodePath
+@export var requires_power: bool = false
+@export var is_powered: bool = true
 
 @onready var front_hatch: MeshInstance3D = $FrontHatch
 @onready var screen_mesh: MeshInstance3D = $AngledTop/ScreenMesh
@@ -34,17 +36,34 @@ func _ready() -> void:
 			mat_f.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 			front_hatch.set_surface_override_material(0, mat_f)
 
-	# Apply Screen Deck Texture (Locked)
+	# Apply Screen Deck Texture (Locked / Unpowered)
 	_update_screen_texture(false)
 
 func _process(delta: float) -> void:
 	time_passed += delta
 	if omni_light:
-		if is_hacked:
+		if requires_power and not is_powered:
+			# Unpowered dim flicker
+			omni_light.light_energy = 0.15 + 0.05 * sin(time_passed * 1.5)
+			omni_light.light_color = Color(0.4, 0.4, 0.4)
+		elif is_hacked:
 			omni_light.light_energy = 0.8 + 0.15 * sin(time_passed * 2.0)
+			omni_light.light_color = Color(0.2, 1.0, 0.4)
 		else:
 			# Slow pulsing amber/red security beacon
 			omni_light.light_energy = 0.6 + 0.3 * sin(time_passed * 3.5)
+			omni_light.light_color = Color(1.0, 0.65, 0.15)
+
+func set_powered(state: bool) -> void:
+	if is_powered == state:
+		return
+	is_powered = state
+	if is_powered:
+		if SoundManager:
+			SoundManager.play_gate_open()
+		if RobotManager:
+			RobotManager.show_message("⚡ ТЕРМИНАЛ ЗАПИТАН! Система взлома готова к работе.", 3.0)
+	_update_screen_texture(is_hacked)
 
 func _update_screen_texture(solved: bool) -> void:
 	if screen_mesh:
@@ -57,13 +76,23 @@ func _update_screen_texture(solved: bool) -> void:
 			mat_s.albedo_texture = tex_s
 			mat_s.emission_enabled = true
 			mat_s.emission_texture = tex_s
-			mat_s.emission_energy_multiplier = 0.9 if solved else 0.75
+			if requires_power and not is_powered:
+				mat_s.albedo_color = Color(0.3, 0.3, 0.3)
+				mat_s.emission_energy_multiplier = 0.05
+			else:
+				mat_s.albedo_color = Color.WHITE
+				mat_s.emission_energy_multiplier = 0.9 if solved else 0.75
 			mat_s.metallic = 0.45
 			mat_s.roughness = 0.35
 			mat_s.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 			screen_mesh.set_surface_override_material(0, mat_s)
 
 func start_hack(robot: Node) -> void:
+	if requires_power and not is_powered:
+		if RobotManager:
+			RobotManager.show_message("⚠️ ТЕРМИНАЛ ОБЕСТОЧЕН! Поставьте тяжелый ящик на нажимную энерго-плиту, чтобы подать питание.", 4.0)
+		return
+
 	if is_hacked:
 		if RobotManager:
 			RobotManager.show_message("✅ Терминал уже взломан! Лазеры отключены.")

@@ -33,8 +33,11 @@ func _press() -> void:
 	
 	if target_node_path != NodePath():
 		var target = get_node_or_null(target_node_path)
-		if target and target.has_method("open"):
-			target.open()
+		if target:
+			if target.has_method("set_powered"):
+				target.set_powered(true)
+			elif target.has_method("open"):
+				target.open()
 
 func _release() -> void:
 	is_pressed = false
@@ -45,5 +48,8 @@ func _release() -> void:
 	
 	if target_node_path != NodePath():
 		var target = get_node_or_null(target_node_path)
-		if target and target.has_method("close"):
-			target.close()
+		if target:
+			if target.has_method("set_powered"):
+				target.set_powered(false)
+			elif target.has_method("close"):
+				target.close()
