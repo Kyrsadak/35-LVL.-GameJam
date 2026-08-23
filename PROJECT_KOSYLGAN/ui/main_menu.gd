@@ -50,19 +50,19 @@ func _ready() -> void:
 
 	# Connect Level Select Buttons
 	if btn_lvl0:
-		btn_lvl0.pressed.connect(func(): _play_click(); _launch_game(1))
+		btn_lvl0.pressed.connect(func(): _play_click(); _launch_game(0))
 		btn_lvl0.mouse_entered.connect(_play_hover)
 	if btn_lvl1:
-		btn_lvl1.pressed.connect(func(): _play_click(); _launch_game(2))
+		btn_lvl1.pressed.connect(func(): _play_click(); _launch_game(1))
 		btn_lvl1.mouse_entered.connect(_play_hover)
 	if btn_lvl2:
-		btn_lvl2.pressed.connect(func(): _play_click(); _launch_game(3))
+		btn_lvl2.pressed.connect(func(): _play_click(); _launch_game(2))
 		btn_lvl2.mouse_entered.connect(_play_hover)
 	if btn_lvl3:
-		btn_lvl3.pressed.connect(func(): _play_click(); _launch_game(4))
+		btn_lvl3.pressed.connect(func(): _play_click(); _launch_game(3))
 		btn_lvl3.mouse_entered.connect(_play_hover)
 	if btn_lvl4:
-		btn_lvl4.pressed.connect(func(): _play_click(); _launch_game(5))
+		btn_lvl4.pressed.connect(func(): _play_click(); _launch_game(4))
 		btn_lvl4.mouse_entered.connect(_play_hover)
 
 func _process(delta: float) -> void:
@@ -82,24 +82,29 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_SPACE or event.keycode == KEY_ENTER:
+		if event.keycode == KEY_ESCAPE:
+			if rules_modal and rules_modal.visible:
+				_hide_rules()
+				get_viewport().set_input_as_handled()
+				return
+		elif event.keycode == KEY_SPACE or event.keycode == KEY_ENTER:
 			_play_click()
-			_launch_game(1)
+			_launch_game(0)
 		elif event.keycode == KEY_0:
 			_play_click()
-			_launch_game(1)
+			_launch_game(0)
 		elif event.keycode == KEY_1:
 			_play_click()
-			_launch_game(2)
+			_launch_game(1)
 		elif event.keycode == KEY_2:
 			_play_click()
-			_launch_game(3)
+			_launch_game(2)
 		elif event.keycode == KEY_3:
 			_play_click()
-			_launch_game(4)
+			_launch_game(3)
 		elif event.keycode == KEY_4 or event.keycode == KEY_5:
 			_play_click()
-			_launch_game(5)
+			_launch_game(4)
 
 	if event is InputEventMouseButton:
 		var mb = event as InputEventMouseButton
@@ -133,7 +138,11 @@ func _handle_mouse_click(screen_pos: Vector2) -> void:
 	if "BtnPlay" in target_name or "BtnPlay" in parent_name:
 		_animate_click_feedback(collider)
 		_play_click()
-		_launch_game(1)
+		_launch_game(0)
+	elif "BtnLvl0" in target_name or "BtnLvl0" in parent_name:
+		_animate_click_feedback(collider)
+		_play_click()
+		_launch_game(0)
 	elif "BtnLvl1" in target_name or "BtnLvl1" in parent_name:
 		_animate_click_feedback(collider)
 		_play_click()
@@ -146,6 +155,10 @@ func _handle_mouse_click(screen_pos: Vector2) -> void:
 		_animate_click_feedback(collider)
 		_play_click()
 		_launch_game(3)
+	elif "BtnLvl4" in target_name or "BtnLvl4" in parent_name:
+		_animate_click_feedback(collider)
+		_play_click()
+		_launch_game(4)
 	elif "BtnRules" in target_name or "BtnRules" in parent_name:
 		_animate_click_feedback(collider)
 		_play_click()
@@ -226,13 +239,16 @@ func _animate_click_feedback(node: Node) -> void:
 	t.tween_property(node, "position:z", orig_pos.z - 0.06, 0.08).set_trans(Tween.TRANS_QUAD)
 	t.tween_property(node, "position:z", orig_pos.z, 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-func _launch_game(level_idx: int = 1) -> void:
+func _launch_game(level_idx: int = 0) -> void:
 	if camera and contraption_root:
 		var t = create_tween().set_parallel(true)
 		t.tween_property(camera, "fov", 28.0, 0.35).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		t.tween_property(contraption_root, "position:z", -1.5, 0.35).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-		if ui_canvas:
-			t.tween_property(ui_canvas, "modulate:a", 0.0, 0.35)
+		if has_node("CanvasLayer/LevelSelectPanel"):
+			var panel = get_node("CanvasLayer/LevelSelectPanel")
+			t.tween_property(panel, "modulate:a", 0.0, 0.35)
+		if rules_modal:
+			t.tween_property(rules_modal, "modulate:a", 0.0, 0.35)
 		t.chain().tween_callback(func():
 			if GameManager:
 				GameManager.load_level(level_idx)

@@ -122,7 +122,7 @@ func _physics_process(delta: float) -> void:
 		if battery <= 0.0:
 			on_battery_depleted()
 
-	if is_active and not is_discharged:
+	if is_active and not is_discharged and not is_dialogue_open:
 		_handle_movement(delta)
 		_handle_input()
 	else:

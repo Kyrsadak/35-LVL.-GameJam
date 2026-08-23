@@ -17,8 +17,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="PROJECT: KOSYLGAN"
 config/tags=PackedStringArray("gamejam", "puzzle", "3d")
 run/main_scene="res://ui/main_menu.tscn"
-config/features=PackedStringArray("4.7")
-config/icon="res://project_icon.png"
+config/features=PackedStringArray("4.6")
 
 [autoload]
 
@@ -33,6 +32,10 @@ window/size/viewport_height=1080
 window/size/mode=3
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[filesystem]
+
+import/blender/enabled=false
 
 [input]
 
@@ -99,7 +102,6 @@ p1_sprint={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":1,"pressure":0.0,"pressed":true,"script":null)
 ]
 }
-
 
 [layer_names]
 

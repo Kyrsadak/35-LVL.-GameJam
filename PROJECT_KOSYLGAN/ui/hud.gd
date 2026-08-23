@@ -64,23 +64,29 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not is_dialogue_open or not dialogue_container or not dialogue_container.visible:
 		return
 		
+	var is_advance_key = false
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER or event.keycode == KEY_SPACE:
-			get_viewport().set_input_as_handled()
-			if is_typing_active:
-				# Skip typing instantly
-				if active_typing_tween and active_typing_tween.is_valid():
-					active_typing_tween.kill()
-				message_banner.visible_characters = current_total_chars
-				is_typing_active = false
-				if dialogue_portrait:
-					dialogue_portrait.set_talking(false)
-				_start_badge_pulse()
-				if SoundManager and SoundManager.has_method("play_ui_hover"):
-					SoundManager.play_ui_hover()
-			else:
-				# Dismiss dialogue on Enter
-				_dismiss_dialogue()
+		if event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER or event.keycode == KEY_SPACE or event.keycode == KEY_E:
+			is_advance_key = true
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		is_advance_key = true
+
+	if is_advance_key:
+		get_viewport().set_input_as_handled()
+		if is_typing_active:
+			# Skip typing animation instantly and reveal full message
+			if active_typing_tween and active_typing_tween.is_valid():
+				active_typing_tween.kill()
+			message_banner.visible_characters = current_total_chars
+			is_typing_active = false
+			if dialogue_portrait:
+				dialogue_portrait.set_talking(false)
+			_start_badge_pulse()
+			if SoundManager and SoundManager.has_method("play_ui_hover"):
+				SoundManager.play_ui_hover()
+		else:
+			# Dismiss dialogue and free robot movement
+			_dismiss_dialogue()
 
 func _process(_delta: float) -> void:
 	# Real-time frame-by-frame polling to guarantee 100% sync with active/inactive robot battery & charging
@@ -196,10 +202,14 @@ func _start_badge_pulse() -> void:
 	if pulse_badge_tween and pulse_badge_tween.is_valid():
 		pulse_badge_tween.kill()
 		
+	enter_badge.pivot_offset = enter_badge.size * 0.5
+	enter_badge.scale = Vector2.ONE
 	enter_badge.modulate.a = 1.0
 	pulse_badge_tween = create_tween().set_loops()
-	pulse_badge_tween.tween_property(enter_badge, "scale", Vector2(1.12, 1.12), 0.45).set_trans(Tween.TRANS_SINE)
-	pulse_badge_tween.tween_property(enter_badge, "scale", Vector2(1.0, 1.0), 0.45).set_trans(Tween.TRANS_SINE)
+	pulse_badge_tween.tween_property(enter_badge, "scale", Vector2(1.15, 1.15), 0.38).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	pulse_badge_tween.parallel().tween_property(enter_badge, "modulate:a", 1.0, 0.38)
+	pulse_badge_tween.tween_property(enter_badge, "scale", Vector2(0.92, 0.92), 0.38).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	pulse_badge_tween.parallel().tween_property(enter_badge, "modulate:a", 0.40, 0.38)
 
 func _dismiss_dialogue() -> void:
 	if not is_dialogue_open:
@@ -271,9 +281,11 @@ func _on_cat_avatar_pressed() -> void:
 	if SoundManager and SoundManager.has_method("play_ui_click"):
 		SoundManager.play_ui_click()
 
-	var lvl = RobotManager.current_level_index if RobotManager else 1
+	var lvl = RobotManager.current_level_index if RobotManager else 0
 	var hint_text = ""
-	if lvl == 1:
+	if lvl == 0:
+		hint_text = "🐾 Привет! Я ваш бортовой ИИ-гид. Управляйте роботами на WASD, переключайтесь на TAB, изучайте планшеты и доставляйте батареи в сокет!"
+	elif lvl == 1:
 		hint_text = "🐾 Мяу! В Бухаре взломайте стартовый терминал через JAM [TAB], заберите батарею в восточном крыле роботом DAU и вставьте в сокет эвакуации на севере!"
 	elif lvl == 2:
 		hint_text = "🐾 В Хиве робот DAU должен расчистить проход от ящиков на восточный склад, достать батарею, а затем поставить один тяжелый ящик на нажимную плиту в ангаре, чтобы запитать терминал выхода для JAM! Используйте [Shift] для быстрого спринта!"
@@ -281,8 +293,6 @@ func _on_cat_avatar_pressed() -> void:
 		hint_text = "🐾 В Самарканде нужно дважды активировать нажимные плиты! Сначала поставьте первый ящик на плиту у спавна, чтобы запитать 5-рубильниковый терминал (код 3-1-4-2-5). Затем в западном хранилище расчистите завал, заберите батарею и второй ящик, и поставьте второй ящик на плиту в ангаре эвакуации!"
 	elif lvl == 4:
 		hint_text = "🐾 ФИНАЛ В ТАШКЕНТЕ! Запустите Центральный Генератор двумя ядрами: JAM взламывает западное крыло и забирает Зеленое ядро, а DAU расчищает восточный завал и приносит Оранжевое ядро! После запуска оба робота получат бесконечный заряд!"
-	elif lvl == 0:
-		hint_text = "🐾 Привет! Я ваш бортовой ИИ-гид. Управляйте роботами на WASD, переключайтесь на TAB, а на Shift включайте спринт без потери заряда!"
 	else:
 		hint_text = "🐾 Действуйте сообща! DAU поднимает тяжести и читает чертежи, а JAM взламывает терминалы и переключает реле!"
 

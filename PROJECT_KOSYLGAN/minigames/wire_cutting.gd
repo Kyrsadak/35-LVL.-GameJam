@@ -52,6 +52,12 @@ func _ready() -> void:
 
 	_build_ui()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_ESCAPE:
+			_on_close_pressed()
+			get_viewport().set_input_as_handled()
+
 func _process(delta: float) -> void:
 	if sparks.size() > 0:
 		var updated_sparks: Array[Dictionary] = []

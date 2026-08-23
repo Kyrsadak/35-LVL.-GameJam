@@ -63,6 +63,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_frame_mat")
 [node name="StatusBeacon" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.70, 0.34)
 mesh = SubResource("BoxMesh_beacon")
+surface_material_override/0 = SubResource("StandardMaterial3D_frame_mat")
 
 [node name="StatusLight" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.60, 0.42)

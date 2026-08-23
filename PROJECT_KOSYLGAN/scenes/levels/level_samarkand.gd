@@ -8,8 +8,8 @@ extends Node3D
 
 func _ready() -> void:
 	if RobotManager:
-		RobotManager.register_level(4, atlas, cipher, charging_station, camera_pivot)
+		RobotManager.register_level(3, atlas, cipher, charging_station, camera_pivot)
 	if hud and hud.has_method("set_level_info"):
-		hud.set_level_info(4, "SAMARKAND (САМАРКАНД)", "Синхронизируйте 5-релейную матрицу, запитайте оба энерго-шлюза и доставьте ядро")
+		hud.set_level_info(3, "SAMARKAND (САМАРКАНД)", "Синхронизируйте 5-релейную матрицу, запитайте оба энерго-шлюза и доставьте ядро")
 	if RobotManager and RobotManager.has_method("show_message"):
 		RobotManager.show_message("⚡ МИССИЯ 3: САМАРКАНД // Запитайте 5-рубильниковый терминал тяжелым ящиком и введите код частот (3-1-4-2-5)!", 5.0)
