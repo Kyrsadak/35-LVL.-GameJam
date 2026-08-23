@@ -49,14 +49,14 @@ func interact() -> void:
 	if target_box and not target_box.has_method("pick_up") and target_box.get_parent() and target_box.get_parent().has_method("pick_up"):
 		target_box = target_box.get_parent()
 		
-	if target_box and (target_box.is_in_group("pushable_box") or target_box.is_in_group("boxes") or target_box.is_in_group("wooden_crate")):
+	if target_box and (target_box.is_in_group("pushable_box") or target_box.is_in_group("boxes") or target_box.is_in_group("battery_cell") or target_box.is_in_group("wooden_crate")):
 		_pick_up_object(target_box)
 		return
 		
 	# Fallback raycast check in front of forklift
 	if push_ray and push_ray.is_colliding():
 		var col = push_ray.get_collider()
-		if col and (col.is_in_group("pushable_box") or col.is_in_group("boxes") or col.is_in_group("wooden_crate")):
+		if col and (col.is_in_group("pushable_box") or col.is_in_group("boxes") or col.is_in_group("battery_cell") or col.is_in_group("wooden_crate")):
 			_pick_up_object(col)
 			return
 
