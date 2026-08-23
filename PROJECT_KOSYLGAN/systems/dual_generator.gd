@@ -112,39 +112,39 @@ func _check_full_activation() -> void:
 func _update_visuals() -> void:
 	if orange_core:
 		var mat_o = StandardMaterial3D.new()
-		mat_o.albedo_color = Color(1.0, 0.45, 0.1) if has_orange_battery else Color(0.25, 0.15, 0.1)
+		mat_o.albedo_color = Color(0.9, 0.45, 0.15) if has_orange_battery else Color(0.25, 0.18, 0.12)
 		mat_o.emission_enabled = has_orange_battery
-		mat_o.emission = Color(1.0, 0.45, 0.1)
-		mat_o.emission_energy_multiplier = 3.0 if has_orange_battery else 0.0
+		mat_o.emission = Color(0.9, 0.45, 0.15)
+		mat_o.emission_energy_multiplier = 1.2 if has_orange_battery else 0.0
 		orange_core.set_surface_override_material(0, mat_o)
 
 	if green_core:
 		var mat_g = StandardMaterial3D.new()
-		mat_g.albedo_color = Color(0.2, 0.95, 0.4) if has_green_battery else Color(0.1, 0.25, 0.15)
+		mat_g.albedo_color = Color(0.3, 0.85, 0.45) if has_green_battery else Color(0.12, 0.22, 0.15)
 		mat_g.emission_enabled = has_green_battery
-		mat_g.emission = Color(0.2, 0.95, 0.4)
-		mat_g.emission_energy_multiplier = 3.0 if has_green_battery else 0.0
+		mat_g.emission = Color(0.3, 0.85, 0.45)
+		mat_g.emission_energy_multiplier = 1.2 if has_green_battery else 0.0
 		green_core.set_surface_override_material(0, mat_g)
 
 	if main_reactor_core:
 		var mat_m = StandardMaterial3D.new()
 		if is_active:
-			mat_m.albedo_color = Color(0.3, 0.95, 1.0)
+			mat_m.albedo_color = Color(0.4, 0.85, 0.95)
 			mat_m.emission_enabled = true
-			mat_m.emission = Color(0.3, 0.95, 1.0)
-			mat_m.emission_energy_multiplier = 4.5
+			mat_m.emission = Color(0.4, 0.85, 0.95)
+			mat_m.emission_energy_multiplier = 1.5
 		else:
-			mat_m.albedo_color = Color(0.2, 0.25, 0.3)
+			mat_m.albedo_color = Color(0.25, 0.28, 0.32)
 			mat_m.emission_enabled = false
 		main_reactor_core.set_surface_override_material(0, mat_m)
 
 	if reactor_light:
 		if is_active:
-			reactor_light.light_color = Color(0.3, 0.95, 1.0)
-			reactor_light.light_energy = 4.0
+			reactor_light.light_color = Color(0.4, 0.85, 0.95)
+			reactor_light.light_energy = 1.8
 		elif has_orange_battery or has_green_battery:
-			reactor_light.light_color = Color(1.0, 0.7, 0.2)
-			reactor_light.light_energy = 2.0
+			reactor_light.light_color = Color(0.95, 0.75, 0.35)
+			reactor_light.light_energy = 1.2
 		else:
-			reactor_light.light_color = Color(0.3, 0.3, 0.3)
-			reactor_light.light_energy = 0.5
+			reactor_light.light_color = Color(0.4, 0.4, 0.4)
+			reactor_light.light_energy = 0.3
