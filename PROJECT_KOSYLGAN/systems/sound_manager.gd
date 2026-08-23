@@ -52,24 +52,24 @@ func play_footstep(volume_db: float = -14.0) -> void:
 	player.pitch_scale = randf_range(0.9, 1.1)
 	player.play()
 
-# 2. Robot Switch (futuristic chirp)
+# 2. Robot Switch (gentle, warm soft sci-fi harmonic chime)
 func play_switch() -> void:
-	var duration = 0.18
+	var duration = 0.22
 	var num_samples = int(sample_rate * duration)
 	var bytes = PackedByteArray()
 	bytes.resize(num_samples * 2)
 	
 	for i in range(num_samples):
 		var t = float(i) / sample_rate
-		var env = sin((float(i) / num_samples) * PI)
-		var freq = 440.0 + (t * 2200.0)
-		var s = sin(t * freq * TAU) * 0.5 + sin(t * freq * 2.0 * TAU) * 0.25
-		var val = int(clamp(s * env * 24000.0, -32767, 32767))
+		var env = sin((float(i) / num_samples) * PI) * exp(-t * 9.0)
+		# Soft warm soothing dual-tone chord (392Hz & 587Hz) with zero harshness
+		var s = sin(t * 392.0 * TAU) * 0.58 + sin(t * 587.33 * TAU) * 0.32
+		var val = int(clamp(s * env * 15000.0, -32767, 32767))
 		bytes.encode_s16(i * 2, val)
 	
 	var player = _get_free_player()
 	player.stream = _create_wav(bytes)
-	player.volume_db = -6.0
+	player.volume_db = -12.0
 	player.pitch_scale = 1.0
 	player.play()
 
