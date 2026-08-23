@@ -439,3 +439,67 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_close_btn")
 theme_override_styles/hover = SubResource("StyleBoxFlat_close_btn")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_close_btn")
 text = "ЗАКРЫТЬ РУКОВОДСТВО"
+
+[node name="LevelSelectPanel" type="PanelContainer" parent="CanvasLayer"]
+custom_minimum_size = Vector2(900, 64)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -450.0
+offset_top = -80.0
+offset_right = 450.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal_rules")
+
+[node name="HBox" type="HBoxContainer" parent="CanvasLayer/LevelSelectPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Header" type="Label" parent="CanvasLayer/LevelSelectPanel/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "🛠️ ТЕСТ: "
+vertical_alignment = 1
+
+[node name="BtnLvl0" type="Button" parent="CanvasLayer/LevelSelectPanel/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 38)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "[0] Обучение"
+
+[node name="BtnLvl1" type="Button" parent="CanvasLayer/LevelSelectPanel/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 38)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "[1] Бухара"
+
+[node name="BtnLvl2" type="Button" parent="CanvasLayer/LevelSelectPanel/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 38)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "[2] Хива"
+
+[node name="BtnLvl3" type="Button" parent="CanvasLayer/LevelSelectPanel/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 38)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "[3] Самарканд"
+
+[node name="BtnLvl4" type="Button" parent="CanvasLayer/LevelSelectPanel/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 38)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 13
+text = "[4] Ташкент (ФИНАЛ)"
+

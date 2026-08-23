@@ -20,10 +20,21 @@ func _ready() -> void:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
 
 func _unhandled_input(event: InputEvent) -> void:
-	# F11 or Alt+Enter to toggle fullscreen
 	if event is InputEventKey and event.pressed and not event.echo:
+		# F11 or Alt+Enter to toggle fullscreen
 		if event.keycode == KEY_F11 or (event.keycode == KEY_ENTER and event.alt_pressed):
 			toggle_fullscreen()
+		# F1 - F5 Quick Debug Level Jump
+		elif event.keycode == KEY_F1:
+			load_level(1)
+		elif event.keycode == KEY_F2:
+			load_level(2)
+		elif event.keycode == KEY_F3:
+			load_level(3)
+		elif event.keycode == KEY_F4:
+			load_level(4)
+		elif event.keycode == KEY_F5:
+			load_level(5)
 
 func toggle_fullscreen() -> void:
 	var mode = DisplayServer.window_get_mode()
