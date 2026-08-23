@@ -158,18 +158,23 @@ func _handle_movement(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, move_dir.x * move_speed, acceleration * delta)
 		velocity.z = move_toward(velocity.z, move_dir.z * move_speed, acceleration * delta)
 		
-		# Footstep sound cadence (matching 0.64s walk cycle, 0.32s per foot)
-		_step_timer += delta
-		if _step_timer >= 0.32:
-			_step_timer = 0.0
-			if SoundManager:
-				SoundManager.play_footstep(-6.0)
-
 		if skin:
 			skin.orient_model_to_direction(move_dir, delta)
 			skin.update_move_animation(velocity.length() / move_speed, delta)
+
+		# Footstep sound cadence precisely synchronized with 0.50s run animation cycle (0.25s per foot)
+		var current_speed_scale = 0.9
+		if skin and "anim_player" in skin and skin.anim_player:
+			current_speed_scale = skin.anim_player.speed_scale
+		var step_interval = 0.25 / max(0.1, current_speed_scale)
+
+		_step_timer += delta
+		if _step_timer >= step_interval:
+			_step_timer = 0.0
+			if SoundManager:
+				SoundManager.play_footstep(-6.0)
 	else:
-		_step_timer = 0.24
+		_step_timer = 0.20
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
 		velocity.z = move_toward(velocity.z, 0, friction * delta)
 		if skin:
