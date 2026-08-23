@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scenes/levels/level_tashkent.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://characters/robots/RobotAtlas.tscn" id="2_atlas"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" path="res://ui/hud.tscn" id="13_hud"]
 [ext_resource type="Material" path="res://assets/materials/mat_space_floor.tres" id="14_floor"]
 [ext_resource type="Material" path="res://assets/materials/mat_space_wall.tres" id="15_wall"]
+[ext_resource type="PackedScene" path="res://systems/top_down_camera.tscn" id="16_cam"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 sky_top_color = Color(0.08, 0.15, 0.25, 1)
@@ -399,16 +400,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -17.0)
 [node name="Robots" type="Node3D" parent="."]
 
 [node name="RobotAtlas" parent="Robots" instance=ExtResource("2_atlas")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 15.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.1, 15.5)
 
 [node name="RobotCipher" parent="Robots" instance=ExtResource("3_cipher")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 15.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.1, 15.5)
 
-[node name="TopDownCamera" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.573576, 0.819152, 0, -0.819152, 0.573576, 0, 22, 12)
-
-[node name="Camera3D" type="Camera3D" parent="TopDownCamera"]
-current = true
-fov = 45.0
+[node name="TopDownCamera" parent="." instance=ExtResource("16_cam")]
 
 [node name="HUD" parent="." instance=ExtResource("13_hud")]
