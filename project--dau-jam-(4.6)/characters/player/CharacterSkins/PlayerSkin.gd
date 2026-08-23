@@ -226,16 +226,16 @@ func update_move_animation(velocity_ratio: float, delta: float) -> void:
 		return
 
 	if velocity_ratio > 0.01:
-		_walk_cycle += delta * 12.0 * velocity_ratio
+		_walk_cycle += delta * 6.5 * velocity_ratio
 		
 		# 1. High priority keyframe animation
 		if anim_player:
 			var target_anim = "Run_Hold" if (is_holding and anim_player.has_animation("Run_Hold")) else "Run"
 			if current_anim != target_anim or not anim_player.is_playing():
 				if anim_player.has_animation(target_anim):
-					anim_player.play(target_anim, 0.08)
+					anim_player.play(target_anim, 0.12)
 					current_anim = target_anim
-			anim_player.speed_scale = clamp(velocity_ratio * 1.4, 0.9, 2.2)
+			anim_player.speed_scale = clamp(velocity_ratio * 1.0, 0.75, 1.2)
 
 		# 2. Universal procedural walk backup (guarantees dynamic movement in all exported builds)
 		if left_leg_node:
