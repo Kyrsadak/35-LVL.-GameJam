@@ -4,14 +4,14 @@ extends CanvasLayer
 signal completed(success: bool)
 
 @export var sequence_length: int = 9
-@export var time_limit_per_digit: float = 0.50
+@export var time_limit_per_digit: float = 1.00
 @export var clue_id: String = "guide_khiva_spawn"
 
 var terminal_ref: Node = null
 var target_sequence: Array[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 var current_step_index: int = 0
 var current_target_num: int = 1
-var remaining_time: float = 0.50
+var remaining_time: float = 1.00
 var is_active: bool = false
 var is_solved: bool = false
 var is_locked: bool = false
@@ -27,7 +27,7 @@ var is_locked: bool = false
 var num_buttons: Dictionary = {} # int -> Button
 var indicator_labels: Array[Label] = []
 
-func setup(p_terminal: Node, p_clue_id: String = "", p_time_limit: float = 0.50) -> void:
+func setup(p_terminal: Node, p_clue_id: String = "", p_time_limit: float = 1.00) -> void:
 	terminal_ref = p_terminal
 	if not p_clue_id.is_empty():
 		clue_id = p_clue_id
@@ -37,11 +37,22 @@ func setup(p_terminal: Node, p_clue_id: String = "", p_time_limit: float = 0.50)
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
+	if RobotManager:
+		RobotManager.level_failed.connect(_on_level_failed)
+		if RobotManager.is_game_over:
+			queue_free()
+			return
+
 	if close_btn:
 		close_btn.pressed.connect(_on_close_pressed)
 
 	_build_ui()
 	_start_game()
+
+func _on_level_failed(_reason: String = "") -> void:
+	is_active = false
+	is_locked = true
+	queue_free()
 
 func _build_ui() -> void:
 	# Clue / Blueprint Hint display
@@ -172,6 +183,12 @@ func _process(delta: float) -> void:
 	if not is_active or is_locked or is_solved:
 		return
 
+	if RobotManager and RobotManager.is_game_over:
+		is_active = false
+		is_locked = true
+		queue_free()
+		return
+
 	remaining_time -= delta
 	if time_bar:
 		time_bar.max_value = time_limit_per_digit
@@ -179,7 +196,7 @@ func _process(delta: float) -> void:
 
 	if status_label:
 		status_label.text = "⚡ НАЖМИТЕ КОНТАКТ [%d]! (%.2f сек)" % [current_target_num, max(0.0, remaining_time)]
-		if remaining_time < 0.2:
+		if remaining_time < 0.35:
 			status_label.modulate = Color(1.0, 0.3, 0.3)
 		else:
 			status_label.modulate = Color(1.0, 0.85, 0.2)
@@ -206,7 +223,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_on_digit_pressed(pressed_digit)
 
 func _on_digit_pressed(digit: int) -> void:
-	if not is_active or is_locked or is_solved:
+	if not is_active or is_locked or is_solved or (RobotManager and RobotManager.is_game_over):
 		return
 
 	if digit == current_target_num:
@@ -245,7 +262,7 @@ func _handle_wrong_hit(digit: int) -> void:
 
 	_shake_panel()
 	get_tree().create_timer(0.6).timeout.connect(func():
-		if is_instance_valid(self) and not is_solved:
+		if is_instance_valid(self) and not is_solved and (not RobotManager or not RobotManager.is_game_over):
 			_start_game()
 	)
 
@@ -259,12 +276,12 @@ func _handle_timeout() -> void:
 		SoundManager.play_spark_error()
 
 	if status_label:
-		status_label.text = "⏱️ ВРЕМЯ ВЫШЛО (> 0.50 сек)! Перезапуск калибровки..."
+		status_label.text = "⏱️ ВРЕМЯ ВЫШЛО (> %.2f сек)! Перезапуск калибровки..." % time_limit_per_digit
 		status_label.modulate = Color(1.0, 0.2, 0.2)
 
 	_shake_panel()
 	get_tree().create_timer(0.6).timeout.connect(func():
-		if is_instance_valid(self) and not is_solved:
+		if is_instance_valid(self) and not is_solved and (not RobotManager or not RobotManager.is_game_over):
 			_start_game()
 	)
 

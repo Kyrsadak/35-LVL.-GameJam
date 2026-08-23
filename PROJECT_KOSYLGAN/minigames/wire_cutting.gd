@@ -42,6 +42,12 @@ func setup(p_terminal: Node, count: int, solution: Array[int], p_clue_id: String
 	require_exact_order = order_required
 
 func _ready() -> void:
+	if RobotManager:
+		RobotManager.level_failed.connect(_on_level_failed)
+		if RobotManager.is_game_over:
+			queue_free()
+			return
+
 	if close_btn:
 		close_btn.pressed.connect(_on_close_pressed)
 	
@@ -51,6 +57,9 @@ func _ready() -> void:
 		wire_canvas.mouse_exited.connect(_on_canvas_mouse_exited)
 
 	_build_ui()
+
+func _on_level_failed(_reason: String = "") -> void:
+	queue_free()
 
 func _process(delta: float) -> void:
 	if sparks.size() > 0:

@@ -30,10 +30,19 @@ func setup(p_terminal: Node, seq: Array[int], p_clue_id: String = "") -> void:
 		clue_id = p_clue_id
 
 func _ready() -> void:
+	if RobotManager:
+		RobotManager.level_failed.connect(_on_level_failed)
+		if RobotManager.is_game_over:
+			queue_free()
+			return
+
 	if close_btn:
 		close_btn.pressed.connect(_on_close_pressed)
 
 	_build_ui()
+
+func _on_level_failed(_reason: String = "") -> void:
+	queue_free()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
