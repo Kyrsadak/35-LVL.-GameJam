@@ -1,28 +1,83 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://systems/pressure_plate.gd" id="1_plate"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_plate"]
-size = Vector3(1.6, 0.4, 1.6)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_trigger"]
+height = 0.4
+radius = 0.95
 
-[sub_resource type="BoxMesh" id="BoxMesh_rim"]
-size = Vector3(1.8, 0.08, 1.8)
+[sub_resource type="CylinderMesh" id="CylinderMesh_base"]
+top_radius = 0.95
+bottom_radius = 0.98
+height = 0.05
+radial_segments = 32
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rim"]
-albedo_color = Color(0.2, 0.22, 0.25, 1)
-metallic = 0.8
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_base"]
+albedo_color = Color(0.18, 0.20, 0.22, 1)
+metallic = 0.85
 roughness = 0.4
 
-[sub_resource type="BoxMesh" id="BoxMesh_btn"]
-size = Vector3(1.4, 0.1, 1.4)
+[sub_resource type="BoxMesh" id="BoxMesh_clamp_main"]
+size = Vector3(0.18, 0.07, 0.32)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_btn"]
-albedo_color = Color(0.9, 0.7, 0.1, 1)
-metallic = 0.5
-roughness = 0.2
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clamp"]
+albedo_color = Color(0.25, 0.27, 0.30, 1)
+metallic = 0.8
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_clamp_toe"]
+size = Vector3(0.16, 0.05, 0.14)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hinge"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.2
+radial_segments = 12
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_bezel"]
+top_radius = 0.86
+bottom_radius = 0.92
+height = 0.06
+radial_segments = 32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bezel"]
+albedo_color = Color(0.88, 0.90, 0.92, 1)
+metallic = 0.4
+roughness = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_led"]
+size = Vector3(0.24, 0.015, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_led_default"]
+albedo_color = Color(0.2, 0.7, 0.85, 1)
 emission_enabled = true
-emission = Color(1, 0.8, 0.0, 1)
-emission_energy_multiplier = 0.7
+emission = Color(0.2, 0.7, 0.85, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_button_pad"]
+top_radius = 0.58
+bottom_radius = 0.58
+height = 0.055
+radial_segments = 32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad_red"]
+albedo_color = Color(0.85, 0.16, 0.16, 1)
+metallic = 0.45
+roughness = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_center_cap"]
+top_radius = 0.22
+bottom_radius = 0.22
+height = 0.065
+radial_segments = 24
+
+[sub_resource type="BoxMesh" id="BoxMesh_seam"]
+size = Vector3(1.16, 0.06, 0.015)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_seam"]
+albedo_color = Color(0.1, 0.1, 0.12, 1)
+metallic = 0.9
+roughness = 0.2
 
 [node name="PressurePlate" type="Area3D" groups=["pressure_plate"]]
 collision_layer = 0
@@ -31,14 +86,134 @@ script = ExtResource("1_plate")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
-shape = SubResource("BoxShape3D_plate")
+shape = SubResource("CylinderShape3D_trigger")
 
-[node name="RimMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
-mesh = SubResource("BoxMesh_rim")
-surface_material_override/0 = SubResource("StandardMaterial3D_rim")
+[node name="BaseRing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0)
+mesh = SubResource("CylinderMesh_base")
+surface_material_override/0 = SubResource("StandardMaterial3D_base")
 
-[node name="ButtonMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
-mesh = SubResource("BoxMesh_btn")
-surface_material_override/0 = SubResource("StandardMaterial3D_btn")
+[node name="HydraulicClamps" type="Node3D" parent="."]
+
+[node name="Clamp_N" type="Node3D" parent="HydraulicClamps"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.035, -0.92)
+
+[node name="Main" type="MeshInstance3D" parent="HydraulicClamps/Clamp_N"]
+mesh = SubResource("BoxMesh_clamp_main")
+surface_material_override/0 = SubResource("StandardMaterial3D_clamp")
+
+[node name="Toe" type="MeshInstance3D" parent="HydraulicClamps/Clamp_N"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, -0.01, -0.16)
+mesh = SubResource("BoxMesh_clamp_toe")
+surface_material_override/0 = SubResource("StandardMaterial3D_clamp")
+
+[node name="Hinge" type="MeshInstance3D" parent="HydraulicClamps/Clamp_N"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.025, -0.05)
+mesh = SubResource("CylinderMesh_hinge")
+surface_material_override/0 = SubResource("StandardMaterial3D_base")
+
+[node name="Clamp_S" type="Node3D" parent="HydraulicClamps"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.035, 0.92)
+
+[node name="Main" type="MeshInstance3D" parent="HydraulicClamps/Clamp_S"]
+mesh = SubResource("BoxMesh_clamp_main")
+surface_material_override/0 = SubResource("StandardMaterial3D_clamp")
+
+[node name="Toe" type="MeshInstance3D" parent="HydraulicClamps/Clamp_S"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, -0.01, -0.16)
+mesh = SubResource("BoxMesh_clamp_toe")
+surface_material_override/0 = SubResource("StandardMaterial3D_clamp")
+
+[node name="Hinge" type="MeshInstance3D" parent="HydraulicClamps/Clamp_S"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.025, -0.05)
+mesh = SubResource("CylinderMesh_hinge")
+surface_material_override/0 = SubResource("StandardMaterial3D_base")
+
+[node name="Clamp_E" type="Node3D" parent="HydraulicClamps"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.92, 0.035, 0)
+
+[node name="Main" type="MeshInstance3D" parent="HydraulicClamps/Clamp_E"]
+mesh = SubResource("BoxMesh_clamp_main")
+surface_material_override/0 = SubResource("StandardMaterial3D_clamp")
+
+[node name="Toe" type="MeshInstance3D" parent="HydraulicClamps/Clamp_E"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, -0.01, -0.16)
+mesh = SubResource("BoxMesh_clamp_toe")
+surface_material_override/0 = SubResource("StandardMaterial3D_clamp")
+
+[node name="Hinge" type="MeshInstance3D" parent="HydraulicClamps/Clamp_E"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.025, -0.05)
+mesh = SubResource("CylinderMesh_hinge")
+surface_material_override/0 = SubResource("StandardMaterial3D_base")
+
+[node name="Clamp_W" type="Node3D" parent="HydraulicClamps"]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -0.92, 0.035, 0)
+
+[node name="Main" type="MeshInstance3D" parent="HydraulicClamps/Clamp_W"]
+mesh = SubResource("BoxMesh_clamp_main")
+surface_material_override/0 = SubResource("StandardMaterial3D_clamp")
+
+[node name="Toe" type="MeshInstance3D" parent="HydraulicClamps/Clamp_W"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, -0.01, -0.16)
+mesh = SubResource("BoxMesh_clamp_toe")
+surface_material_override/0 = SubResource("StandardMaterial3D_clamp")
+
+[node name="Hinge" type="MeshInstance3D" parent="HydraulicClamps/Clamp_W"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.025, -0.05)
+mesh = SubResource("CylinderMesh_hinge")
+surface_material_override/0 = SubResource("StandardMaterial3D_base")
+
+[node name="BezelRing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.045, 0)
+mesh = SubResource("CylinderMesh_bezel")
+surface_material_override/0 = SubResource("StandardMaterial3D_bezel")
+
+[node name="LEDStrips" type="Node3D" parent="BezelRing"]
+
+[node name="LED_NE" type="MeshInstance3D" parent="BezelRing/LEDStrips"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0.54, 0.032, -0.54)
+mesh = SubResource("BoxMesh_led")
+surface_material_override/0 = SubResource("StandardMaterial3D_led_default")
+
+[node name="LED_NW" type="MeshInstance3D" parent="BezelRing/LEDStrips"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -0.54, 0.032, -0.54)
+mesh = SubResource("BoxMesh_led")
+surface_material_override/0 = SubResource("StandardMaterial3D_led_default")
+
+[node name="LED_SE" type="MeshInstance3D" parent="BezelRing/LEDStrips"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.54, 0.032, 0.54)
+mesh = SubResource("BoxMesh_led")
+surface_material_override/0 = SubResource("StandardMaterial3D_led_default")
+
+[node name="LED_SW" type="MeshInstance3D" parent="BezelRing/LEDStrips"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -0.54, 0.032, 0.54)
+mesh = SubResource("BoxMesh_led")
+surface_material_override/0 = SubResource("StandardMaterial3D_led_default")
+
+[node name="ButtonPadPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0)
+
+[node name="ButtonDisc" type="MeshInstance3D" parent="ButtonPadPivot"]
+mesh = SubResource("CylinderMesh_button_pad")
+surface_material_override/0 = SubResource("StandardMaterial3D_pad_red")
+
+[node name="ButtonCenterCap" type="MeshInstance3D" parent="ButtonPadPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("CylinderMesh_center_cap")
+surface_material_override/0 = SubResource("StandardMaterial3D_pad_red")
+
+[node name="Seam1" type="MeshInstance3D" parent="ButtonPadPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("BoxMesh_seam")
+surface_material_override/0 = SubResource("StandardMaterial3D_seam")
+
+[node name="Seam2" type="MeshInstance3D" parent="ButtonPadPivot"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.005, 0)
+mesh = SubResource("BoxMesh_seam")
+surface_material_override/0 = SubResource("StandardMaterial3D_seam")
+
+[node name="StatusLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+light_color = Color(0.9, 0.25, 0.2, 1)
+light_energy = 0.4
+omni_range = 3.5

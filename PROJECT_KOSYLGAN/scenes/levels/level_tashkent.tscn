@@ -449,7 +449,7 @@ powered_color = Color(0.9, 0.7, 0.2, 1)
 powered_emission_energy = 1.2
 
 [node name="GuideTabletWest" parent="." instance=ExtResource("10_tablet")]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -11.0, 0.8, -4.5)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -11.0, 0, -4.5)
 guide_id = "guide_tashkent_west"
 guide_title = "МАТРИЦА ПЕРЕКЛЮЧАТЕЛЕЙ"
 guide_text = "КОД ПИТАНИЯ СИСТЕМЫ: 3 -> 1 -> 4 -> 2 -> 5. Поставьте ящик на плиту для активации панели!"
@@ -457,6 +457,10 @@ guide_text = "КОД ПИТАНИЯ СИСТЕМЫ: 3 -> 1 -> 4 -> 2 -> 5. По�
 [node name="PressurePlateEast" parent="." instance=ExtResource("7_plate")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.0, 0, 2.5)
 target_gate_path = NodePath("../LaserGateEast")
+
+[node name="CableEastPlateToGate" parent="." instance=ExtResource("30_cable")]
+points = Array[Vector3]([Vector3(11.0, 0.05, 2.5), Vector3(12.5, 0.05, 2.5), Vector3(12.5, 0.05, 0.5)])
+source_plate_path = NodePath("../PressurePlateEast")
 
 [node name="PushableBoxEast1" parent="." instance=ExtResource("8_box")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0, 0.6, 2.5)
@@ -479,7 +483,7 @@ custom_color = Color(1, 0.55, 0.1, 1)
 is_custom_colored = true
 
 [node name="GuideTablet" parent="." instance=ExtResource("10_tablet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.8, 14.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 14.5)
 guide_id = "guide_tashkent"
 guide_title = "ПЛАН ОПЕРАЦИИ: ТАШКЕНТ"
 guide_text = "ГЕНЕРАЛЬНЫЙ ПЛАН ТАШКЕНТА:\n1. DAU: Расчистите восточное хранилище, поставьте тяжелый ящик на плиту и заберите Оранжевое титановое ядро.\n2. JAM: Поставьте ящик на плиту, чтобы запитать терминал, взломайте матрицу (3-1-4-2-5) и заберите Зеленое квантовое ядро.\n3. Установите оба ядра в Центральный Генератор для запуска вечной энергии и открытия Врат Свободы!"
