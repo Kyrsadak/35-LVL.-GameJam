@@ -233,14 +233,24 @@ mesh = SubResource("BoxMesh_bracket")
 surface_material_override/0 = SubResource("StandardMaterial3D_metal_purple")
 
 [node name="LabelTitle" type="Label3D" parent="Contraption/FrontPlate"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, 0.05)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48, 0.05)
 render_priority = 3
 pixel_size = 0.0036
-text = "PROJECT: KOSYLGAN"
+text = "PROJECT: DAU-JAM"
 font_size = 44
 outline_size = 14
 modulate = Color(0.95, 0.98, 1, 1)
 outline_modulate = Color(0.08, 0.12, 0.16, 1)
+
+[node name="LabelSubtitle" type="Label3D" parent="Contraption/FrontPlate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0.05)
+render_priority = 3
+pixel_size = 0.0028
+text = "ЛАБОРАТОРИЯ «КОСЫЛГАН»"
+font_size = 24
+outline_size = 8
+modulate = Color(0.4, 0.9, 1, 0.95)
+outline_modulate = Color(0.05, 0.1, 0.15, 1)
 
 [node name="BtnPlay" type="StaticBody3D" parent="Contraption/FrontPlate"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, 0.06)
