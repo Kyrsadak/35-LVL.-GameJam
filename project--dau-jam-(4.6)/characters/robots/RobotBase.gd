@@ -123,14 +123,16 @@ func _physics_process(delta: float) -> void:
 		if battery <= 0.0:
 			on_battery_depleted()
 
-	if is_active and not is_discharged:
+	var can_control = is_active and not is_discharged and not (RobotManager and RobotManager.is_dialogue_active)
+	if can_control:
 		_handle_movement(delta)
 		_handle_input()
 	else:
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
 		velocity.z = move_toward(velocity.z, 0, friction * delta)
-		if skin and skin.has_method("update_move_animation"):
-			skin.update_move_animation(0.0, delta)
+		var active_skin = skin if (skin and is_instance_valid(skin)) else get_node_or_null("Skin")
+		if active_skin and active_skin.has_method("update_move_animation"):
+			active_skin.update_move_animation(0.0, delta)
 
 	move_and_slide()
 

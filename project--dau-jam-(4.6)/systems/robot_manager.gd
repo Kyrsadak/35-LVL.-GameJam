@@ -108,7 +108,7 @@ func set_active_robot(robot: Node) -> void:
 	robot_switched.emit(active_robot)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if is_game_paused:
+	if is_game_paused or is_dialogue_active:
 		return
 
 	if event.is_action_pressed("switch_robot") or (event is InputEventKey and event.pressed and not event.echo and (event.keycode == KEY_TAB or event.keycode == KEY_Q)):
@@ -117,7 +117,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		restart_level()
 
 func try_switch_robot() -> void:
-	if not atlas or not cipher or not active_robot:
+	if is_dialogue_active or not atlas or not cipher or not active_robot:
 		return
 	
 	var target_robot = cipher if active_robot == atlas else atlas
