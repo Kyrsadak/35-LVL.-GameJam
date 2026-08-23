@@ -70,9 +70,9 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.y = 0.0
 
-	# Keep carry pivot aligned with the direction the robot is facing (in front of loader scoops)
+	# Keep carry pivot aligned with the direction the robot is facing (resting cleanly on top of forklift tines)
 	if skin and carry_pivot:
-		carry_pivot.global_position = global_position + Vector3(0, 1.05, 0) + get_facing_direction() * 0.85
+		carry_pivot.global_position = global_position + Vector3(0, 0.40, 0) + get_facing_direction() * 1.05
 		carry_pivot.global_rotation.y = skin.global_rotation.y
 
 	if is_discharged:

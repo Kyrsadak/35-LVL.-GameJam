@@ -64,9 +64,9 @@ func pick_up(carrier: Marker3D) -> void:
 
 	var tween = create_tween()
 	tween.set_parallel(true)
-	# Position crate securely onto Atlas forklift forks
-	tween.tween_property(self, "position", Vector3(0, -0.05, 0), 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "rotation", Vector3.ZERO, 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	# Position box squarely on top of forklift forks (y = 0.0)
+	tween.tween_property(self, "position", Vector3.ZERO, 0.28).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "rotation", Vector3.ZERO, 0.28).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func drop(drop_pos: Vector3) -> void:
 	is_carried = false
