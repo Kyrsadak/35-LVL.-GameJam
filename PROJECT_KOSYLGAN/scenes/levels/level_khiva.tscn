@@ -406,13 +406,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.0)
 [node name="GuideTabletSpawn" parent="." instance=ExtResource("7_tablet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, 13.0)
 guide_id = "guide_khiva_spawn"
-clue_text = "ИНСТРУКЦИЯ ХИВЫ: Для открытия входного шлюза перережьте СИНИЙ провод ■ [2-й]"
+clue_text = "КАЛИБРОВКА МАТРИЦЫ ХИВЫ: Быстро нажимайте загорающиеся контакты 1..9 за 0.50 сек (клавиши 1-9 или клик)!"
 
 [node name="TerminalSpawn" parent="." instance=ExtResource("8_term")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0, 13.0)
 terminal_id = "term_khiva_spawn"
-wires_count = 4
-solution_wires = Array[int]([1])
+minigame_type = "reaction_numpad"
 clue_id = "guide_khiva_spawn"
 target_gate_path = NodePath("../LaserGateSpawn")
 

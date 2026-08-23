@@ -2,7 +2,7 @@ class_name Terminal
 extends Area3D
 
 @export var terminal_id: String = "terminal_1"
-@export var minigame_type: String = "wires" # "wires" or "switches"
+@export var minigame_type: String = "wires" # "wires", "switches", or "reaction_numpad"
 @export var switch_sequence: Array[int] = [3, 1, 4, 2, 5]
 @export var wires_count: int = 3
 @export var solution_wires: Array[int] = [0]
@@ -19,6 +19,7 @@ extends Area3D
 var is_hacked: bool = false
 var minigame_wires_scene = preload("res://minigames/wire_cutting.tscn")
 var minigame_switches_scene = preload("res://minigames/switch_puzzle.tscn")
+var minigame_numpad_scene = preload("res://minigames/reaction_numpad.tscn")
 var time_passed: float = 0.0
 
 func _ready() -> void:
@@ -104,7 +105,7 @@ func start_hack(robot: Node) -> void:
 	# Strictly enforce cooperative workflow: DAU MUST read the tablet clue first!
 	if not clue_id.is_empty() and RobotManager and not RobotManager.discovered_clues.has(clue_id):
 		if RobotManager:
-			RobotManager.show_message("Я не знаю, какой провод резать! Схема зашифрована. Сначала DAU должен найти и просканировать планшет-инструкцию!", 4.5)
+			RobotManager.show_message("Терминал заблокирован шифром! Сначала DAU должен найти и просканировать планшет-инструкцию!", 4.5)
 		if SoundManager and SoundManager.has_method("play_spark_error"):
 			SoundManager.play_spark_error()
 		return
@@ -113,6 +114,9 @@ func start_hack(robot: Node) -> void:
 	if minigame_type == "switches":
 		minigame = minigame_switches_scene.instantiate()
 		minigame.setup(self, switch_sequence, clue_id)
+	elif minigame_type == "reaction_numpad" or minigame_type == "numpad":
+		minigame = minigame_numpad_scene.instantiate()
+		minigame.setup(self, clue_id, 0.50)
 	else:
 		minigame = minigame_wires_scene.instantiate()
 		minigame.setup(self, wires_count, solution_wires, clue_id, require_exact_order)
