@@ -425,12 +425,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 0.6, 0.6)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2, 0.6, 0.0)
 
 [node name="KeyModule" parent="." instance=ExtResource("9_key")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 0.8, 0.0)
-module_name = "Хивинский Энергомодуль (Склад)"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2, 0.8, -0.7)
+module_name = "Хивинский Энергомодуль Альфа (Склад)"
 
 [node name="KeyModuleExit" parent="." instance=ExtResource("9_key")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, 0.8, -0.5)
-module_name = "Хивинский Энергомодуль (Эвакуация)"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2, 0.8, 0.7)
+module_name = "Хивинский Энергомодуль Бета (Склад)"
 
 [node name="GuideTabletWest" parent="." instance=ExtResource("7_tablet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, 2.8)

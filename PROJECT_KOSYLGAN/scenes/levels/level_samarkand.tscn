@@ -434,11 +434,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5, 0.6, 2.2)
 
 [node name="KeyModule" parent="." instance=ExtResource("9_key")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0.8, -1.0)
-module_name = "Самаркандский Энергомодуль (Запад)"
+module_name = "Самаркандский Энергомодуль Альфа (Запад)"
 
 [node name="KeyModuleExit" parent="." instance=ExtResource("9_key")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5, 0.8, 0.0)
-module_name = "Самаркандский Энергомодуль (Эвакуация)"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0.8, 0.5)
+module_name = "Самаркандский Энергомодуль Бета (Запад)"
 
 [node name="LaserGateHangar" parent="." instance=ExtResource("6_gate")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.5)
