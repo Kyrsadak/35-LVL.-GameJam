@@ -25,14 +25,15 @@ func _ready() -> void:
 	add_child(bgm_player)
 
 func play_bgm(path: String = "res://audio/ambient_level1.wav") -> void:
-	if bgm_player.playing:
+	if not bgm_player or bgm_player.playing:
 		return
-	var stream = load(path)
-	if stream:
-		if stream is AudioStreamWAV:
-			stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
-		bgm_player.stream = stream
-		bgm_player.play()
+	if ResourceLoader.exists(path):
+		var stream = load(path)
+		if stream:
+			if stream is AudioStreamWAV:
+				stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+			bgm_player.stream = stream
+			bgm_player.play()
 
 func stop_bgm(fade_time: float = 1.5) -> void:
 	if not bgm_player.playing:
