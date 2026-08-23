@@ -84,9 +84,23 @@ func _apply_door_state(closed: bool, immediate: bool) -> void:
 	if not door_right:
 		door_right = find_child("DoorRight", true, false) as Node3D
 
+	# Completely toggle collision layer & mask on the StaticBody3D
+	collision_layer = 2 if closed else 0
+	collision_mask = 7 if closed else 0
+
 	if collision_shape:
 		collision_shape.disabled = not closed
 		collision_shape.set_deferred("disabled", not closed)
+
+	var post_l = find_child("PostLeftCol", true, false) as CollisionShape3D
+	if post_l:
+		post_l.disabled = not closed
+		post_l.set_deferred("disabled", not closed)
+
+	var post_r = find_child("PostRightCol", true, false) as CollisionShape3D
+	if post_r:
+		post_r.disabled = not closed
+		post_r.set_deferred("disabled", not closed)
 
 	# Closed: left and right leaves meet seamlessly with overlap in center (±1.18)
 	# Open: leaves fully retract into the side pillars and walls (±3.75)
