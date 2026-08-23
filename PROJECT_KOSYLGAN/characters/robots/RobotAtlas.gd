@@ -44,12 +44,23 @@ func interact() -> void:
 		_pick_up_object(current_interactable)
 		return
 
-	# 4. Check if near box to lift / carry
-	if current_interactable and (current_interactable.is_in_group("pushable_box") or current_interactable.is_in_group("boxes")):
-		_pick_up_object(current_interactable)
+	# 4. Check if near battery / box to lift / carry
+	var target_box = current_interactable
+	if target_box and not target_box.has_method("pick_up") and target_box.get_parent() and target_box.get_parent().has_method("pick_up"):
+		target_box = target_box.get_parent()
+		
+	if target_box and (target_box.is_in_group("pushable_box") or target_box.is_in_group("boxes") or target_box.is_in_group("battery_cell")):
+		_pick_up_object(target_box)
 		return
+		
+	# Fallback raycast check in front of forklift
+	if push_ray and push_ray.is_colliding():
+		var col = push_ray.get_collider()
+		if col and (col.is_in_group("pushable_box") or col.is_in_group("boxes") or col.is_in_group("battery_cell")):
+			_pick_up_object(col)
+			return
 
-	# 6. Check generic interactable (like RoboCatGirl or ChargingStation)
+	# 5. Check generic interactable (like RoboCatGirl or ChargingStation)
 	if current_interactable and current_interactable.has_method("interact"):
 		current_interactable.interact(self)
 		return

@@ -1,82 +1,140 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://systems/pushable_box.gd" id="1_box"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_crate"]
-size = Vector3(1.2, 1.2, 1.2)
+[sub_resource type="BoxShape3D" id="BoxShape3D_battery"]
+size = Vector3(1.10, 1.10, 1.10)
 
-[sub_resource type="BoxMesh" id="BoxMesh_inner"]
-size = Vector3(1.16, 1.16, 1.16)
+[sub_resource type="BoxMesh" id="BoxMesh_battery_body"]
+size = Vector3(1.02, 0.94, 1.02)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_orange_panels"]
-albedo_color = Color(0.85, 0.44, 0.16, 1)
-metallic = 0.4
-roughness = 0.5
-
-[sub_resource type="QuadMesh" id="QuadMesh_top"]
-size = Vector2(1.14, 1.14)
+[sub_resource type="QuadMesh" id="QuadMesh_battery_top"]
+size = Vector2(1.00, 1.00)
 
 [sub_resource type="BoxMesh" id="BoxMesh_corner_pillar"]
-size = Vector3(0.09, 1.20, 0.09)
+size = Vector3(0.08, 0.98, 0.08)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_steel"]
 albedo_color = Color(0.18, 0.21, 0.27, 1)
 metallic = 0.85
 roughness = 0.35
 
+[sub_resource type="BoxMesh" id="BoxMesh_skid_runner"]
+size = Vector3(0.16, 0.08, 1.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skid"]
+albedo_color = Color(0.14, 0.16, 0.20, 1)
+metallic = 0.6
+roughness = 0.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_terminal"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_terminal_pos"]
+albedo_color = Color(0.85, 0.22, 0.18, 1)
+emission_enabled = true
+emission = Color(0.85, 0.22, 0.18, 1)
+emission_energy_multiplier = 0.4
+metallic = 0.8
+roughness = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_terminal_neg"]
+albedo_color = Color(0.18, 0.50, 0.90, 1)
+emission_enabled = true
+emission = Color(0.18, 0.50, 0.90, 1)
+emission_energy_multiplier = 0.4
+metallic = 0.8
+roughness = 0.25
+
 [sub_resource type="BoxMesh" id="BoxMesh_handle"]
-size = Vector3(0.05, 0.06, 0.42)
+size = Vector3(0.04, 0.06, 0.38)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yellow_handle"]
 albedo_color = Color(0.95, 0.72, 0.15, 1)
 metallic = 0.3
 roughness = 0.4
 
-[node name="PushableBox" type="CharacterBody3D" groups=["boxes", "interactable", "pushable_box"]]
+[sub_resource type="SphereShape3D" id="SphereShape3D_interact"]
+radius = 1.35
+
+[node name="PushableBox" type="CharacterBody3D" groups=["battery_cell", "boxes", "interactable", "pushable_box"]]
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_box")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_crate")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("BoxShape3D_battery")
 
 [node name="InnerBody" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_inner")
-surface_material_override/0 = SubResource("StandardMaterial3D_orange_panels")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+mesh = SubResource("BoxMesh_battery_body")
 
 [node name="TopLid" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.182, 0)
-mesh = SubResource("QuadMesh_top")
-surface_material_override/0 = SubResource("StandardMaterial3D_orange_panels")
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.025, 0)
+mesh = SubResource("QuadMesh_battery_top")
+
+[node name="SkidLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42, 0.04, 0)
+mesh = SubResource("BoxMesh_skid_runner")
+surface_material_override/0 = SubResource("StandardMaterial3D_skid")
+
+[node name="SkidCenter" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+mesh = SubResource("BoxMesh_skid_runner")
+surface_material_override/0 = SubResource("StandardMaterial3D_skid")
+
+[node name="SkidRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 0.04, 0)
+mesh = SubResource("BoxMesh_skid_runner")
+surface_material_override/0 = SubResource("StandardMaterial3D_skid")
 
 [node name="Corner1" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.56, 0.6, -0.56)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.49, 0.55, -0.49)
 mesh = SubResource("BoxMesh_corner_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_steel")
 
 [node name="Corner2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56, 0.6, -0.56)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.49, 0.55, -0.49)
 mesh = SubResource("BoxMesh_corner_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_steel")
 
 [node name="Corner3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.56, 0.6, 0.56)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.49, 0.55, 0.49)
 mesh = SubResource("BoxMesh_corner_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_steel")
 
 [node name="Corner4" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56, 0.6, 0.56)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.49, 0.55, 0.49)
 mesh = SubResource("BoxMesh_corner_pillar")
 surface_material_override/0 = SubResource("StandardMaterial3D_dark_steel")
 
+[node name="TerminalPos" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.28, 1.06, -0.22)
+mesh = SubResource("CylinderMesh_terminal")
+surface_material_override/0 = SubResource("StandardMaterial3D_terminal_pos")
+
+[node name="TerminalNeg" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 1.06, -0.22)
+mesh = SubResource("CylinderMesh_terminal")
+surface_material_override/0 = SubResource("StandardMaterial3D_terminal_neg")
+
 [node name="HandleLeft" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.60, 0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.53, 0.55, 0)
 mesh = SubResource("BoxMesh_handle")
 surface_material_override/0 = SubResource("StandardMaterial3D_yellow_handle")
 
 [node name="HandleRight" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.60, 0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.53, 0.55, 0)
 mesh = SubResource("BoxMesh_handle")
 surface_material_override/0 = SubResource("StandardMaterial3D_yellow_handle")
+
+[node name="InteractTrigger" type="Area3D" parent="." groups=["battery_cell", "boxes", "interactable", "pushable_box"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractTrigger"]
+shape = SubResource("SphereShape3D_interact")

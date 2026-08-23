@@ -14,33 +14,42 @@ func _ready() -> void:
 	add_to_group("pushable_box")
 	add_to_group("interactable")
 	add_to_group("boxes")
+	add_to_group("battery_cell")
 
-	# 1. Apply Side Panel Texture
+	# 1. Apply Side Battery Panel Texture with glowing LED charge bars
 	if inner_body:
-		var path_s = "res://assets/textures/tex_crate_side.png"
+		var path_s = "res://assets/textures/tex_battery_side.png"
 		var global_s = ProjectSettings.globalize_path(path_s)
 		var img_s = Image.load_from_file(global_s)
 		if img_s:
+			img_s.generate_mipmaps()
 			var tex_s = ImageTexture.create_from_image(img_s)
 			var mat_s = StandardMaterial3D.new()
 			mat_s.albedo_texture = tex_s
-			mat_s.metallic = 0.45
-			mat_s.roughness = 0.4
-			mat_s.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			mat_s.emission_enabled = true
+			mat_s.emission_texture = tex_s
+			mat_s.emission_energy_multiplier = 0.55
+			mat_s.metallic = 0.35
+			mat_s.roughness = 0.40
+			mat_s.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 			inner_body.set_surface_override_material(0, mat_s)
 
-	# 2. Apply Dedicated Top Lid Texture
+	# 2. Apply Dedicated Top Terminal Texture with glow
 	if top_lid:
-		var path_t = "res://assets/textures/tex_crate_top.png"
+		var path_t = "res://assets/textures/tex_battery_top.png"
 		var global_t = ProjectSettings.globalize_path(path_t)
 		var img_t = Image.load_from_file(global_t)
 		if img_t:
+			img_t.generate_mipmaps()
 			var tex_t = ImageTexture.create_from_image(img_t)
 			var mat_t = StandardMaterial3D.new()
 			mat_t.albedo_texture = tex_t
-			mat_t.metallic = 0.5
+			mat_t.emission_enabled = true
+			mat_t.emission_texture = tex_t
+			mat_t.emission_energy_multiplier = 0.40
+			mat_t.metallic = 0.45
 			mat_t.roughness = 0.35
-			mat_t.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			mat_t.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 			top_lid.set_surface_override_material(0, mat_t)
 
 func pick_up(carrier: Marker3D) -> void:
@@ -58,7 +67,8 @@ func pick_up(carrier: Marker3D) -> void:
 
 	var tween = create_tween()
 	tween.set_parallel(true)
-	tween.tween_property(self, "position", Vector3(0, 0.4, 0), 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	# Position squarely onto Atlas forklift forks
+	tween.tween_property(self, "position", Vector3(0, -0.05, 0), 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "rotation", Vector3.ZERO, 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func drop(drop_pos: Vector3) -> void:
