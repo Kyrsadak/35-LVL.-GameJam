@@ -5,36 +5,37 @@
 [ext_resource type="Script" path="res://ui/dialogue_portrait.gd" id="3_portrait"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
-bg_color = Color(0.07, 0.09, 0.14, 0.94)
+bg_color = Color(0.97, 0.95, 0.92, 0.96)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.35, 0.82, 0.96, 0.95)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-shadow_color = Color(0, 0, 0, 0.5)
+border_color = Color(0.88, 0.82, 0.76, 0.95)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.25, 0.20, 0.15, 0.18)
 shadow_size = 12
+shadow_offset = Vector2(0, 4)
 content_margin_left = 24.0
-content_margin_top = 8.0
+content_margin_top = 10.0
 content_margin_right = 18.0
-content_margin_bottom = 8.0
+content_margin_bottom = 10.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_enter_key"]
-bg_color = Color(0.12, 0.18, 0.28, 0.95)
+bg_color = Color(0.92, 0.85, 0.78, 0.95)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.0, 0.85, 1.0, 0.9)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-shadow_color = Color(0.0, 0.85, 1.0, 0.3)
-shadow_size = 6
+border_color = Color(0.82, 0.72, 0.64, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.25, 0.20, 0.15, 0.12)
+shadow_size = 4
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -118,11 +119,9 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-theme_override_colors/font_color = Color(1, 0.96, 0.88, 1)
-theme_override_colors/font_outline_color = Color(0.04, 0.06, 0.1, 1)
-theme_override_constants/outline_size = 4
+theme_override_colors/font_color = Color(0.18, 0.17, 0.20, 1)
 theme_override_font_sizes/font_size = 23
-text = "(=^･ω･^=)⚡ // Weo Weo Weo! 🔌"
+text = "(=^..^=)⚡ // Weo Weo Weo! 🔌"
 vertical_alignment = 1
 
 [node name="EnterBadge" type="PanelContainer" parent="DialogueContainer/DialogueBoxPanel/HBox"]
@@ -135,9 +134,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_enter_key")
 
 [node name="EnterIcon" type="Label" parent="DialogueContainer/DialogueBoxPanel/HBox/EnterBadge"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.0, 0.95, 1.0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
+theme_override_colors/font_color = Color(0.38, 0.30, 0.24, 1)
 theme_override_font_sizes/font_size = 22
 text = "↵"
 horizontal_alignment = 1

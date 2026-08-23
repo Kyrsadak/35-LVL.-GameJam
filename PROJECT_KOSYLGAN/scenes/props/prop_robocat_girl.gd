@@ -246,7 +246,7 @@ func trigger_weo_dialogue() -> void:
 
 	var rm = get_node_or_null("/root/RobotManager")
 	if rm and rm.has_method("show_message"):
-		rm.show_message("(=^･ω･^=)⚡ // Weo Weo Weo! 🔌", 3.0)
+		rm.show_message("(=^..^=)⚡ // Weo Weo Weo! 🔌", 3.0)
 
 	var sm = get_node_or_null("/root/SoundManager")
 	if sm and sm.has_method("play_success"):
