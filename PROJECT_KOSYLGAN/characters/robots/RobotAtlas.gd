@@ -18,8 +18,8 @@ func _ready() -> void:
 func interact() -> void:
 	# 1. If currently carrying an object (box or key module)
 	if carried_object != null:
-		# If near socket and holding key module
-		if current_interactable and current_interactable.is_in_group("socket_terminal") and carried_object.is_in_group("key_module"):
+		# If near socket and holding key module or battery
+		if current_interactable and current_interactable.is_in_group("socket_terminal") and (carried_object.is_in_group("key_module") or carried_object.is_in_group("battery_cell")):
 			if current_interactable.has_method("insert_module"):
 				current_interactable.insert_module(carried_object)
 				carried_object = null
