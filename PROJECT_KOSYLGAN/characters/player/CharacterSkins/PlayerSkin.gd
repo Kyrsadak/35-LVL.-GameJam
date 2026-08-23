@@ -20,12 +20,27 @@ func _ready() -> void:
 	screen_face = find_child("ScreenFace", true, false) as MeshInstance3D
 	
 	_setup_screen_materials()
+	_setup_tshirt_material()
 	
 	if anim_player and anim_player.has_animation("Idle"):
 		anim_player.play("Idle")
 		current_anim = "Idle"
 	
 	blink_timer = randf_range(2.0, 4.5)
+
+func _setup_tshirt_material() -> void:
+	var tshirt_mesh = find_child("TshirtChestFront", true, false) as MeshInstance3D
+	if not tshirt_mesh:
+		return
+	var tshirt_path = "res://assets/textures/tex_atlas_tshirt_21.png"
+	var img = Image.load_from_file(ProjectSettings.globalize_path(tshirt_path))
+	if img:
+		img.generate_mipmaps()
+		var mat = StandardMaterial3D.new()
+		mat.albedo_texture = ImageTexture.create_from_image(img)
+		mat.roughness = 0.65
+		mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+		tshirt_mesh.set_surface_override_material(0, mat)
 
 func _setup_screen_materials() -> void:
 	var prefix = "atlas" if character_id == "atlas" else "cipher"
