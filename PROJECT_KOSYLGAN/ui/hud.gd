@@ -6,6 +6,7 @@ extends CanvasLayer
 
 @onready var level_title: Label = %LevelTitle
 @onready var dialogue_container: PanelContainer = %DialogueContainer
+@onready var dialogue_portrait: Control = %DialoguePortrait
 @onready var message_banner: Label = %MessageBanner
 @onready var enter_badge: PanelContainer = %EnterBadge
 @onready var interact_prompt: Label = %InteractPrompt
@@ -59,6 +60,8 @@ func _unhandled_input(event: InputEvent) -> void:
 					active_typing_tween.kill()
 				message_banner.visible_characters = current_total_chars
 				is_typing_active = false
+				if dialogue_portrait:
+					dialogue_portrait.set_talking(false)
 				_start_badge_pulse()
 				if SoundManager and SoundManager.has_method("play_ui_hover"):
 					SoundManager.play_ui_hover()
@@ -114,7 +117,20 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 	current_total_chars = text.length()
 	var char_speed = 0.046 # Left-to-right steady typing cadence
 	var type_duration = max(0.60, current_total_chars * char_speed)
-	var is_catgirl = "Weo" in text or "(=^" in text or "CRT-CAT" in text
+	var is_catgirl = "Weo" in text or "(=^" in text or "CRT-CAT" in text or "кошко" in text.to_lower()
+
+	# Set speaker portrait
+	var speaker = "catgirl"
+	if "ATLAS" in text:
+		speaker = "atlas"
+	elif "CIPHER" in text:
+		speaker = "cipher"
+	elif is_catgirl:
+		speaker = "catgirl"
+		
+	if dialogue_portrait:
+		dialogue_portrait.set_speaker(speaker)
+		dialogue_portrait.set_talking(true)
 
 	# 1. Silky Smooth Panel Fade & Slide Up Entrance
 	dialogue_container.modulate.a = 0.0
@@ -144,6 +160,8 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 	# When typing finishes, activate the pulsing Enter Badge (NO auto-close!)
 	active_typing_tween.tween_callback(func():
 		is_typing_active = false
+		if dialogue_portrait:
+			dialogue_portrait.set_talking(false)
 		_start_badge_pulse()
 	)
 
@@ -163,6 +181,8 @@ func _dismiss_dialogue() -> void:
 		return
 	is_dialogue_open = false
 	is_typing_active = false
+	if dialogue_portrait:
+		dialogue_portrait.set_talking(false)
 	
 	if SoundManager and SoundManager.has_method("play_ui_click"):
 		SoundManager.play_ui_click()
