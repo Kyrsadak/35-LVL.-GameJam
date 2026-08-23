@@ -16,12 +16,18 @@ func _ready() -> void:
 		skin.set_skin_material(load("res://characters/player/CharacterSkins/character_mat_atlas.tres"))
 
 func interact() -> void:
-	# 1. If currently carrying an object (box or key module)
+	# 1. If currently carrying an object (box or key module/battery)
 	if carried_object != null:
-		# If near socket and holding key module or battery
-		if current_interactable and current_interactable.is_in_group("socket_terminal") and (carried_object.is_in_group("key_module") or carried_object.is_in_group("battery_cell")):
-			if current_interactable.has_method("insert_module"):
-				current_interactable.insert_module(carried_object)
+		# If near socket (or facing it) and holding key module or battery
+		var sock = current_interactable
+		if not sock and push_ray and push_ray.is_colliding():
+			var col = push_ray.get_collider()
+			if col and col.is_in_group("socket_terminal"):
+				sock = col
+				
+		if sock and sock.is_in_group("socket_terminal") and (carried_object.is_in_group("key_module") or carried_object.is_in_group("battery_cell")):
+			if sock.has_method("insert_module"):
+				sock.insert_module(carried_object)
 				carried_object = null
 				if skin and skin.has_method("set_holding"):
 					skin.set_holding(false)
