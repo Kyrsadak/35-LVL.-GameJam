@@ -14,11 +14,13 @@ var camera_pivot: Node3D = null
 
 var current_level_index: int = 1
 var is_game_paused: bool = false
+var is_dialogue_active: bool = false
 
 var discovered_clues: Dictionary = {}
 
 func register_level(level_idx: int, atlas_node: Node, cipher_node: Node, station: Node3D, cam_pivot: Node3D = null) -> void:
 	is_game_over = false
+	is_dialogue_active = false
 	current_level_index = level_idx
 	atlas = atlas_node
 	cipher = cipher_node
@@ -134,7 +136,11 @@ func _on_guide_read(guide_id: String, clue_text: String) -> void:
 		SoundManager.play_tablet_read()
 
 func show_message(text: String, duration: float = 2.0) -> void:
+	is_dialogue_active = true
 	hud_message_requested.emit(text, duration)
+
+func set_dialogue_active(active: bool) -> void:
+	is_dialogue_active = active
 
 func complete_level() -> void:
 	level_completed.emit()

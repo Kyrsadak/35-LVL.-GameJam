@@ -110,6 +110,8 @@ func show_banner_message(text: String, _duration: float = 0.0) -> void:
 
 	is_dialogue_open = true
 	is_typing_active = true
+	if RobotManager:
+		RobotManager.set_dialogue_active(true)
 	dialogue_container.visible = true
 	message_banner.text = text
 	message_banner.visible_characters = 0
@@ -185,6 +187,8 @@ func _dismiss_dialogue() -> void:
 		return
 	is_dialogue_open = false
 	is_typing_active = false
+	if RobotManager:
+		RobotManager.set_dialogue_active(false)
 	if dialogue_portrait:
 		dialogue_portrait.set_talking(false)
 	

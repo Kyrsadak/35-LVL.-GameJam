@@ -83,6 +83,8 @@ func _physics_process(delta: float) -> void:
 		return
 
 	# Dynamic Battery Drain & Charge Logic
+	var is_dialogue_open: bool = RobotManager != null and RobotManager.is_dialogue_active
+
 	if is_on_charging_station:
 		# Strictly charge only: zero drain while docked
 		velocity = Vector3.ZERO
@@ -94,6 +96,9 @@ func _physics_process(delta: float) -> void:
 		if skin:
 			skin.update_move_animation(0.0, delta)
 		return # Prevent physics engine from ever pushing robot upwards onto roof
+	elif is_dialogue_open:
+		# Battery drain is completely PAUSED while reading dialogues!
+		pass
 	elif is_active:
 		var current_drain = discharge_rate
 		# Increase drain when moving
