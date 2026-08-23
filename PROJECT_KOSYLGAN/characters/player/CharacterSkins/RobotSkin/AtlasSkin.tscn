@@ -98,23 +98,29 @@ top_radius = 0.025
 bottom_radius = 0.025
 height = 0.24
 
-[sub_resource type="BoxMesh" id="BoxMesh_scoop_floor"]
-size = Vector3(0.72, 0.035, 0.32)
+[sub_resource type="BoxMesh" id="BoxMesh_fork_carriage_crossbar"]
+size = Vector3(0.68, 0.05, 0.04)
 
-[sub_resource type="BoxMesh" id="BoxMesh_scoop_backwall"]
-size = Vector3(0.72, 0.24, 0.035)
+[sub_resource type="BoxMesh" id="BoxMesh_fork_carriage_grill"]
+size = Vector3(0.025, 0.32, 0.025)
 
-[sub_resource type="BoxMesh" id="BoxMesh_scoop_sidewall"]
-size = Vector3(0.035, 0.24, 0.34)
+[sub_resource type="BoxMesh" id="BoxMesh_fork_carriage_side"]
+size = Vector3(0.04, 0.36, 0.06)
 
-[sub_resource type="BoxMesh" id="BoxMesh_scoop_cutting_lip"]
-size = Vector3(0.74, 0.035, 0.08)
+[sub_resource type="BoxMesh" id="BoxMesh_fork_shank"]
+size = Vector3(0.075, 0.36, 0.04)
 
-[sub_resource type="BoxMesh" id="BoxMesh_scoop_corner_gusset"]
-size = Vector3(0.04, 0.20, 0.04)
+[sub_resource type="BoxMesh" id="BoxMesh_fork_blade"]
+size = Vector3(0.075, 0.035, 0.46)
 
-[sub_resource type="BoxMesh" id="BoxMesh_gripper_tooth"]
-size = Vector3(0.045, 0.06, 0.09)
+[sub_resource type="BoxMesh" id="BoxMesh_fork_tip"]
+size = Vector3(0.075, 0.02, 0.08)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fork_heel"]
+size = Vector3(0.078, 0.065, 0.065)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fork_clamp"]
+size = Vector3(0.09, 0.05, 0.06)
 
 [sub_resource type="BoxMesh" id="BoxMesh_thigh_frame"]
 size = Vector3(0.09, 0.34, 0.09)
@@ -852,78 +858,99 @@ transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, -0.04, -0.
 mesh = SubResource("BoxMesh_arm_beam")
 surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
 
-[node name="UnifiedLoaderScoop" type="Node3D" parent="Visuals/ArmsRoot"]
+[node name="ForkliftMechanism" type="Node3D" parent="Visuals/ArmsRoot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.36, 0.18)
 
-[node name="ScoopFloor" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.10, 0.06)
-mesh = SubResource("BoxMesh_scoop_floor")
-surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
-
-[node name="ScoopBackWall" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.09)
-mesh = SubResource("BoxMesh_scoop_backwall")
+[node name="CarriageTopRail" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, -0.04)
+mesh = SubResource("BoxMesh_fork_carriage_crossbar")
 surface_material_override/0 = SubResource("StandardMaterial3D_yellow_hazard")
 
-[node name="ScoopSideL" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36, 0.02, 0.06)
-mesh = SubResource("BoxMesh_scoop_sidewall")
+[node name="CarriageBottomRail" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.14, -0.04)
+mesh = SubResource("BoxMesh_fork_carriage_crossbar")
 surface_material_override/0 = SubResource("StandardMaterial3D_yellow_hazard")
 
-[node name="ScoopSideR" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36, 0.02, 0.06)
-mesh = SubResource("BoxMesh_scoop_sidewall")
+[node name="CarriageSideL" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.32, 0, -0.03)
+mesh = SubResource("BoxMesh_fork_carriage_side")
+surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
+
+[node name="CarriageSideR" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.32, 0, -0.03)
+mesh = SubResource("BoxMesh_fork_carriage_side")
+surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
+
+[node name="CarriageGrill1" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10, 0, -0.04)
+mesh = SubResource("BoxMesh_fork_carriage_grill")
+surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
+
+[node name="CarriageGrill2" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04)
+mesh = SubResource("BoxMesh_fork_carriage_grill")
+surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
+
+[node name="CarriageGrill3" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10, 0, -0.04)
+mesh = SubResource("BoxMesh_fork_carriage_grill")
+surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
+
+[node name="LeftFork" type="Node3D" parent="Visuals/ArmsRoot/ForkliftMechanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.20, 0, 0)
+
+[node name="ShankL" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism/LeftFork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.01)
+mesh = SubResource("BoxMesh_fork_shank")
+surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
+
+[node name="ClampTopL" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism/LeftFork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, -0.02)
+mesh = SubResource("BoxMesh_fork_clamp")
 surface_material_override/0 = SubResource("StandardMaterial3D_yellow_hazard")
 
-[node name="CuttingLip" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.10, 0.23)
-mesh = SubResource("BoxMesh_scoop_cutting_lip")
-surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
-
-[node name="GussetL" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -0.35, 0.01, -0.08)
-mesh = SubResource("BoxMesh_scoop_corner_gusset")
+[node name="HeelL" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism/LeftFork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0.01)
+mesh = SubResource("BoxMesh_fork_heel")
 surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
 
-[node name="GussetR" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0.35, 0.01, -0.08)
-mesh = SubResource("BoxMesh_scoop_corner_gusset")
+[node name="BladeL" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism/LeftFork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.165, 0.24)
+mesh = SubResource("BoxMesh_fork_blade")
+surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
+
+[node name="TipL" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism/LeftFork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0.49)
+mesh = SubResource("BoxMesh_fork_tip")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_hazard")
+
+[node name="RightFork" type="Node3D" parent="Visuals/ArmsRoot/ForkliftMechanism"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.20, 0, 0)
+
+[node name="ShankR" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism/RightFork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.01)
+mesh = SubResource("BoxMesh_fork_shank")
 surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
 
-[node name="Tooth1" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.30, -0.10, 0.28)
-mesh = SubResource("BoxMesh_gripper_tooth")
+[node name="ClampTopR" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism/RightFork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, -0.02)
+mesh = SubResource("BoxMesh_fork_clamp")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_hazard")
+
+[node name="HeelR" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism/RightFork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0.01)
+mesh = SubResource("BoxMesh_fork_heel")
+surface_material_override/0 = SubResource("StandardMaterial3D_slate_mech")
+
+[node name="BladeR" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism/RightFork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.165, 0.24)
+mesh = SubResource("BoxMesh_fork_blade")
 surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
 
-[node name="Tooth2" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.20, -0.10, 0.28)
-mesh = SubResource("BoxMesh_gripper_tooth")
-surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
-
-[node name="Tooth3" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10, -0.10, 0.28)
-mesh = SubResource("BoxMesh_gripper_tooth")
-surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
-
-[node name="Tooth4" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, -0.10, 0.28)
-mesh = SubResource("BoxMesh_gripper_tooth")
-surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
-
-[node name="Tooth5" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10, -0.10, 0.28)
-mesh = SubResource("BoxMesh_gripper_tooth")
-surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
-
-[node name="Tooth6" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.20, -0.10, 0.28)
-mesh = SubResource("BoxMesh_gripper_tooth")
-surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
-
-[node name="Tooth7" type="MeshInstance3D" parent="Visuals/ArmsRoot/UnifiedLoaderScoop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.30, -0.10, 0.28)
-mesh = SubResource("BoxMesh_gripper_tooth")
-surface_material_override/0 = SubResource("StandardMaterial3D_chrome_steel")
+[node name="TipR" type="MeshInstance3D" parent="Visuals/ArmsRoot/ForkliftMechanism/RightFork"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0.49)
+mesh = SubResource("BoxMesh_fork_tip")
+surface_material_override/0 = SubResource("StandardMaterial3D_yellow_hazard")
 
 [node name="HydraulicPistonL" type="MeshInstance3D" parent="Visuals/ArmsRoot"]
 transform = Transform3D(1, 0, 0, 0, 0.939693, -0.34202, 0, 0.34202, 0.939693, -0.22, -0.15, 0.04)

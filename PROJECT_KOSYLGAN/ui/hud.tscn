@@ -60,7 +60,7 @@ layout_mode = 2
 size_flags_horizontal = 2
 script = ExtResource("2_bat")
 robot_name = "ATLAS"
-robot_role = "HEAVY LOADER // SCOOP MECHA"
+robot_role = "HEAVY LOADER // FORKLIFT MECHA"
 theme_color = Color(0.91, 0.44, 0.36, 1)
 
 [node name="LevelInfo" type="VBoxContainer" parent="TopMargin/HBox"]
