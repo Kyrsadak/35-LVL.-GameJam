@@ -5,7 +5,7 @@ extends CanvasLayer
 @onready var cipher_battery_display = %CipherBatteryDisplay
 
 @onready var level_title: Label = %LevelTitle
-@onready var dialogue_container: PanelContainer = %DialogueContainer
+@onready var dialogue_container: Control = %DialogueContainer
 @onready var dialogue_portrait: Control = %DialoguePortrait
 @onready var message_banner: Label = %MessageBanner
 @onready var enter_badge: PanelContainer = %EnterBadge

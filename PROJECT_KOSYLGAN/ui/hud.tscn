@@ -84,7 +84,7 @@ robot_name = "CIPHER"
 robot_role = "INFILTRATOR // DATA PLUG MECHA"
 theme_color = Color(0.15, 0.95, 0.50, 1)
 
-[node name="DialogueContainer" type="PanelContainer" parent="."]
+[node name="DialogueContainer" type="Control" parent="."]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(620, 68)
 anchors_preset = 7
@@ -95,35 +95,25 @@ anchor_bottom = 1.0
 offset_left = -310.0
 offset_top = -140.0
 offset_right = 310.0
-offset_bottom = -68.0
+offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="DialogueBoxPanel" type="PanelContainer" parent="DialogueContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
 
-[node name="DialoguePortrait" type="Control" parent="DialogueContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(110, 110)
-layout_mode = 2
-anchors_preset = 1
-anchor_left = 1.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 0.0
-offset_left = -110.0
-offset_top = -92.0
-offset_right = 0.0
-offset_bottom = 18.0
-grow_horizontal = 0
-mouse_filter = 2
-script = ExtResource("3_portrait")
-speaker_id = "catgirl"
-
-[node name="HBox" type="HBoxContainer" parent="DialogueContainer"]
+[node name="HBox" type="HBoxContainer" parent="DialogueContainer/DialogueBoxPanel"]
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="MessageBanner" type="Label" parent="DialogueContainer/HBox"]
+[node name="MessageBanner" type="Label" parent="DialogueContainer/DialogueBoxPanel/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -135,7 +125,7 @@ theme_override_font_sizes/font_size = 23
 text = "(=^･ω･^=)⚡ // Weo Weo Weo! 🔌"
 vertical_alignment = 1
 
-[node name="EnterBadge" type="PanelContainer" parent="DialogueContainer/HBox"]
+[node name="EnterBadge" type="PanelContainer" parent="DialogueContainer/DialogueBoxPanel/HBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(44, 36)
 layout_mode = 2
@@ -143,7 +133,7 @@ size_flags_horizontal = 8
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_enter_key")
 
-[node name="EnterIcon" type="Label" parent="DialogueContainer/HBox/EnterBadge"]
+[node name="EnterIcon" type="Label" parent="DialogueContainer/DialogueBoxPanel/HBox/EnterBadge"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.0, 0.95, 1.0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -152,6 +142,24 @@ theme_override_font_sizes/font_size = 22
 text = "↵"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="DialoguePortrait" type="Control" parent="DialogueContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 110)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -115.0
+offset_top = -88.0
+offset_right = -5.0
+offset_bottom = 22.0
+grow_horizontal = 0
+mouse_filter = 2
+script = ExtResource("3_portrait")
+speaker_id = "catgirl"
 
 [node name="InteractPrompt" type="Label" parent="."]
 unique_name_in_owner = true
