@@ -30,26 +30,35 @@ func _create_wav(samples: PackedByteArray) -> AudioStreamWAV:
 	wav.data = samples
 	return wav
 
-# 1. Footstep (soft, warm and clearly audible mechanical tap)
-func play_footstep(volume_db: float = -6.0) -> void:
-	var duration = 0.08
+# 1. Footstep — robotic heartbeat (deep lub-dub double pulse)
+func play_footstep(volume_db: float = -4.0) -> void:
+	var duration = 0.32
 	var num_samples = int(sample_rate * duration)
 	var bytes = PackedByteArray()
 	bytes.resize(num_samples * 2)
-	
+
 	for i in range(num_samples):
 		var t = float(i) / sample_rate
-		var env = exp(-t * 28.0) * sin((float(i) / num_samples) * PI)
-		# Warm, pleasant acoustic low-mid tap (165Hz -> 90Hz) clearly audible on all speakers
-		var freq = 165.0 * exp(-t * 22.0) + 90.0
-		var s = sin(t * freq * TAU) * 0.62 + sin(t * freq * 1.5 * TAU) * 0.24 + sin(t * freq * 2.0 * TAU) * 0.14
-		var val = int(clamp(s * env * 24000.0, -32767, 32767))
+
+		# First pulse (LUB) — deep and heavy at t=0.00
+		var env1 = exp(-t * 38.0)
+		var s1 = sin(t * 52.0 * TAU) * 0.72 + sin(t * 80.0 * TAU) * 0.28
+
+		# Second pulse (DUB) — softer echo at t=0.14s
+		var t2 = t - 0.14
+		var env2 = 0.0
+		if t2 > 0.0:
+			env2 = exp(-t2 * 52.0) * 0.55
+		var s2 = sin(t2 * 46.0 * TAU) * 0.72 + sin(t2 * 72.0 * TAU) * 0.28
+
+		var s = s1 * env1 + s2 * env2
+		var val = int(clamp(s * 26000.0, -32767, 32767))
 		bytes.encode_s16(i * 2, val)
-	
+
 	var player = _get_free_player()
 	player.stream = _create_wav(bytes)
 	player.volume_db = volume_db
-	player.pitch_scale = randf_range(0.96, 1.04)
+	player.pitch_scale = randf_range(0.97, 1.03)
 	player.play()
 
 # 2. Robot Switch (gentle, warm soft sci-fi harmonic chime)
